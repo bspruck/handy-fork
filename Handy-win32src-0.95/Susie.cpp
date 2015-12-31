@@ -762,8 +762,8 @@ ULONG CSusie::PaintSprites(void)
 					// the hflip, vflip bits & negative tilt to be able to work correctly
 					//
 					int	modquad=quadrant;
-					static int vquadflip[4]={1,0,3,2};
-					static int hquadflip[4]={3,2,1,0};
+					static const int vquadflip[4]={1,0,3,2};
+					static const int hquadflip[4]={3,2,1,0};
 
 					if(mSPRCTL0_Vflip) modquad=vquadflip[modquad];
 					if(mSPRCTL0_Hflip) modquad=hquadflip[modquad];
@@ -891,7 +891,8 @@ ULONG CSusie::PaintSprites(void)
 										if(hoff>=0 && hoff<SCREEN_WIDTH)
 										{
 											ProcessPixel(hoff,pixel);
-											onscreen=everonscreen=TRUE;
+											onscreen = TRUE;
+											everonscreen = TRUE;
 										}
 										else
 										{
@@ -1880,11 +1881,19 @@ void CSusie::Poke(ULONG addr,UBYTE data)
 // Cartridge writing ports
 
 		case (RCART0&0xff):
+			if(mSystem.mCart->CartGetAudin() && mSystem.mMikie->SwitchAudInValue()){
+			  mSystem.Poke_CARTB0A(data);
+			}else{
 			mSystem.Poke_CARTB0(data);
+			}
 			TRACE_SUSIE2("Poke(RCART0,%02x) at PC=$%04x",data,mSystem.mCpu->GetPC());
 			break;
 		case (RCART1&0xff):
+			if(mSystem.mCart->CartGetAudin() && mSystem.mMikie->SwitchAudInValue()){
+			  mSystem.Poke_CARTB1A(data);
+			}else{
 			mSystem.Poke_CARTB1(data);
+			}
 			TRACE_SUSIE2("Poke(RCART1,%02x) at PC=$%04x",data,mSystem.mCpu->GetPC());
 			break;
 			
@@ -2281,12 +2290,20 @@ UBYTE CSusie::Peek(ULONG addr)
 // Cartridge reading ports
 
 		case (RCART0&0xff):
+			if(mSystem.mCart->CartGetAudin() && mSystem.mMikie->SwitchAudInValue()){
+			  retval=mSystem.Peek_CARTB0A();
+			}else{
 			retval=mSystem.Peek_CARTB0();
+			}
 //			TRACE_SUSIE2("Peek(RCART0)=$%02x at PC=$%04x",retval,mSystem.mCpu->GetPC());
 			return retval;
 			break;
 		case (RCART1&0xff):
+			if(mSystem.mCart->CartGetAudin() && mSystem.mMikie->SwitchAudInValue()){
+			  retval=mSystem.Peek_CARTB1A();
+			}else{
 			retval=mSystem.Peek_CARTB1();
+			}
 //			TRACE_SUSIE2("Peek(RCART1)=$%02x at PC=$%04x",retval,mSystem.mCpu->GetPC());
 			return retval;
 			break;
