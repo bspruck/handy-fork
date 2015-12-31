@@ -243,6 +243,25 @@ CCart::CCart(UBYTE *gamedata,ULONG gamesize)
 		DEFAULT_CART_CONTENTS,
 		mMaskBank1+1 - bank1size);
 
+	if(mAudinFlag){// TODO schoener machen
+	memcpy(
+		mCartBankA0,
+		gamedata+(sizeof(LYNX_HEADER)+ bank0size + bank1size),
+		bank0size);
+	memset(
+		mCartBankA0 + bank0size,
+		DEFAULT_CART_CONTENTS,
+		mMaskBankA0+1 - bank0size);
+	memcpy(
+		mCartBankA1,
+		gamedata+(sizeof(LYNX_HEADER) + bank0size + bank1size + bank0size),
+		bank1size);
+	memset(
+		mCartBankA1 + bank1size,
+		DEFAULT_CART_CONTENTS,
+		mMaskBankA1+1 - bank1size);
+        }
+
 	// Copy the cart banks from the image
 	if(gamesize)
 	{
