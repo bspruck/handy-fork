@@ -236,10 +236,10 @@ CCart::CCart(UBYTE *gamedata,ULONG gamesize)
 		mMaskBank0+1 - bank0size);
 	memcpy(
 		mCartBank1,
-		gamedata+(sizeof(LYNX_HEADER)),
+		gamedata+(sizeof(LYNX_HEADER) + bank0size),
 		bank1size);
 	memset(
-		mCartBank1 + bank0size,
+		mCartBank1 + bank1size,
 		DEFAULT_CART_CONTENTS,
 		mMaskBank1+1 - bank1size);
 
