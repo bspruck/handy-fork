@@ -1530,6 +1530,8 @@ class CMikie : public CLynxBase
 			// cannot be updated until this point otherwise it screws up the counters.
 			gSystemCycleCount+=mikie_work_done;
 		}
+		inline bool SwitchAudInDir(void){ return(mIODIR&0x10);};
+		inline bool SwitchAudInValue(void){ return (mIODAT&0x10);};
 
 	private:
 		CSystem		&mSystem;

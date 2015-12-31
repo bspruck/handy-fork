@@ -336,7 +336,7 @@ ULONG CMikie::GetLfsrNext(ULONG current)
 	// table will give the next value.
 
 	static ULONG switches,lfsr,next,swloop,result;
-	static ULONG switchbits[9]={7,0,1,2,3,4,5,10,11};
+	static const ULONG switchbits[9]={7,0,1,2,3,4,5,10,11};
 
 	switches=current>>12;
 	lfsr=current&0xfff;
@@ -1971,7 +1971,7 @@ void CMikie::Poke(ULONG addr,UBYTE data)
 			mIODAT=data;
 			mSystem.CartAddressData((mIODAT&0x02)?TRUE:FALSE);
 			// Enable cart writes to BANK1 on AUDIN if AUDIN is set to output
-			if(mIODIR&0x10) mSystem.mCart->mWriteEnableBank1=(mIODAT&0x10)?TRUE:FALSE;
+			if(mIODIR&0x10) mSystem.mCart->mWriteEnableBank1=(mIODAT&0x10)?TRUE:FALSE;// there is no reason to use AUDIN as Write Enable or latch. private patch???
 			break;
 
 		case (SERCTL&0xff): 
