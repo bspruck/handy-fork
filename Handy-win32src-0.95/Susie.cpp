@@ -483,10 +483,11 @@ ULONG CSusie::PaintSprites(void)
 	}
 
 	cycles_used=0;
-	everonscreen=0;
 
 	do
 	{
+		everonscreen=0;// everon has to be reset fro every sprite, thus line was moved inside this loop
+
 		TRACE_SUSIE1("PaintSprites() ************ Rendering Sprite %03d ************",sprcount);
 
 		// Step 1 load up the SCB params into Susie
