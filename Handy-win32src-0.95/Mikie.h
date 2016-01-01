@@ -214,6 +214,7 @@ class CMikie : public CLynxBase
 		inline void ClearCPUSleep(void) {gSystemCPUSleep=FALSE;gSystemCPUSleep_Saved=FALSE;};
 
 		inline void Update(void);
+		inline void UpdateSound(void);
 		inline bool SwitchAudInDir(void){ return(mIODIR&0x10);};
 		inline bool SwitchAudInValue(void){ return (mIODAT&0x10);};
 
@@ -347,7 +348,6 @@ class CMikie : public CLynxBase
 		ULONG		mAUDIO_0_LAST_LINK_CARRY;
 		ULONG		mAUDIO_0_LAST_COUNT;
 		SBYTE		mAUDIO_0_VOLUME;
-		SBYTE		mAUDIO_0_OUTPUT;
 		ULONG		mAUDIO_0_INTEGRATE_ENABLE;
 		ULONG		mAUDIO_0_WAVESHAPER;
 
@@ -363,7 +363,6 @@ class CMikie : public CLynxBase
 		ULONG		mAUDIO_1_LAST_LINK_CARRY;
 		ULONG		mAUDIO_1_LAST_COUNT;
 		SBYTE		mAUDIO_1_VOLUME;
-		SBYTE		mAUDIO_1_OUTPUT;
 		ULONG		mAUDIO_1_INTEGRATE_ENABLE;
 		ULONG		mAUDIO_1_WAVESHAPER;
 
@@ -379,7 +378,6 @@ class CMikie : public CLynxBase
 		ULONG		mAUDIO_2_LAST_LINK_CARRY;
 		ULONG		mAUDIO_2_LAST_COUNT;
 		SBYTE		mAUDIO_2_VOLUME;
-		SBYTE		mAUDIO_2_OUTPUT;
 		ULONG		mAUDIO_2_INTEGRATE_ENABLE;
 		ULONG		mAUDIO_2_WAVESHAPER;
 
@@ -395,11 +393,13 @@ class CMikie : public CLynxBase
 		ULONG		mAUDIO_3_LAST_LINK_CARRY;
 		ULONG		mAUDIO_3_LAST_COUNT;
 		SBYTE		mAUDIO_3_VOLUME;
-		SBYTE		mAUDIO_3_OUTPUT;
 		ULONG		mAUDIO_3_INTEGRATE_ENABLE;
 		ULONG		mAUDIO_3_WAVESHAPER;
 
+		SBYTE		mAUDIO_OUTPUT[4];
+                UBYTE           mAUDIO_ATTEN[4];
 		ULONG		mSTEREO;
+		ULONG		mPAN;
 
 		//
 		// Serial related variables
