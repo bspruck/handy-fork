@@ -226,6 +226,8 @@ CCart::CCart(UBYTE *gamedata,ULONG gamesize)
 	int cartsize = __max(0, int(gamesize - sizeof(LYNX_HEADER)));
 	int bank0size = __min(cartsize, (int)(mMaskBank0+1));
 	int bank1size = __min(cartsize, (int)(mMaskBank1+1));
+        if( bank0size==1) bank0size=0;// workaround ...
+        if( bank1size==1) bank1size=0;// workaround ...
 	memcpy(
 		mCartBank0,
 		gamedata+(sizeof(LYNX_HEADER)),
@@ -261,6 +263,9 @@ CCart::CCart(UBYTE *gamedata,ULONG gamesize)
 		DEFAULT_CART_CONTENTS,
 		mMaskBankA1+1 - bank1size);
         }
+
+        if( bank0size==0) bank0size=1;// workaround ...
+        if( bank1size==0) bank1size=1;// workaround ...
 
 	// Copy the cart banks from the image
 	if(gamesize)
