@@ -1,0 +1,600 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.K.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENG)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_UK
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MAINFRAME MENU DISCARDABLE 
+BEGIN
+    POPUP "&File"
+    BEGIN
+        MENUITEM "&Load Cartridge\tCtrl+O",     IDM_FILE_LOAD
+        MENUITEM "Load Game Snapshot\tCtrl-L",  IDM_FILE_SNAPSHOT_LOAD
+        MENUITEM "Save &Game Snapshot\tCtrl-G", IDM_FILE_SNAPSHOT_GAME
+        MENUITEM SEPARATOR
+        MENUITEM "&BMP snapshot\tCtrl+Alt+B",   IDM_FILE_SNAPSHOT_BMP
+        MENUITEM "&RAW snapshot\tCtrl+Alt+R",   IDM_FILE_SNAPSHOT_RAW
+        MENUITEM SEPARATOR
+        MENUITEM "E&xit",                       IDM_FILE_EXIT
+    END
+    POPUP "&Options"
+    BEGIN
+        MENUITEM "&Sound Enable\tCtrl+S",       IDM_OPTIONS_SOUND
+        MENUITEM SEPARATOR
+        MENUITEM "&Joystick Enable\tCtrl+J",    IDM_OPTIONS_JOYSTICK
+        MENUITEM SEPARATOR
+        MENUITEM "Key &definitions...",         IDM_OPTIONS_KEYDEFS
+        MENUITEM SEPARATOR
+        MENUITEM "Normal Mode (Windowed)",      IDM_OPTIONS_DISPLAY_MODE_1
+        MENUITEM "&Normal Mode (Full Screen)",  IDM_OPTIONS_DISPLAY_MODE_2
+        MENUITEM "Lynx LCD Emulation (Windowed)", IDM_OPTIONS_DISPLAY_MODE_3
+        MENUITEM "Lynx LCD Emulation (Full Screen)", 
+                                                IDM_OPTIONS_DISPLAY_MODE_4
+        MENUITEM "Eagle Mode (Windowed)",       IDM_OPTIONS_DISPLAY_MODE_5
+        MENUITEM "Eagle Mode (Full Screen)",    IDM_OPTIONS_DISPLAY_MODE_6
+        MENUITEM "GDI Mode (Windowed - SLOW)",  IDM_OPTIONS_DISPLAY_MODE_7
+        MENUITEM SEPARATOR
+        MENUITEM "&1x Screen Zoom",             IDM_OPTIONS_SIZE_NORMAL
+        MENUITEM "&2x Screen Zoom",             IDM_OPTIONS_SIZE_DOUBLE
+        MENUITEM "&3x Screen Zoom",             IDM_OPTIONS_SIZE_TRIPLE
+        MENUITEM "&4x Screen Zoom",             IDM_OPTIONS_SIZE_QUAD
+        MENUITEM SEPARATOR
+        MENUITEM "&Rotate Screen (Left)",       IDM_OPTIONS_ROTATE_LEFT
+        MENUITEM "&Rotate Screen (Right)",      IDM_OPTIONS_ROTATE_RIGHT
+        MENUITEM SEPARATOR
+        MENUITEM "Lynx &Background\tCtrl+B",    IDM_OPTIONS_BACKGROUND
+        POPUP "Select Background Type"
+        BEGIN
+            MENUITEM "Lynx I",                      IDM_OPTIONS_BACKGROUNDTYPE1
+
+            MENUITEM "Lynx II",                     IDM_OPTIONS_BACKGROUNDTYPE2
+
+            MENUITEM "Screen Border",               IDM_OPTIONS_BACKGROUNDTYPE3
+
+        END
+        MENUITEM SEPARATOR
+        MENUITEM "Lynx &Networking\tCtrl+N",    IDM_OPTIONS_NETWORK
+        MENUITEM SEPARATOR
+        MENUITEM "&Reset\tF3",                  IDM_OPTIONS_RESET
+        MENUITEM "&Pause\tF5",                  IDM_OPTIONS_PAUSE
+    END
+    POPUP "&Debug"
+    BEGIN
+        MENUITEM "&Debugger",                   IDM_DEBUG_DEBUGGER
+        MENUITEM "&Trace window",               IDM_DEBUG_TRACE
+        MENUITEM "D&ump window",                IDM_DEBUG_DUMP
+        MENUITEM "&Code window",                IDM_DEBUG_CODE
+        MENUITEM "&Graphics window",            IDM_DEBUG_GRAPHICS
+        MENUITEM SEPARATOR
+        MENUITEM "Lynx RAM Dump",               IDM_DEBUG_RAMDUMP
+        MENUITEM SEPARATOR
+        MENUITEM "Close al&l",                  IDM_DEBUG_CLOSEALL
+    END
+    POPUP "&Help"
+    BEGIN
+        MENUITEM "&Emulation status",           IDM_HELP_INFO
+        MENUITEM "&About",                      IDM_HELP_ABOUT
+    END
+END
+
+IDR_MAINFRAME_CONTEXT_MENU MENU DISCARDABLE 
+BEGIN
+    POPUP "Context Menu"
+    BEGIN
+        MENUITEM "&Load Cartridge...\tCtrl+O",  IDM_FILE_LOAD
+        MENUITEM "Load Game Snapshot\tCtrl-L",  IDM_FILE_SNAPSHOT_LOAD
+        MENUITEM "Save &Game Snapshot\tCtrl+G", IDM_FILE_SNAPSHOT_GAME
+        MENUITEM SEPARATOR
+        MENUITEM "&Sound Enable\tCtrl+S",       IDM_OPTIONS_SOUND
+        MENUITEM SEPARATOR
+        MENUITEM "&Joystick Enable\tCtrl+J",    IDM_OPTIONS_JOYSTICK
+        MENUITEM SEPARATOR
+        MENUITEM "&1x Screen Zoom",             IDM_OPTIONS_SIZE_NORMAL
+        MENUITEM "&2x Screen Zoom",             IDM_OPTIONS_SIZE_DOUBLE
+        MENUITEM "&3x Screen Zoom",             IDM_OPTIONS_SIZE_TRIPLE
+        MENUITEM "&4x Screen Zoom",             IDM_OPTIONS_SIZE_QUAD
+        MENUITEM SEPARATOR
+        MENUITEM "&Rotate Screen (Left)",       IDM_OPTIONS_ROTATE_LEFT
+        MENUITEM "&Rotate Screen (Right)",      IDM_OPTIONS_ROTATE_RIGHT
+        MENUITEM SEPARATOR
+        MENUITEM "Lynx &Background\tCtrl+B",    IDM_OPTIONS_BACKGROUND
+        MENUITEM SEPARATOR
+        MENUITEM "&Full Screen Mode\tAlt+Enter", IDM_OPTIONS_FULL_SCREEN
+        MENUITEM SEPARATOR
+        MENUITEM "&Reset\tF3",                  IDM_OPTIONS_RESET
+        MENUITEM SEPARATOR
+        MENUITEM "&Pause\tF5",                  IDM_OPTIONS_PAUSE
+    END
+END
+
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x40004L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "080904b0"
+        BEGIN
+            VALUE "Comments", "I can't beleive you're really reading this junk.....\0"
+            VALUE "CompanyName", "Irwell Expert Systems\0"
+            VALUE "FileDescription", "lynx\0"
+            VALUE "FileVersion", "1\0"
+            VALUE "InternalName", "Handy\0"
+            VALUE "LegalCopyright", "Copyright © 1999,2000,2001,2002\0"
+            VALUE "LegalTrademarks", "\0"
+            VALUE "OriginalFilename", "Handy.exe\0"
+            VALUE "PrivateBuild", "\0"
+            VALUE "ProductName", "Handy - Lynx Emulator\0"
+            VALUE "ProductVersion", "See About Box\0"
+            VALUE "SpecialBuild", "\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x809, 1200
+    END
+END
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Accelerator
+//
+
+IDR_ACCELERATOR1 ACCELERATORS DISCARDABLE 
+BEGIN
+    "B",            IDM_OPTIONS_BACKGROUND, VIRTKEY, CONTROL, NOINVERT
+    "B",            IDM_FILE_SNAPSHOT_BMP,  VIRTKEY, CONTROL, ALT, NOINVERT
+    "G",            IDM_FILE_SNAPSHOT_GAME, VIRTKEY, CONTROL, NOINVERT
+    "J",            IDM_OPTIONS_JOYSTICK,   VIRTKEY, CONTROL, NOINVERT
+    "L",            IDM_FILE_SNAPSHOT_LOAD, VIRTKEY, CONTROL, NOINVERT
+    "N",            IDM_OPTIONS_NETWORK,    VIRTKEY, CONTROL, NOINVERT
+    "O",            IDM_FILE_LOAD,          VIRTKEY, CONTROL, NOINVERT
+    "R",            IDM_FILE_SNAPSHOT_RAW,  VIRTKEY, CONTROL, ALT, NOINVERT
+    "S",            IDM_OPTIONS_SOUND,      VIRTKEY, CONTROL, NOINVERT
+    VK_ESCAPE,      IDM_ESCAPE_FULLSCREEN,  VIRTKEY, NOINVERT
+    VK_F11,         IDM_DEBUG_STEP,         VIRTKEY, NOINVERT
+    VK_F3,          IDM_OPTIONS_RESET,      VIRTKEY, NOINVERT
+    VK_F5,          IDM_OPTIONS_PAUSE,      VIRTKEY, NOINVERT
+    VK_RETURN,      IDM_OPTIONS_DISPLAY_FULLSCN, VIRTKEY, ALT, NOINVERT
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_ICON1               ICON    DISCARDABLE     "icon1.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_DUMPWIN_CONTEXT DIALOG DISCARDABLE  0, 0, 162, 103
+STYLE DS_MODALFRAME | DS_CENTER | DS_CENTERMOUSE | WS_POPUP | WS_CAPTION | 
+    WS_SYSMENU
+CAPTION "Window Settings"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "&Address (Hex)",IDC_STATIC,14,14,56,12,NOT WS_GROUP
+    EDITTEXT        IDC_EDIT1,14,26,56,15,ES_AUTOHSCROLL
+    CONTROL         "&Follow PC",IDC_CHECK1,"Button",BS_AUTOCHECKBOX | 
+                    WS_DISABLED,14,46,53,12
+    GROUPBOX        "&Data Source",IDC_STATIC,85,10,58,64
+    CONTROL         "CART&0",IDC_RADIO1,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP | WS_TABSTOP,95,20,39,10
+    CONTROL         "CART&1",IDC_RADIO2,"Button",BS_AUTORADIOBUTTON,95,34,39,
+                    10
+    CONTROL         "&RAM",IDC_RADIO3,"Button",BS_AUTORADIOBUTTON,95,47,39,
+                    10
+    CONTROL         "&CPU",IDC_RADIO4,"Button",BS_AUTORADIOBUTTON,95,60,39,
+                    10
+    DEFPUSHBUTTON   "OK",IDOK,23,82,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,89,82,50,14
+    CONTROL         "&2x Zoom",IDC_CHECK2,"Button",BS_AUTOCHECKBOX | 
+                    WS_DISABLED,14,60,53,12
+END
+
+IDD_TRACE DIALOG DISCARDABLE  0, 0, 164, 200
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    GROUPBOX        "Registers",IDC_STATIC,72,5,85,95
+    PUSHBUTTON      "&Run/Halt",IDM_OPTIONS_PAUSE,32,181,42,16
+    PUSHBUTTON      "&Step",IDM_DEBUG_STEP,87,181,41,16
+    GROUPBOX        "Breakpoints",IDC_STATIC,7,5,60,95
+    GROUPBOX        "Window Updates",IDC_WINUPD,7,105,75,45
+    CONTROL         "Normal",IDC_WINUPD_NORM,"Button",BS_AUTORADIOBUTTON | 
+                    BS_NOTIFY | WS_TABSTOP,12,115,69,12
+    CONTROL         "Once Per Frame",IDC_WINUPD_FRAME,"Button",
+                    BS_AUTORADIOBUTTON | BS_NOTIFY,12,125,69,12
+    CONTROL         "Once per Cycle",IDC_WINUPD_CYCLE,"Button",
+                    BS_AUTORADIOBUTTON | BS_NOTIFY,12,135,69,12
+    LTEXT           "0x0000",IDC_BPOINT0,32,15,25,10
+    LTEXT           "0x0000",IDC_BPOINT1,32,25,25,10
+    LTEXT           "0x0000",IDC_BPOINT2,32,35,25,10
+    LTEXT           "0x0000",IDC_BPOINT3,32,45,26,10
+    LTEXT           "0x0000",IDC_BPOINT4,32,55,26,10
+    LTEXT           "0x0000",IDC_BPOINT5,32,65,26,10
+    LTEXT           "0x0000",IDC_BPOINT6,32,75,26,10
+    LTEXT           "0x0000",IDC_BPOINT7,32,85,26,10
+    GROUPBOX        "Run Status",IDC_WINUPD2,92,105,65,45
+    CONTROL         "Halt",IDC_RUNSTAT_HALT,"Button",BS_AUTORADIOBUTTON | 
+                    BS_NOTIFY | WS_TABSTOP,95,115,55,12
+    CONTROL         "Step Mode",IDC_RUNSTAT_STEP,"Button",BS_AUTORADIOBUTTON | 
+                    BS_NOTIFY,95,125,55,12
+    CONTROL         "Running",IDC_RUNSTAT_RUN,"Button",BS_AUTORADIOBUTTON | 
+                    BS_NOTIFY,95,135,55,12
+    LTEXT           "0x0000",IDC_REG_PC,95,15,25,10
+    LTEXT           "0x00",IDC_REG_SP,95,25,15,10
+    LTEXT           "0x00",IDC_REG_PS,95,35,15,10
+    LTEXT           "0x00",IDC_REG_A,90,65,15,10
+    LTEXT           "0x00",IDC_REG_X,90,75,15,10
+    LTEXT           "0x00",IDC_REG_Y,90,85,15,10
+    LTEXT           "0",IDC_REG_NMI,140,65,8,10
+    LTEXT           "0",IDC_REG_IRQ,140,75,8,10
+    LTEXT           "0",IDC_REG_WAI,140,85,8,10
+    LTEXT           "NMI -",IDC_STATIC,120,65,20,10
+    LTEXT           "IRQ -",IDC_STATIC,120,75,20,10
+    LTEXT           "WAI -",IDC_STATIC,120,85,20,10
+    LTEXT           "A -",IDC_STATIC,80,65,10,10
+    LTEXT           "X -",IDC_STATIC,80,75,10,10
+    LTEXT           "Y -",IDC_STATIC,80,85,10,10
+    LTEXT           "PC -",IDC_STATIC,80,15,15,10
+    LTEXT           "SP -",IDC_STATIC,80,25,15,10
+    LTEXT           "PS -",IDC_STATIC,80,35,15,10
+    LTEXT           "N:",IDC_STATIC,80,45,8,10
+    LTEXT           "0",IDC_REG_N,88,45,8,10
+    LTEXT           "V:",IDC_STATIC,96,45,8,10
+    LTEXT           "0",IDC_REG_V,104,45,8,10
+    LTEXT           "B:",IDC_STATIC,111,45,8,10
+    LTEXT           "0",IDC_REG_B,119,45,8,10
+    LTEXT           "I:",IDC_STATIC,80,55,8,10
+    LTEXT           "0",IDC_REG_I,88,55,8,10
+    LTEXT           "Z:",IDC_STATIC,96,55,8,10
+    LTEXT           "0",IDC_REG_Z,104,55,8,10
+    LTEXT           "C:",IDC_STATIC,111,55,8,10
+    LTEXT           "0",IDC_REG_C,119,55,8,10
+    LTEXT           "D:",IDC_STATIC,127,45,8,10
+    LTEXT           "0",IDC_REG_D,135,45,8,10
+    LTEXT           "B0 -",IDC_STATIC,17,15,15,10
+    LTEXT           "B1 -",IDC_STATIC,17,25,15,10
+    LTEXT           "B3 -",IDC_STATIC,17,45,15,10
+    LTEXT           "B2 -",IDC_STATIC,17,35,15,10
+    LTEXT           "B4 -",IDC_STATIC,17,55,15,10
+    LTEXT           "B5 -",IDC_STATIC,17,65,15,10
+    LTEXT           "B6 -",IDC_STATIC,17,75,15,10
+    LTEXT           "B7 -",IDC_STATIC,17,85,15,10
+    GROUPBOX        "Cycle Count",IDC_STATIC,92,153,65,25
+    LTEXT           "00000000",IDC_CYCLE_COUNT,105,163,35,10,SS_CENTERIMAGE
+    GROUPBOX        "Sprite Debug",IDC_STATIC,7,153,75,25
+    CONTROL         "Single Step",IDC_SPRITE_DEBUG,"Button",BS_AUTOCHECKBOX | 
+                    BS_NOTIFY,12,163,65,10
+END
+
+IDD_ABOUT_BOX DIALOG DISCARDABLE  0, 0, 214, 194
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "About Handy"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,81,117,50,14
+    CTEXT           "Copyright K.Wilkins 2007",IDC_STATIC,66,97,80,8
+    ICON            IDI_ICON1,IDC_STATIC,50,14,20,20
+    CTEXT           "Lynx Emulator for Windows",IDC_STATIC,77,19,86,8
+    CTEXT           "Version X.XX",IDC_ABOUT_VERSION,68,71,75,8
+    CTEXT           "http://handy.sourceforge.net",IDC_STATIC,64,54,92,8
+    LTEXT           "WWW Homepage",IDC_STATIC,77,44,60,8
+    EDITTEXT        IDC_ABOUT_MANUFACTURER,42,147,129,13,ES_CENTER | 
+                    ES_READONLY
+    EDITTEXT        IDC_ABOUT_CARTRIDGE,42,166,129,13,ES_CENTER | 
+                    ES_READONLY
+    CTEXT           "(Build XXXXXX)",IDC_ABOUT_BUILD,65,82,82,9
+END
+
+IDD_INFO_BOX DIALOGEX 0, 0, 109, 84
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION
+CAPTION "Handy Status Info"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    LTEXT           "Frames per second",IDC_STATIC,7,11,61,8
+    EDITTEXT        IDC_STATUS_FPS,75,8,27,13,ES_AUTOHSCROLL | ES_READONLY
+    LTEXT           "Emulation Speed %",IDC_STATIC,7,47,62,8
+    EDITTEXT        IDC_STATUS_EFF,75,44,27,13,ES_AUTOHSCROLL | ES_READONLY
+    EDITTEXT        IDC_STATUS_TARGET,75,62,27,13,ES_AUTOHSCROLL | 
+                    ES_READONLY | ES_NUMBER
+    CONTROL         "Spin1",IDC_STATUS_SPIN1,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS | UDS_NOTHOUSANDS,91,63,11,12,
+                    WS_EX_TRANSPARENT
+    LTEXT           "Emulation Max %",IDC_STATIC,7,64,54,8
+    LTEXT           "Frame Skip",IDC_STATIC,7,28,64,8
+    EDITTEXT        IDC_STATUS_SKIP,75,26,27,13,ES_AUTOHSCROLL | ES_READONLY | 
+                    ES_NUMBER
+END
+
+IDD_WARNING DIALOG DISCARDABLE  0, 0, 224, 109
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Handy Warning Message"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "Continue",IDOK,52,88,50,14
+    PUSHBUTTON      "Reset Lynx",IDCANCEL,120,88,50,14
+    CTEXT           "Static\nStatic\nStatic",IDC_WARNING,7,7,210,76,NOT 
+                    WS_GROUP
+END
+
+IDD_NETWAIT DIALOG DISCARDABLE  0, 0, 186, 42
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Handy Networking"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "Cancel",IDCANCEL,67,21,50,14
+    CTEXT           "Starting Synchronisation...",IDC_NETWAIT_TEXT,7,7,172,
+                    10,SS_CENTERIMAGE
+END
+
+IDD_NETADDRESS DIALOG DISCARDABLE  0, 0, 186, 71
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Handy Networking"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,38,50,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,97,50,50,14
+    LTEXT           "Enter the name or TCP/IP address of the machine you wish to connect with.",
+                    IDC_STATIC,7,7,172,15
+    EDITTEXT        IDC_NETWORK_ADDRESS,7,30,172,12,ES_AUTOHSCROLL
+END
+
+IDD_KEYCONF DIALOG DISCARDABLE  0, 0, 277, 141
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Handy Button Configuration"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "Done",IDOK,10,120,255,14
+    PUSHBUTTON      "UP",IDC_KEYDEF_UP,45,10,35,30,BS_CENTER | BS_VCENTER | 
+                    BS_MULTILINE
+    PUSHBUTTON      "LEFT",IDC_KEYDEF_LEFT,10,45,35,30,BS_CENTER | 
+                    BS_VCENTER | BS_MULTILINE
+    PUSHBUTTON      "RIGHT",IDC_KEYDEF_RIGHT,80,45,35,30,BS_CENTER | 
+                    BS_VCENTER | BS_MULTILINE
+    PUSHBUTTON      "DOWN",IDC_KEYDEF_DOWN,45,80,35,30,BS_CENTER | 
+                    BS_VCENTER | BS_MULTILINE
+    PUSHBUTTON      "OPT1",IDC_KEYDEF_OPT1,135,10,35,30,BS_CENTER | 
+                    BS_VCENTER | BS_MULTILINE
+    PUSHBUTTON      "PAUSE",IDC_KEYDEF_PAUSE,135,45,35,30,BS_CENTER | 
+                    BS_VCENTER | BS_MULTILINE
+    PUSHBUTTON      "OPT2",IDC_KEYDEF_OPT2,135,80,35,30,BS_CENTER | 
+                    BS_VCENTER | BS_MULTILINE
+    PUSHBUTTON      "A",IDC_KEYDEF_A,190,45,35,30,BS_CENTER | BS_VCENTER | 
+                    BS_MULTILINE
+    PUSHBUTTON      "B",IDC_KEYDEF_B,230,45,35,30,BS_CENTER | BS_VCENTER | 
+                    BS_MULTILINE
+    LTEXT           "Caption",IDC_KEYGET,180,10,90,25
+END
+
+IDD_KEYGET DIALOG DISCARDABLE  0, 0, 186, 36
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Handy Button Configuration"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CTEXT           "Please press a key",IDC_STATIC,5,5,175,25,
+                    SS_CENTERIMAGE
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_DUMPWIN_CONTEXT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 154
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 96
+    END
+
+    IDD_TRACE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 157
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 197
+    END
+
+    IDD_ABOUT_BOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 207
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 187
+    END
+
+    IDD_INFO_BOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 102
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 75
+    END
+
+    IDD_WARNING, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 217
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 102
+    END
+
+    IDD_NETWAIT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 179
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 35
+    END
+
+    IDD_NETADDRESS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 179
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 64
+    END
+
+    IDD_KEYCONF, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 270
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 128
+    END
+
+    IDD_KEYGET, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 179
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 29
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_BITMAP_BACKGROUND1  BITMAP  DISCARDABLE     "LynxBackground1.bmp"
+IDB_BITMAP_BACKGROUND2  BITMAP  DISCARDABLE     "lynxbackground2.bmp"
+IDB_BITMAP_BACKGROUND3  BITMAP  DISCARDABLE     "lynxbackground3.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDM_FILE_EXIT           "Exit the emulator"
+    IDM_FILE_OPEN           "Open a new game image"
+    IDM_HELP_ABOUT          "Information about the Lynx Emulator"
+    IDM_DEBUG_TRACE         "Open a new trace window"
+    IDM_DEBUG_DUMP          "Open a new dump window"
+    IDM_DEBUG_CODE          "Open a new source code window"
+    IDM_DEBUG_CLOSEALL      "Close all open debug windows"
+    IDM_OPTIONS_JOYSTICK    "Select joystick input"
+    IDM_OPTIONS_KEYBOARD    "Select keyboard input"
+    IDM_OPTIONS_NORMAL_SIZE "Normal Lynx screen resolution"
+    IDM_OPTIONS_SIZE_NORMAL "Normal Lynx screen size"
+    IDM_OPTIONS_SIZE_DOUBLE "Double size Lynx screen size"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDM_OPTIONS_SIZE_TRIPLE "Triple Lynx screen size"
+    IDM_OPTIONS_SIZE_QUAD   "Quadruple Lynx screen size"
+    IDM_OPTIONS_ROTATE_LEFT "Rotate Lynx Screen (Left)"
+    IDM_OPTIONS_ROTATE_RIGHT "Rotate Lynx Screen (Right)"
+    IDM_OPTIONS_FULL_SCREEN "Full screen mode"
+    IDM_OPTIONS_WRESET      "Reset the emulator"
+    IDM_OPTIONS_KEYDEFS     "Assign keys to Lynx buttons/Joystick"
+    IDM_HELP_INFO           "Display information regarding Handy status"
+    IDM_OPTIONS_SOUND       "Enable/Disable Lynx sound"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDM_DEBUG_GRAPHICS      "Open a new graphics window"
+END
+
+#endif    // English (U.K.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+
