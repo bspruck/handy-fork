@@ -59,9 +59,9 @@
 #include <cstring>
 #include <ctime>
 #include <cctype>
-#include <SDL.h>
-#include <SDL_main.h>
-#include <SDL_timer.h>
+#include <SDL/SDL.h>
+#include <SDL/SDL_main.h>
+#include <SDL/SDL_timer.h>
 
 #include "handy_sdl_main.h"
 #include "handy_sdl_handling.h"
