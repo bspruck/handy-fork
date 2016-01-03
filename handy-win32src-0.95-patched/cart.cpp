@@ -247,21 +247,21 @@ CCart::CCart(UBYTE *gamedata,ULONG gamesize)
 
 	if(mAudinFlag){// TODO schoener machen
 	memcpy(
-		mCartBankA0,
+		mCartBank0A,
 		gamedata+(sizeof(LYNX_HEADER)+ bank0size + bank1size),
 		bank0size);
 	memset(
-		mCartBankA0 + bank0size,
+		mCartBank0A + bank0size,
 		DEFAULT_CART_CONTENTS,
-		mMaskBankA0+1 - bank0size);
+		mMaskBank0+1 - bank0size);
 	memcpy(
-		mCartBankA1,
+		mCartBank1A,
 		gamedata+(sizeof(LYNX_HEADER) + bank0size + bank1size + bank0size),
 		bank1size);
 	memset(
-		mCartBankA1 + bank1size,
+		mCartBank1A + bank1size,
 		DEFAULT_CART_CONTENTS,
-		mMaskBankA1+1 - bank1size);
+		mMaskBank1+1 - bank1size);
         }
 
         if( bank0size==0) bank0size=1;// workaround ...
