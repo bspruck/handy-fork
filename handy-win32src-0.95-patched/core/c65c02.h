@@ -135,7 +135,7 @@ typedef struct
 class C65C02
 {
 	public:
-		C65C02::C65C02(CSystemBase& parent)
+		C65C02(CSystemBase& parent)
 			:mSystem(parent)
 		{
 			TRACE_CPU0("C65C02()");
@@ -153,7 +153,7 @@ class C65C02
 			
 		}
 
-		C65C02::~C65C02()
+		~C65C02()
 		{
 			TRACE_CPU0("~C65C02()");
 		}

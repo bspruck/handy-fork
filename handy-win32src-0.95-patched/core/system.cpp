@@ -59,8 +59,8 @@
 #include <string.h>
 #include "system.h"
 #include "error.h"
-#include "./zlib-113/zlib.h"
-#include "./zlib-113/unzip.h"
+#include "../zlib-113/zlib.h"
+#include "../zlib-113/unzip.h"
 
 int lss_read(void* dest,int varsize, int varcount,LSS_FILE *fp)
 {
