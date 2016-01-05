@@ -168,7 +168,6 @@ class CSystem;
 // Now pull in the parts that build the system
 //
 #include "lynxbase.h"
-#include "memfault.h"
 #include "ram.h"
 #include "rom.h"
 #include "memmap.h"
