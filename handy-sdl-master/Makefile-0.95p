@@ -72,6 +72,7 @@ OBJS = \
 		obj/errorhandler.o \
 		obj/unzip.o \
 		obj/ioapi.o \
+		obj/lynxdec.o \
 		obj/sdlemu_opengl.o \
 		obj/sdlemu_filter.o \
 		obj/sdlemu_video.o \
