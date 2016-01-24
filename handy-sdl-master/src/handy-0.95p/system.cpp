@@ -529,11 +529,10 @@ void CSystem::Reset(void)
 		regs.PC=(UWORD)gCPUBootAddress;
 		mCpu->SetRegs(regs);
         }else{
-      //if(!mRom->mValid)
+      if(!mRom->mValid)
       {
-		mMikie->PresetForHomebrew();
-   		fprintf(stderr, "[handy] HLE_BIOS_Init\r\n");
-		printf("======== [handy] HLE_BIOS_Init\r\n");
+ 	  printf("[handy] HLE_BIOS_Init\r\n");
+	  mMikie->PresetForHomebrew();
           mRom->mWriteEnable=true;
 
           mRom->Poke(0xFE00+0,0x8d);
@@ -554,7 +553,7 @@ void CSystem::Reset(void)
           mRom->Poke(0xFF80+2,0xfd);          
 
           mRom->mWriteEnable=false;
-    }
+        }
 	}
 }
 

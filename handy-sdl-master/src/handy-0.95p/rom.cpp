@@ -58,11 +58,22 @@ extern CErrorInterface *gError;
 CRom::CRom(char *romfile)
 {
 	mWriteEnable=FALSE;
+        mValid = TRUE;
 	strncpy(mFileName,romfile,1024);
 	Reset();
 
 	// Initialise ROM
 	for(int loop=0;loop<ROM_SIZE;loop++) mRomData[loop]=DEFAULT_ROM_CONTENTS;
+          // actually not part of Boot ROM but uninitialized otherwise
+          // Reset Vector etc
+          mRomData[0x1F8]=0x00;
+          mRomData[0x1F9]=0x80;
+          mRomData[0x1FA]=0x00;
+          mRomData[0x1FB]=0x30;
+          mRomData[0x1FC]=0x80;
+          mRomData[0x1FD]=0xFF;
+          mRomData[0x1FE]=0x80;
+          mRomData[0x1FF]=0xFF;
 
 	// Load up the file
 
@@ -70,35 +81,42 @@ CRom::CRom(char *romfile)
 
 	if((fp=fopen(mFileName,"rb"))==NULL)
 	{
+/*
 		CLynxException lynxerr;
 
 		lynxerr.Message() << "The Lynx Boot ROM image couldn't be located!";
 		lynxerr.Description()
-			<< "The lynx emulator will not run without the Boot ROM image." << endl
+			<< "The lynx emulator can run without the Boot ROM image." << endl
 			<< "\"" << romfile << "\" was not found in the lynx emulator " << endl
 			<< "directory (see the LynxEmu User Guide for more information).";
-		throw(lynxerr);
-	}
+		//throw(lynxerr);
+*/
+		printf("The Lynx Boot ROM image couldn't be located! Using built-in replacement\n");
+                mValid = FALSE;
+	}else{
 
 	// Read in the 512 bytes
 
 	if(fread(mRomData,sizeof(char),ROM_SIZE,fp)!=ROM_SIZE)
 	{
-		CLynxException lynxerr;
+/*		CLynxException lynxerr;
 
 		lynxerr.Message() << "The Lynx Boot ROM image couldn't be loaded!";
 		lynxerr.Description()
 			<< "The lynx emulator will not run without the Boot ROM image." << endl
 			<< "It appears that your BOOT image may be corrupted or there is" << endl
 			<< "some other error.(see the LynxEmu User Guide for more information)";
-		throw(lynxerr);
+//		throw(lynxerr);
+*/
+		printf("The Lynx Boot ROM image couldn't be located! Using built-in replacement\n");
+                mValid = FALSE;
 	}
-
-	fclose(fp);
+	if(fp) fclose(fp);
+        }
 
 	// Check the code that has been loaded and report an error if its a
 	// fake version of the bootrom
-
+/*
 	UBYTE mRomCheck[16]={0x38,0x80,0x0A,0x90,0x04,0x8E,0x8B,0xFD,
 						 0x18,0xE8,0x8E,0x87,0xFD,0xA2,0x02,0x8E};
 
@@ -118,6 +136,7 @@ CRom::CRom(char *romfile)
 			}
 		}
 	}
+*/
 }
 
 void CRom::Reset(void)
