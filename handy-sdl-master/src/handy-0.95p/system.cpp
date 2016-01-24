@@ -72,6 +72,8 @@
 	#include "stdlib_gcc_extra.h"
 #endif
 
+extern void lynx_decrypt(unsigned char * result, const unsigned char * encrypted, const int length);
+
 int lss_read(void* dest,int varsize, int varcount,LSS_FILE *fp)
 {
 	ULONG copysize;
@@ -417,6 +419,70 @@ bool CSystem::IsZip(char *filename)
 	return FALSE;
 }
 
+void CSystem::HLE_BIOS_FE00(void)
+{
+    // Select Block in A
+    C6502_REGS regs;
+    mCpu->GetRegs(regs);
+    mCart->SetShifterValue(regs.A);
+    // we just put an RTS behind in fake ROM!
+}
+
+void CSystem::HLE_BIOS_FE19(void)
+{
+    // (not) initial jump from reset vector
+    // Clear full 64k memory!
+    mRam->Clear();
+
+    // Set Load adresse to $200 ($05,$06)
+    mRam->Poke(0x0005,0x00);
+    mRam->Poke(0x0006,0x02);
+    // Call to $FE00
+    mCart->SetShifterValue(0);
+    // Fallthrou $FE4A
+    HLE_BIOS_FE4A();
+}
+
+void CSystem::HLE_BIOS_FE4A(void)
+{
+    UWORD addr=mRam->Peek(0x0005) | (mRam->Peek(0x0006)<<8);
+    
+   // Load from Cart (loader blocks)
+      unsigned char buff[256];// maximum 5 blocks
+      unsigned char res[256];
+    
+        buff[0]=mCart->Peek0();
+        int blockcount = 0x100 -  buff[0];
+    
+        for (int i = 1; i < 1+51*blockcount; ++i) // first encrypted loader
+        {
+           buff[i] = mCart->Peek0();
+        }
+        printf("\n");
+
+        lynx_decrypt(res, buff, 51);
+
+        for (int i = 0; i < 50*blockcount; ++i)
+        {
+          Poke_CPU(addr++, res[i]);
+        }
+
+    // Load Block(s), decode to ($05,$06)
+    // jmp $200
+
+   C6502_REGS regs;
+   mCpu->GetRegs(regs);
+   regs.PC=0x0200;
+   mCpu->SetRegs(regs);    
+}
+
+void CSystem::HLE_BIOS_FF80(void)
+{
+    // initial jump from reset vector ... calls FE19
+    HLE_BIOS_FE19();
+}
+
+
 void CSystem::Reset(void)
 {
 	gSystemCycleCount=0;
@@ -462,6 +528,33 @@ void CSystem::Reset(void)
 		mCpu->GetRegs(regs);
 		regs.PC=(UWORD)gCPUBootAddress;
 		mCpu->SetRegs(regs);
+        }else{
+      //if(!mRom->mValid)
+      {
+		mMikie->PresetForHomebrew();
+   		fprintf(stderr, "[handy] HLE_BIOS_Init\r\n");
+		printf("======== [handy] HLE_BIOS_Init\r\n");
+          mRom->mWriteEnable=true;
+
+          mRom->Poke(0xFE00+0,0x8d);
+          mRom->Poke(0xFE00+1,0x97);
+          mRom->Poke(0xFE00+2,0xfd);
+          mRom->Poke(0xFE00+3,0x60);// RTS
+
+          mRom->Poke(0xFE19+0,0x8d);
+          mRom->Poke(0xFE19+1,0x97);
+          mRom->Poke(0xFE19+2,0xfd);
+          
+          mRom->Poke(0xFE4A+0,0x8d);
+          mRom->Poke(0xFE4A+1,0x97);
+          mRom->Poke(0xFE4A+2,0xfd);          
+
+          mRom->Poke(0xFF80+0,0x8d);
+          mRom->Poke(0xFF80+1,0x97);
+          mRom->Poke(0xFF80+2,0xfd);          
+
+          mRom->mWriteEnable=false;
+    }
 	}
 }
 

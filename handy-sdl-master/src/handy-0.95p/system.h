@@ -190,7 +190,11 @@ class CSystem : public CSystemBase
 		CSystem(char* gamefile,char* romfile);
 		~CSystem();
 
-	public:
+	public:     
+                void HLE_BIOS_FE00(void);
+                void HLE_BIOS_FE19(void);
+                void HLE_BIOS_FE4A(void);
+                void HLE_BIOS_FF80(void);
 		void	Reset(void);
 		bool	ContextSave(char *context);
 		bool	ContextLoad(char *context);
