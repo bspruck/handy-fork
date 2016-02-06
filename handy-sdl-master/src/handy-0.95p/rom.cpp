@@ -58,7 +58,7 @@ extern CErrorInterface *gError;
 CRom::CRom(char *romfile)
 {
 	mWriteEnable=FALSE;
-        mValid = TRUE;
+   mValid = TRUE;
 	strncpy(mFileName,romfile,1024);
 	Reset();
 

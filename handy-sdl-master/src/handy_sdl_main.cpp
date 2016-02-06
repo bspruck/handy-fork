@@ -263,6 +263,9 @@ void handy_sdl_rom_info(void)
         case HANDY_FILETYPE_HOMEBREW:
             printf("Homebrew\n");
             break;
+        case HANDY_FILETYPE_RAW:
+            printf("RAW ROM Image without layout information... guessing\n");
+            break;
         case HANDY_FILETYPE_LNX:
             printf("Commercial and/or .LNX-format\n");
             break;

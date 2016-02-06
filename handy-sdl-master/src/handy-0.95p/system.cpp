@@ -105,7 +105,7 @@ CSystem::CSystem(char* gamefile,char* romfile)
 	ULONG filesize=0;
 	ULONG howardsize=0;
 
-	mFileType=HANDY_FILETYPE_LNX;
+   mFileType=HANDY_FILETYPE_ILLEGAL;
 	if(strcmp(gamefile,"")==0)
 	{
 		// No file
@@ -266,8 +266,12 @@ CSystem::CSystem(char* gamefile,char* romfile)
 		if(!strcmp(&clip[6],"BS93")) mFileType=HANDY_FILETYPE_HOMEBREW;
 		else if(!strcmp(&clip[0],"LYNX")) mFileType=HANDY_FILETYPE_LNX;
 		else if(!strcmp(&clip[0],LSS_VERSION_OLD)) mFileType=HANDY_FILETYPE_SNAPSHOT;
-		else
+      else if(filesize==128*1024 || filesize==256*1024 || filesize==512*1024)
 		{
+         fprintf(stderr, "Invalid Cart (type). but 128/256/512k size -> set to RAW and try to load raw rom image\n");
+         mFileType=HANDY_FILETYPE_RAW;
+         //delete filememory;// WHY????? -> crash!
+      }else{
 			CLynxException lynxerr;
 			delete filememory;
 			mFileType=HANDY_FILETYPE_ILLEGAL;
@@ -291,10 +295,12 @@ CSystem::CSystem(char* gamefile,char* romfile)
 
 	switch(mFileType)
 	{
+      case HANDY_FILETYPE_RAW:
 		case HANDY_FILETYPE_LNX:
 			mCart = new CCart(filememory,filesize);
 			if(mCart->CartHeaderLess())
-			{
+         {// veryvery strange Howard Check CANNOT work, as there are two different loader-less card types...
+          // unclear HOW this should do anything useful...
 				FILE	*fp;
 				char drive[3],dir[256],cartgo[256];
 				mFileType=HANDY_FILETYPE_HOMEBREW;
@@ -531,7 +537,6 @@ void CSystem::Reset(void)
         }else{
       if(!mRom->mValid)
       {
- 	  printf("[handy] HLE_BIOS_Init\r\n");
 	  mMikie->PresetForHomebrew();
           mRom->mWriteEnable=true;
 
