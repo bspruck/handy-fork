@@ -64,6 +64,7 @@ CCart::CCart(UBYTE *gamedata,ULONG gamesize)
    mWriteEnableBank1=FALSE;
    mCartRAM=FALSE;
    mHeaderLess=FALSE;
+   mEEPROMType=0;
    mCRC32=0;
    mCRC32=crc32(mCRC32,gamedata,gamesize);
 
@@ -108,7 +109,8 @@ CCart::CCart(UBYTE *gamedata,ULONG gamesize)
 
       mRotation=header.rotation;
       if(mRotation!=CART_NO_ROTATE && mRotation!=CART_ROTATE_LEFT && mRotation!=CART_ROTATE_RIGHT) mRotation=CART_NO_ROTATE;
-      mAudinFlag=(header.aud_bits&0x01) ;
+      mAudinFlag=(header.aud_bits&0x01);
+      mEEPROMType=header.eeprom;
    } else {
       header.page_size_bank0=0x000;
       header.page_size_bank1=0x000;
@@ -228,7 +230,7 @@ CCart::CCart(UBYTE *gamedata,ULONG gamesize)
    // TODO: the following code to read the banks is not very nice .. should be reworked
    // TODO: actually its dangerous, if more than one bank is used ... (only homebrews)
 
-   int cartsize = __max(0, int(gamesize - sizeof(LYNX_HEADER)));
+   int cartsize = __max(0, int(gamesize - headersize));
    int bank0size = __min(cartsize, (int)(mMaskBank0+1));
    int bank1size = __min(cartsize, (int)(mMaskBank1+1));
    memset(mCartBank0, DEFAULT_CART_CONTENTS, bank0size);

@@ -220,7 +220,7 @@ public:
       gSystemCPUSleep_Saved=FALSE;
    };
 
-   inline void Update(void);
+   void Update(void); // inline ...
    inline void UpdateSound(void);
    inline bool SwitchAudInDir(void)
    {
