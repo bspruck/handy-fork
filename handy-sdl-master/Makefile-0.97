@@ -63,16 +63,17 @@ INCS = -I./src -I./src/handy-0.97 -I./src/sdlemu -I/usr/local/include -I/usr/inc
 
 OBJS = \
 		obj/cart.o \
+		obj/eeprom.o \
 		obj/memmap.o \
 		obj/mikie.o \
 		obj/ram.o \
 		obj/rom.o \
 		obj/susie.o \
 		obj/system.o \
-		obj/lynxdec.o \
 		obj/errorhandler.o \
 		obj/unzip.o \
 		obj/ioapi.o \
+		obj/lynxdec.o \
 		obj/sdlemu_opengl.o \
 		obj/sdlemu_filter.o \
 		obj/sdlemu_video.o \

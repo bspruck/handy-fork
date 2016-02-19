@@ -1,7 +1,17 @@
 latest updates
 --------------
 
+Handy/SDL v0.61
+--------------
 
+* added EEPROM support
+
+Handy/SDL v0.6
+--------------
+
+* called handy now 0.97 (in sync with libretro)
+* "support" for broken ROMs without lnx header (does not for all BLL types)
+* full lynxboot image replacement in software, no image needed anymore
 * patches for sound (stereo)
 * bug fixes in graphic and audio handy code
 * AUDIN switchable banks
