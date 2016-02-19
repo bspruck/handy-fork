@@ -46,9 +46,9 @@
 #define ERROR_H
 
 #ifdef SDL_PATCH
-	#include <sstream>
-	#include <iosfwd>
-	using namespace std;
+#include <sstream>
+#include <iosfwd>
+using namespace std;
 #else
 //	#include <strstrea.h>
 #endif
@@ -59,118 +59,129 @@
 //class CLynxException : public CException
 class CLynxException
 {
-	public:
-		// Constructor
-		CLynxException() {}
- 
-		// Copy Constructor
-		CLynxException(CLynxException& err)
-		{
+public:
+   // Constructor
+   CLynxException() {}
+
+   // Copy Constructor
+   CLynxException(CLynxException& err)
+   {
 #ifndef SDL_PATCH
-			int MsgCount,DescCount;
+      int MsgCount,DescCount;
 
-			MsgCount = err.Message().pcount() + 1;
-			DescCount = err.Description().pcount() + 1;
-			if(MsgCount>MAX_ERROR_MSG) MsgCount=MAX_ERROR_MSG;
-			if(DescCount>MAX_ERROR_DESC) DescCount=MAX_ERROR_DESC;
+      MsgCount = err.Message().pcount() + 1;
+      DescCount = err.Description().pcount() + 1;
+      if(MsgCount>MAX_ERROR_MSG) MsgCount=MAX_ERROR_MSG;
+      if(DescCount>MAX_ERROR_DESC) DescCount=MAX_ERROR_DESC;
 
-			strncpy(mMsg,err.Message().str(),MsgCount);
-			mMsg[MsgCount-1]='\0';
-			strncpy(mDesc,err.Description().str(),DescCount);
-			mDesc[DescCount-1]='\0';
+      strncpy(mMsg,err.Message().str(),MsgCount);
+      mMsg[MsgCount-1]='\0';
+      strncpy(mDesc,err.Description().str(),DescCount);
+      mDesc[DescCount-1]='\0';
 #else
-			mMsg.str("");
-			mMsg << err.Message().str ();
-			mDesc.str("");
-			mDesc << err.Description().str ();
+      mMsg.str("");
+      mMsg << err.Message().str ();
+      mDesc.str("");
+      mDesc << err.Description().str ();
 #endif
-		}
- 
-		// Destructor
-		virtual ~CLynxException()
-		{
+   }
+
+   // Destructor
+   virtual ~CLynxException()
+   {
 #ifndef SDL_PATCH
-			mMsgStream.rdbuf()->freeze(0);
-			mDescStream.rdbuf()->freeze(0);
+      mMsgStream.rdbuf()->freeze(0);
+      mDescStream.rdbuf()->freeze(0);
 #endif
-		}
+   }
 
-  public:
+public:
 #ifndef SDL_PATCH
-		// Answer stream which should contain the one line error message
-		ostrstream& Message() { return mMsgStream; }
+   // Answer stream which should contain the one line error message
+   ostrstream& Message()
+   {
+      return mMsgStream;
+   }
 
-		// Answer stream which should contain the multiple line description
-		ostrstream& Description() { return mDescStream; }
+   // Answer stream which should contain the multiple line description
+   ostrstream& Description()
+   {
+      return mDescStream;
+   }
 #else
-		// Answer stream which should contain the one line error message
-		std::stringstream& Message() { return mMsgStream; }
+   // Answer stream which should contain the one line error message
+   std::stringstream& Message()
+   {
+      return mMsgStream;
+   }
 
-		// Answer stream which should contain the multiple line description
-		std::stringstream& Description() { return mDescStream; }
+   // Answer stream which should contain the multiple line description
+   std::stringstream& Description()
+   {
+      return mDescStream;
+   }
 #endif
-  public:
+public:
 #ifndef SDL_PATCH
-		// Overload the assignment operator
-		CLynxException& operator=(CLynxException& err)
-		{
-			mMsgStream.seekp(0);
+   // Overload the assignment operator
+   CLynxException& operator=(CLynxException& err)
+   {
+      mMsgStream.seekp(0);
 
-			mMsgStream.write(err.Message().str(), err.Message().pcount());
-			err.Message().rdbuf()->freeze(0);
+      mMsgStream.write(err.Message().str(), err.Message().pcount());
+      err.Message().rdbuf()->freeze(0);
 
-			mDescStream.seekp(0);
+      mDescStream.seekp(0);
 
-			mDescStream.write(err.Description().str(), err.Description().pcount());
-			err.Description().rdbuf()->freeze(0);
+      mDescStream.write(err.Description().str(), err.Description().pcount());
+      err.Description().rdbuf()->freeze(0);
 
-			return *this;
-		}
+      return *this;
+   }
 
-		// Overload the I/O output operator
-		friend ostream& operator<<(ostream& out, CLynxException& err)
-		{
-			out.write(err.Message().str(), err.Message().pcount());
-			err.Message().rdbuf()->freeze(0);
+   // Overload the I/O output operator
+   friend ostream& operator<<(ostream& out, CLynxException& err)
+   {
+      out.write(err.Message().str(), err.Message().pcount());
+      err.Message().rdbuf()->freeze(0);
 
-			if(err.Description().pcount() != 0)
-			{
-				out << endl << endl;
+      if(err.Description().pcount() != 0) {
+         out << endl << endl;
 
-				out.write(err.Description().str(), err.Description().pcount());
-				err.Description().rdbuf()->freeze(0);
-			}
+         out.write(err.Description().str(), err.Description().pcount());
+         err.Description().rdbuf()->freeze(0);
+      }
 
-			return out;
-		}
+      return out;
+   }
 
-  private:
-		// Contains the one line error code message
-		ostrstream mMsgStream;
+private:
+   // Contains the one line error code message
+   ostrstream mMsgStream;
 
-		// Contains a multiple line description of the error and ways to 
-		// solve the problem
-		ostrstream mDescStream;
+   // Contains a multiple line description of the error and ways to
+   // solve the problem
+   ostrstream mDescStream;
 
-  public:
-		// CStrings to hold the data after its been thrown
+public:
+   // CStrings to hold the data after its been thrown
 
-		char mMsg[MAX_ERROR_MSG];
-		char mDesc[MAX_ERROR_DESC];
+   char mMsg[MAX_ERROR_MSG];
+   char mDesc[MAX_ERROR_DESC];
 #else
-  private:
-		// Contains the one line error code message
-		std::stringstream mMsgStream;
+private:
+   // Contains the one line error code message
+   std::stringstream mMsgStream;
 
-		// Contains a multiple line description of the error and ways to 
-		// solve the problem
-		std::stringstream mDescStream;
+   // Contains a multiple line description of the error and ways to
+   // solve the problem
+   std::stringstream mDescStream;
 
-  public:
-		// strings to hold the data after its been thrown
+public:
+   // strings to hold the data after its been thrown
 
-		std::stringstream mMsg;
-		std::stringstream mDesc;
+   std::stringstream mMsg;
+   std::stringstream mDesc;
 #endif
 };
 #endif

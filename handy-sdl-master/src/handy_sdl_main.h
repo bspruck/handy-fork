@@ -90,8 +90,8 @@ extern Uint32           overlay_format;         // YUV Overlay format
 extern Uint8  		   *delta;
 
 inline	int 	handy_sdl_update(void);
-		void 	handy_sdl_rom_info(void);
-		int 	main(int argc, char *argv[]);
-		void	handy_sdl_quit(void);
-		void	handy_sdl_core_reinit(char *romname);
+void 	handy_sdl_rom_info(void);
+int 	main(int argc, char *argv[]);
+void	handy_sdl_quit(void);
+void	handy_sdl_core_reinit(char *romname);
 #endif

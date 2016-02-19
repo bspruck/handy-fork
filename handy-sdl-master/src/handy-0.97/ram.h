@@ -49,43 +49,60 @@
 #define RAM_ADDR_MASK			0xffff
 #define DEFAULT_RAM_CONTENTS	0xff
 
-typedef struct
-{
+typedef struct {
    UWORD   jump;
    UWORD   load_address;
    UWORD   size;
    UBYTE   magic[4];
-}HOME_HEADER;
+} HOME_HEADER;
 
 class CRam : public CLynxBase
 {
 
-	// Function members
+   // Function members
 
-	public:
-		CRam(UBYTE *filememory,ULONG filesize);
-		~CRam();
+public:
+   CRam(UBYTE *filememory,ULONG filesize);
+   ~CRam();
 
-	public:
+public:
 
-		void	Reset(void);
-                void    Clear(void);
-		bool	ContextSave(FILE *fp);
-		bool	ContextLoad(LSS_FILE *fp);
+   void	Reset(void);
+   void    Clear(void);
+   bool	ContextSave(FILE *fp);
+   bool	ContextLoad(LSS_FILE *fp);
 
-		void	Poke(ULONG addr, UBYTE data){ mRamData[addr]=data;};
-		UBYTE	Peek(ULONG addr){ return(mRamData[addr]);};
-		ULONG	ReadCycle(void) {return 5;};
-		ULONG	WriteCycle(void) {return 5;};
-		ULONG   ObjectSize(void) {return RAM_SIZE;};
-		UBYTE*	GetRamPointer(void) { return mRamData; };
+   void	Poke(ULONG addr, UBYTE data)
+   {
+      mRamData[addr]=data;
+   };
+   UBYTE	Peek(ULONG addr)
+   {
+      return(mRamData[addr]);
+   };
+   ULONG	ReadCycle(void)
+   {
+      return 5;
+   };
+   ULONG	WriteCycle(void)
+   {
+      return 5;
+   };
+   ULONG   ObjectSize(void)
+   {
+      return RAM_SIZE;
+   };
+   UBYTE*	GetRamPointer(void)
+   {
+      return mRamData;
+   };
 
-	// Data members
+   // Data members
 
-	private:
-		UBYTE	mRamData[RAM_SIZE];
-		UBYTE	*mFileData;
-		ULONG	mFileSize;
+private:
+   UBYTE	mRamData[RAM_SIZE];
+   UBYTE	*mFileData;
+   ULONG	mFileSize;
 
 };
 

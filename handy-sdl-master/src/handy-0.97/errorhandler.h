@@ -35,17 +35,17 @@ class CErrorHandler : public CErrorInterface
 {
 public:
 #ifndef SDL_PATCH
-	CErrorHandler(CLynxWindow *lwin);
+   CErrorHandler(CLynxWindow *lwin);
 #else
-	CErrorHandler();
+   CErrorHandler();
 #endif
-	virtual ~CErrorHandler();
-	int Warning(const char *message);
-	int Fatal(const char *message);
+   virtual ~CErrorHandler();
+   int Warning(const char *message);
+   int Fatal(const char *message);
 
 private:
 #ifndef SDL_PATCH
-	CLynxWindow *mpLynxWin;
+   CLynxWindow *mpLynxWin;
 #endif
 };
 

@@ -25,7 +25,7 @@
 //                             Copyright (c) 2005                           //
 //                                SDLemu Team                               //
 //                                                                          //
-//                          Based upon Handy v0.90 WIN32                    // 
+//                          Based upon Handy v0.90 WIN32                    //
 //                            Copyright (c) 1996,1997                       //
 //                                  K. Wilkins                              //
 //////////////////////////////////////////////////////////////////////////////
@@ -68,63 +68,63 @@
 SDL_mutex *sound_mutex;
 SDL_cond *sound_cv;
 
-/*  
+/*
     Name                :   handy_sdl_audio_callback
     Parameters          :   userdata (NULL, not used)
                             stream   (sample data)
                             len      (sampel length)
     Function            :   Our SDL adio callback/output function
-    
+
     Uses                :   gAudioBuffer        (Lynx Audio Buffer)
                             gAudioBufferPointer (Filled size of gAudioBuffer)
-    
-    Information         :   Only when gAudioBufferPointer is equal or larger 
+
+    Information         :   Only when gAudioBufferPointer is equal or larger
                             then len, then we want to output the audio.
-    
-                            gAudioBufferPointer increases everytime the 
-                            mpLynx->Update() function is called. It is 
+
+                            gAudioBufferPointer increases everytime the
+                            mpLynx->Update() function is called. It is
                             possible that gAudioBufferPointer exceeds the
-                            number of the sample length. So we allways reset 
-                            the gAudioBuffer and gAudioBufferPointer based 
+                            number of the sample length. So we allways reset
+                            the gAudioBuffer and gAudioBufferPointer based
                             upon the differences between len en gAudioBufferPointer
 */
 void handy_sdl_audio_callback(void *userdata, Uint8 *stream, int len)
 {
-    Uint32 length = len >> 1;
-    Uint16 *dst = (Uint16 *)stream;
-    Uint16 *src = (Uint16 *)gAudioBuffer;
+   Uint32 length = len >> 1;
+   Uint16 *dst = (Uint16 *)stream;
+   Uint16 *src = (Uint16 *)gAudioBuffer;
 #ifdef HANDY_SDL_DEBUG
-    printf("handy_sdl_audio_callback - DEBUG\n");
-    printf("gAudioBufferPointer : %d - len : %d\n", gAudioBufferPointer, len);
+   printf("handy_sdl_audio_callback - DEBUG\n");
+   printf("gAudioBufferPointer : %d - len : %d\n", gAudioBufferPointer, len);
 #endif
 
-    SDL_LockMutex(sound_mutex);
+   SDL_LockMutex(sound_mutex);
 
-    // expand to pseudo-stereo because rzx50/a380 dingux doesn't support mono
-    if( ( (int)gAudioBufferPointer >= len) && (gAudioBufferPointer != 0) && (!gSystemHalt) ) {
-        while(length) {
-            *dst++ = *src++;
-            length--;
-        }
-        memmove(gAudioBuffer, gAudioBuffer+len, gAudioBufferPointer - len);
-        gAudioBufferPointer = gAudioBufferPointer - len;
-    }
-    SDL_CondSignal(sound_cv);
-    SDL_UnlockMutex(sound_mutex);
+   // expand to pseudo-stereo because rzx50/a380 dingux doesn't support mono
+   if( ( (int)gAudioBufferPointer >= len) && (gAudioBufferPointer != 0) && (!gSystemHalt) ) {
+      while(length) {
+         *dst++ = *src++;
+         length--;
+      }
+      memmove(gAudioBuffer, gAudioBuffer+len, gAudioBufferPointer - len);
+      gAudioBufferPointer = gAudioBufferPointer - len;
+   }
+   SDL_CondSignal(sound_cv);
+   SDL_UnlockMutex(sound_mutex);
 }
 
-/*  
+/*
     Name                :   handy_sdl_audio_init
     Parameters          :   N/A
     Function            :   Initialisation of the audio using the SDL libary.
 
     Uses                :   N/A
-    
+
     Information         :   This is our initalisation function for getting our
                             desired audio setup. Since the Atari Lynx has 8-bit
                             audio, no stereo and a output of 22050hz we use these
                             values to setup audio.
-                            
+
                             Because of portability, our samples need to be a value
                             powered by two. During tests we found out that this is
                             the best value for constant sound updates in combination
@@ -132,39 +132,39 @@ void handy_sdl_audio_callback(void *userdata, Uint8 *stream, int len)
 */
 int handy_sdl_audio_init(void)
 {
-    SDL_AudioSpec     *desired;
+   SDL_AudioSpec     *desired;
 
 #ifdef HANDY_SDL_DEBUG
-    printf("handy_sdl_audio_init - DEBUG\n");
+   printf("handy_sdl_audio_init - DEBUG\n");
 #endif
 
-    /* If we don't want sound, return 0 */
-    if(gAudioEnabled == FALSE) return 0;
+   /* If we don't want sound, return 0 */
+   if(gAudioEnabled == FALSE) return 0;
 
-    /* Allocate a desired SDL_AudioSpec */
-    desired = (SDL_AudioSpec *)malloc(sizeof(SDL_AudioSpec));
+   /* Allocate a desired SDL_AudioSpec */
+   desired = (SDL_AudioSpec *)malloc(sizeof(SDL_AudioSpec));
 
-    /* Define our desired SDL audio output */
-    desired->format     = AUDIO_S16;                 // Signed 16 bit (was AUDIO_U8 - Unsigned 8-bit)
-    desired->channels   = 2;                         // Real Stereo (was Pseudo stereo)
-    desired->freq       = HANDY_AUDIO_SAMPLE_FREQ;   // Freq : 22050 
-    desired->samples    = 256;                       // Samples (power of two)
-    desired->callback   = handy_sdl_audio_callback;  // Our audio callback
-    desired->userdata   = NULL;                      // N/A
+   /* Define our desired SDL audio output */
+   desired->format     = AUDIO_S16;                 // Signed 16 bit (was AUDIO_U8 - Unsigned 8-bit)
+   desired->channels   = 2;                         // Real Stereo (was Pseudo stereo)
+   desired->freq       = HANDY_AUDIO_SAMPLE_FREQ;   // Freq : 22050
+   desired->samples    = 256;                       // Samples (power of two)
+   desired->callback   = handy_sdl_audio_callback;  // Our audio callback
+   desired->userdata   = NULL;                      // N/A
 
-    /* Check if we can get our desired SDL audio output */
-    if(SDL_OpenAudio(desired, NULL) < 0) {
-        fprintf(stderr, "ERROR : Couldn't open audio: %s\n", SDL_GetError());
-        return 0;  
-    }
+   /* Check if we can get our desired SDL audio output */
+   if(SDL_OpenAudio(desired, NULL) < 0) {
+      fprintf(stderr, "ERROR : Couldn't open audio: %s\n", SDL_GetError());
+      return 0;
+   }
 
-    free(desired);
+   free(desired);
 
-    sound_mutex = SDL_CreateMutex();
-    sound_cv = SDL_CreateCond();
-    
-    /* Enable SDL audio */
-    SDL_PauseAudio(0);
-    
-    return 1;
+   sound_mutex = SDL_CreateMutex();
+   sound_cv = SDL_CreateCond();
+
+   /* Enable SDL audio */
+   SDL_PauseAudio(0);
+
+   return 1;
 }

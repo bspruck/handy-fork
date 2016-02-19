@@ -6,14 +6,16 @@ to change, so not suitable for long-term storage or transfer between computers. 
 #define BLZ_H
 
 #ifdef __cplusplus
-	extern "C" {
+extern "C" {
 #endif
 
 /* All functions are thread-safe */
 
 /* Temporary buffer type that you must allocate. Does NOT need to be cleared
 before calling blz_pack(), and can be freed immediately afterwards. */
-typedef struct blz_pack_t { unsigned char const* dict [0x1000]; } blz_pack_t;
+typedef struct blz_pack_t {
+   unsigned char const* dict [0x1000];
+} blz_pack_t;
 
 /* Compresses data_size bytes from data_in to packed_out and returns packed size,
 at most data_size + blz_worst_case. Requires data_size + blz_pack_extra bytes
@@ -34,7 +36,7 @@ int blz_size( void const* packed_in );
 extern char const blz_version [];
 
 #ifdef __cplusplus
-	}
+}
 #endif
 
 #endif

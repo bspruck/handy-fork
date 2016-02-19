@@ -102,349 +102,362 @@ class CSystem;
 #define UART_RX_TIME_PERIOD	(11)
 #define UART_RX_NEXT_DELAY	(44)
 
-typedef struct
-{
-	UBYTE	backup;
-	UBYTE	count;
-	UBYTE	controlA;
-	UBYTE	controlB;
-	bool	linkedlastcarry;
-}MTIMER;
+typedef struct {
+   UBYTE	backup;
+   UBYTE	count;
+   UBYTE	controlA;
+   UBYTE	controlB;
+   bool	linkedlastcarry;
+} MTIMER;
 
-typedef struct
-{
-	union
-	{
-		struct
-		{
+typedef struct {
+   union {
+      struct {
 #ifdef MSB_FIRST
-			UBYTE unused:4;
-			UBYTE Colour:1;
-			UBYTE FourColour:1;
-			UBYTE Flip:1;
-			UBYTE DMAEnable:1;
+         UBYTE unused:4;
+         UBYTE Colour:1;
+         UBYTE FourColour:1;
+         UBYTE Flip:1;
+         UBYTE DMAEnable:1;
 #else
 
-			UBYTE DMAEnable:1;
-			UBYTE Flip:1;
-			UBYTE FourColour:1;
-			UBYTE Colour:1;
-			UBYTE unused:4;
+         UBYTE DMAEnable:1;
+         UBYTE Flip:1;
+         UBYTE FourColour:1;
+         UBYTE Colour:1;
+         UBYTE unused:4;
 #endif
-		}Bits;
-		UBYTE Byte;
-	};
-}TDISPCTL;
+      } Bits;
+      UBYTE Byte;
+   };
+} TDISPCTL;
 
-typedef struct
-{
-	union
-	{
-		struct
-		{
+typedef struct {
+   union {
+      struct {
 #ifdef MSB_FIRST
-			UBYTE unused:8;
-			UBYTE unused2:8;
-			UBYTE unused3:4;
-			UBYTE Blue:4;
-			UBYTE Red:4;
-			UBYTE Green:4;
+         UBYTE unused:8;
+         UBYTE unused2:8;
+         UBYTE unused3:4;
+         UBYTE Blue:4;
+         UBYTE Red:4;
+         UBYTE Green:4;
 #else
-			UBYTE Green:4;
-			UBYTE Red:4;
-			UBYTE Blue:4;
+         UBYTE Green:4;
+         UBYTE Red:4;
+         UBYTE Blue:4;
 #endif
-          }Colours;
-          ULONG     Index;
-     };
-}TPALETTE;
+      } Colours;
+      ULONG     Index;
+   };
+} TPALETTE;
 
 
 //
 // Emumerated types for possible mikie windows independant modes
 //
-enum
-{
-	MIKIE_BAD_MODE=0,
-	MIKIE_NO_ROTATE,
-	MIKIE_ROTATE_L,
-	MIKIE_ROTATE_R
+enum {
+   MIKIE_BAD_MODE=0,
+   MIKIE_NO_ROTATE,
+   MIKIE_ROTATE_L,
+   MIKIE_ROTATE_R
 };
 
-enum
-{
-	MIKIE_PIXEL_FORMAT_8BPP=0,
-	MIKIE_PIXEL_FORMAT_16BPP_555,
-	MIKIE_PIXEL_FORMAT_16BPP_565,
-	MIKIE_PIXEL_FORMAT_24BPP,
-	MIKIE_PIXEL_FORMAT_32BPP,
+enum {
+   MIKIE_PIXEL_FORMAT_8BPP=0,
+   MIKIE_PIXEL_FORMAT_16BPP_555,
+   MIKIE_PIXEL_FORMAT_16BPP_565,
+   MIKIE_PIXEL_FORMAT_24BPP,
+   MIKIE_PIXEL_FORMAT_32BPP,
 };
 
 class CMikie : public CLynxBase
 {
-	public:
-		CMikie(CSystem& parent);
-		~CMikie();
-	
-		bool	ContextSave(FILE *fp);
-		bool	ContextLoad(LSS_FILE *fp);
-		void	Reset(void);
+public:
+   CMikie(CSystem& parent);
+   ~CMikie();
 
-		UBYTE	Peek(ULONG addr);
-		void	Poke(ULONG addr,UBYTE data);
-		ULONG	ReadCycle(void) {return 5;};
-		ULONG	WriteCycle(void) {return 5;};
-		ULONG	ObjectSize(void) {return MIKIE_SIZE;};
-		void	PresetForHomebrew(void);
-		ULONG	GetLfsrNext(ULONG current);
+   bool	ContextSave(FILE *fp);
+   bool	ContextLoad(LSS_FILE *fp);
+   void	Reset(void);
 
-		void	ComLynxCable(int status);
-		void	ComLynxRxData(int data);
-		void	ComLynxTxLoopback(int data);
-		void	ComLynxTxCallback(void (*function)(int data,ULONG objref),ULONG objref);
-		
-		void	DisplaySetAttributes(ULONG Rotate, ULONG Format, ULONG Pitch, UBYTE* (*DisplayCallback)(ULONG objref),ULONG objref);
-		
-		void	BlowOut(void);
+   UBYTE	Peek(ULONG addr);
+   void	Poke(ULONG addr,UBYTE data);
+   ULONG	ReadCycle(void)
+   {
+      return 5;
+   };
+   ULONG	WriteCycle(void)
+   {
+      return 5;
+   };
+   ULONG	ObjectSize(void)
+   {
+      return MIKIE_SIZE;
+   };
+   void	PresetForHomebrew(void);
+   ULONG	GetLfsrNext(ULONG current);
 
-		ULONG	DisplayRenderLine(void);
-		ULONG	DisplayEndOfFrame(void);
+   void	ComLynxCable(int status);
+   void	ComLynxRxData(int data);
+   void	ComLynxTxLoopback(int data);
+   void	ComLynxTxCallback(void (*function)(int data,ULONG objref),ULONG objref);
 
-		inline void SetCPUSleep(void) {gSystemCPUSleep=TRUE;};
-		inline void ClearCPUSleep(void) {gSystemCPUSleep=FALSE;gSystemCPUSleep_Saved=FALSE;};
+   void	DisplaySetAttributes(ULONG Rotate, ULONG Format, ULONG Pitch, UBYTE* (*DisplayCallback)(ULONG objref),ULONG objref);
 
-		inline void Update(void);
-		inline void UpdateSound(void);
-                inline bool SwitchAudInDir(void){ return(mIODIR&0x10);};
-		inline bool SwitchAudInValue(void){ return (mIODAT&0x10);};
+   void	BlowOut(void);
 
-	private:
-		CSystem		&mSystem;
+   ULONG	DisplayRenderLine(void);
+   ULONG	DisplayEndOfFrame(void);
 
-		// Hardware storage
-		
-		ULONG		mDisplayAddress;
-		ULONG		mAudioInputComparator;
-		ULONG		mTimerStatusFlags;
-		ULONG		mTimerInterruptMask;
+   inline void SetCPUSleep(void)
+   {
+      gSystemCPUSleep=TRUE;
+   };
+   inline void ClearCPUSleep(void)
+   {
+      gSystemCPUSleep=FALSE;
+      gSystemCPUSleep_Saved=FALSE;
+   };
 
-		TPALETTE	mPalette[16];
-		ULONG		mColourMap[4096];
+   inline void Update(void);
+   inline void UpdateSound(void);
+   inline bool SwitchAudInDir(void)
+   {
+      return(mIODIR&0x10);
+   };
+   inline bool SwitchAudInValue(void)
+   {
+      return (mIODAT&0x10);
+   };
 
-		ULONG		mIODAT;
-		ULONG		mIODIR;
-		ULONG		mIODAT_REST_SIGNAL;
+private:
+   CSystem		&mSystem;
 
-		ULONG		mDISPCTL_DMAEnable;
-		ULONG		mDISPCTL_Flip;
-		ULONG		mDISPCTL_FourColour;
-		ULONG		mDISPCTL_Colour;
+   // Hardware storage
 
-		ULONG		mTIM_0_BKUP;
-		ULONG		mTIM_0_ENABLE_RELOAD;
-		ULONG		mTIM_0_ENABLE_COUNT;
-		ULONG		mTIM_0_LINKING;
-		ULONG		mTIM_0_CURRENT;
-		ULONG		mTIM_0_TIMER_DONE;
-		ULONG		mTIM_0_LAST_CLOCK;
-		ULONG		mTIM_0_BORROW_IN;
-		ULONG		mTIM_0_BORROW_OUT;
-		ULONG		mTIM_0_LAST_LINK_CARRY;
-		ULONG		mTIM_0_LAST_COUNT;
+   ULONG		mDisplayAddress;
+   ULONG		mAudioInputComparator;
+   ULONG		mTimerStatusFlags;
+   ULONG		mTimerInterruptMask;
 
-		ULONG		mTIM_1_BKUP;
-		ULONG		mTIM_1_ENABLE_RELOAD;
-		ULONG		mTIM_1_ENABLE_COUNT;
-		ULONG		mTIM_1_LINKING;
-		ULONG		mTIM_1_CURRENT;
-		ULONG		mTIM_1_TIMER_DONE;
-		ULONG		mTIM_1_LAST_CLOCK;
-		ULONG		mTIM_1_BORROW_IN;
-		ULONG		mTIM_1_BORROW_OUT;
-		ULONG		mTIM_1_LAST_LINK_CARRY;
-		ULONG		mTIM_1_LAST_COUNT;
+   TPALETTE	mPalette[16];
+   ULONG		mColourMap[4096];
 
-		ULONG		mTIM_2_BKUP;
-		ULONG		mTIM_2_ENABLE_RELOAD;
-		ULONG		mTIM_2_ENABLE_COUNT;
-		ULONG		mTIM_2_LINKING;
-		ULONG		mTIM_2_CURRENT;
-		ULONG		mTIM_2_TIMER_DONE;
-		ULONG		mTIM_2_LAST_CLOCK;
-		ULONG		mTIM_2_BORROW_IN;
-		ULONG		mTIM_2_BORROW_OUT;
-		ULONG		mTIM_2_LAST_LINK_CARRY;
-		ULONG		mTIM_2_LAST_COUNT;
+   ULONG		mIODAT;
+   ULONG		mIODIR;
+   ULONG		mIODAT_REST_SIGNAL;
 
-		ULONG		mTIM_3_BKUP;
-		ULONG		mTIM_3_ENABLE_RELOAD;
-		ULONG		mTIM_3_ENABLE_COUNT;
-		ULONG		mTIM_3_LINKING;
-		ULONG		mTIM_3_CURRENT;
-		ULONG		mTIM_3_TIMER_DONE;
-		ULONG		mTIM_3_LAST_CLOCK;
-		ULONG		mTIM_3_BORROW_IN;
-		ULONG		mTIM_3_BORROW_OUT;
-		ULONG		mTIM_3_LAST_LINK_CARRY;
-		ULONG		mTIM_3_LAST_COUNT;
+   ULONG		mDISPCTL_DMAEnable;
+   ULONG		mDISPCTL_Flip;
+   ULONG		mDISPCTL_FourColour;
+   ULONG		mDISPCTL_Colour;
 
-		ULONG		mTIM_4_BKUP;
-		ULONG		mTIM_4_ENABLE_RELOAD;
-		ULONG		mTIM_4_ENABLE_COUNT;
-		ULONG		mTIM_4_LINKING;
-		ULONG		mTIM_4_CURRENT;
-		ULONG		mTIM_4_TIMER_DONE;
-		ULONG		mTIM_4_LAST_CLOCK;
-		ULONG		mTIM_4_BORROW_IN;
-		ULONG		mTIM_4_BORROW_OUT;
-		ULONG		mTIM_4_LAST_LINK_CARRY;
-		ULONG		mTIM_4_LAST_COUNT;
+   ULONG		mTIM_0_BKUP;
+   ULONG		mTIM_0_ENABLE_RELOAD;
+   ULONG		mTIM_0_ENABLE_COUNT;
+   ULONG		mTIM_0_LINKING;
+   ULONG		mTIM_0_CURRENT;
+   ULONG		mTIM_0_TIMER_DONE;
+   ULONG		mTIM_0_LAST_CLOCK;
+   ULONG		mTIM_0_BORROW_IN;
+   ULONG		mTIM_0_BORROW_OUT;
+   ULONG		mTIM_0_LAST_LINK_CARRY;
+   ULONG		mTIM_0_LAST_COUNT;
 
-		ULONG		mTIM_5_BKUP;
-		ULONG		mTIM_5_ENABLE_RELOAD;
-		ULONG		mTIM_5_ENABLE_COUNT;
-		ULONG		mTIM_5_LINKING;
-		ULONG		mTIM_5_CURRENT;
-		ULONG		mTIM_5_TIMER_DONE;
-		ULONG		mTIM_5_LAST_CLOCK;
-		ULONG		mTIM_5_BORROW_IN;
-		ULONG		mTIM_5_BORROW_OUT;
-		ULONG		mTIM_5_LAST_LINK_CARRY;
-		ULONG		mTIM_5_LAST_COUNT;
+   ULONG		mTIM_1_BKUP;
+   ULONG		mTIM_1_ENABLE_RELOAD;
+   ULONG		mTIM_1_ENABLE_COUNT;
+   ULONG		mTIM_1_LINKING;
+   ULONG		mTIM_1_CURRENT;
+   ULONG		mTIM_1_TIMER_DONE;
+   ULONG		mTIM_1_LAST_CLOCK;
+   ULONG		mTIM_1_BORROW_IN;
+   ULONG		mTIM_1_BORROW_OUT;
+   ULONG		mTIM_1_LAST_LINK_CARRY;
+   ULONG		mTIM_1_LAST_COUNT;
 
-		ULONG		mTIM_6_BKUP;
-		ULONG		mTIM_6_ENABLE_RELOAD;
-		ULONG		mTIM_6_ENABLE_COUNT;
-		ULONG		mTIM_6_LINKING;
-		ULONG		mTIM_6_CURRENT;
-		ULONG		mTIM_6_TIMER_DONE;
-		ULONG		mTIM_6_LAST_CLOCK;
-		ULONG		mTIM_6_BORROW_IN;
-		ULONG		mTIM_6_BORROW_OUT;
-		ULONG		mTIM_6_LAST_LINK_CARRY;
-		ULONG		mTIM_6_LAST_COUNT;
+   ULONG		mTIM_2_BKUP;
+   ULONG		mTIM_2_ENABLE_RELOAD;
+   ULONG		mTIM_2_ENABLE_COUNT;
+   ULONG		mTIM_2_LINKING;
+   ULONG		mTIM_2_CURRENT;
+   ULONG		mTIM_2_TIMER_DONE;
+   ULONG		mTIM_2_LAST_CLOCK;
+   ULONG		mTIM_2_BORROW_IN;
+   ULONG		mTIM_2_BORROW_OUT;
+   ULONG		mTIM_2_LAST_LINK_CARRY;
+   ULONG		mTIM_2_LAST_COUNT;
 
-		ULONG		mTIM_7_BKUP;
-		ULONG		mTIM_7_ENABLE_RELOAD;
-		ULONG		mTIM_7_ENABLE_COUNT;
-		ULONG		mTIM_7_LINKING;
-		ULONG		mTIM_7_CURRENT;
-		ULONG		mTIM_7_TIMER_DONE;
-		ULONG		mTIM_7_LAST_CLOCK;
-		ULONG		mTIM_7_BORROW_IN;
-		ULONG		mTIM_7_BORROW_OUT;
-		ULONG		mTIM_7_LAST_LINK_CARRY;
-		ULONG		mTIM_7_LAST_COUNT;
+   ULONG		mTIM_3_BKUP;
+   ULONG		mTIM_3_ENABLE_RELOAD;
+   ULONG		mTIM_3_ENABLE_COUNT;
+   ULONG		mTIM_3_LINKING;
+   ULONG		mTIM_3_CURRENT;
+   ULONG		mTIM_3_TIMER_DONE;
+   ULONG		mTIM_3_LAST_CLOCK;
+   ULONG		mTIM_3_BORROW_IN;
+   ULONG		mTIM_3_BORROW_OUT;
+   ULONG		mTIM_3_LAST_LINK_CARRY;
+   ULONG		mTIM_3_LAST_COUNT;
 
-		ULONG		mAUDIO_0_BKUP;
-		ULONG		mAUDIO_0_ENABLE_RELOAD;
-		ULONG		mAUDIO_0_ENABLE_COUNT;
-		ULONG		mAUDIO_0_LINKING;
-		ULONG		mAUDIO_0_CURRENT;
-		ULONG		mAUDIO_0_TIMER_DONE;
-		ULONG		mAUDIO_0_LAST_CLOCK;
-		ULONG		mAUDIO_0_BORROW_IN;
-		ULONG		mAUDIO_0_BORROW_OUT;
-		ULONG		mAUDIO_0_LAST_LINK_CARRY;
-		ULONG		mAUDIO_0_LAST_COUNT;
-		SBYTE		mAUDIO_0_VOLUME;
-		ULONG		mAUDIO_0_INTEGRATE_ENABLE;
-		ULONG		mAUDIO_0_WAVESHAPER;
+   ULONG		mTIM_4_BKUP;
+   ULONG		mTIM_4_ENABLE_RELOAD;
+   ULONG		mTIM_4_ENABLE_COUNT;
+   ULONG		mTIM_4_LINKING;
+   ULONG		mTIM_4_CURRENT;
+   ULONG		mTIM_4_TIMER_DONE;
+   ULONG		mTIM_4_LAST_CLOCK;
+   ULONG		mTIM_4_BORROW_IN;
+   ULONG		mTIM_4_BORROW_OUT;
+   ULONG		mTIM_4_LAST_LINK_CARRY;
+   ULONG		mTIM_4_LAST_COUNT;
 
-		ULONG		mAUDIO_1_BKUP;
-		ULONG		mAUDIO_1_ENABLE_RELOAD;
-		ULONG		mAUDIO_1_ENABLE_COUNT;
-		ULONG		mAUDIO_1_LINKING;
-		ULONG		mAUDIO_1_CURRENT;
-		ULONG		mAUDIO_1_TIMER_DONE;
-		ULONG		mAUDIO_1_LAST_CLOCK;
-		ULONG		mAUDIO_1_BORROW_IN;
-		ULONG		mAUDIO_1_BORROW_OUT;
-		ULONG		mAUDIO_1_LAST_LINK_CARRY;
-		ULONG		mAUDIO_1_LAST_COUNT;
-		SBYTE		mAUDIO_1_VOLUME;
-		ULONG		mAUDIO_1_INTEGRATE_ENABLE;
-		ULONG		mAUDIO_1_WAVESHAPER;
+   ULONG		mTIM_5_BKUP;
+   ULONG		mTIM_5_ENABLE_RELOAD;
+   ULONG		mTIM_5_ENABLE_COUNT;
+   ULONG		mTIM_5_LINKING;
+   ULONG		mTIM_5_CURRENT;
+   ULONG		mTIM_5_TIMER_DONE;
+   ULONG		mTIM_5_LAST_CLOCK;
+   ULONG		mTIM_5_BORROW_IN;
+   ULONG		mTIM_5_BORROW_OUT;
+   ULONG		mTIM_5_LAST_LINK_CARRY;
+   ULONG		mTIM_5_LAST_COUNT;
 
-		ULONG		mAUDIO_2_BKUP;
-		ULONG		mAUDIO_2_ENABLE_RELOAD;
-		ULONG		mAUDIO_2_ENABLE_COUNT;
-		ULONG		mAUDIO_2_LINKING;
-		ULONG		mAUDIO_2_CURRENT;
-		ULONG		mAUDIO_2_TIMER_DONE;
-		ULONG		mAUDIO_2_LAST_CLOCK;
-		ULONG		mAUDIO_2_BORROW_IN;
-		ULONG		mAUDIO_2_BORROW_OUT;
-		ULONG		mAUDIO_2_LAST_LINK_CARRY;
-		ULONG		mAUDIO_2_LAST_COUNT;
-		SBYTE		mAUDIO_2_VOLUME;
-		ULONG		mAUDIO_2_INTEGRATE_ENABLE;
-		ULONG		mAUDIO_2_WAVESHAPER;
+   ULONG		mTIM_6_BKUP;
+   ULONG		mTIM_6_ENABLE_RELOAD;
+   ULONG		mTIM_6_ENABLE_COUNT;
+   ULONG		mTIM_6_LINKING;
+   ULONG		mTIM_6_CURRENT;
+   ULONG		mTIM_6_TIMER_DONE;
+   ULONG		mTIM_6_LAST_CLOCK;
+   ULONG		mTIM_6_BORROW_IN;
+   ULONG		mTIM_6_BORROW_OUT;
+   ULONG		mTIM_6_LAST_LINK_CARRY;
+   ULONG		mTIM_6_LAST_COUNT;
 
-		ULONG		mAUDIO_3_BKUP;
-		ULONG		mAUDIO_3_ENABLE_RELOAD;
-		ULONG		mAUDIO_3_ENABLE_COUNT;
-		ULONG		mAUDIO_3_LINKING;
-		ULONG		mAUDIO_3_CURRENT;
-		ULONG		mAUDIO_3_TIMER_DONE;
-		ULONG		mAUDIO_3_LAST_CLOCK;
-		ULONG		mAUDIO_3_BORROW_IN;
-		ULONG		mAUDIO_3_BORROW_OUT;
-		ULONG		mAUDIO_3_LAST_LINK_CARRY;
-		ULONG		mAUDIO_3_LAST_COUNT;
-		SBYTE		mAUDIO_3_VOLUME;
-		ULONG		mAUDIO_3_INTEGRATE_ENABLE;
-		ULONG		mAUDIO_3_WAVESHAPER;
+   ULONG		mTIM_7_BKUP;
+   ULONG		mTIM_7_ENABLE_RELOAD;
+   ULONG		mTIM_7_ENABLE_COUNT;
+   ULONG		mTIM_7_LINKING;
+   ULONG		mTIM_7_CURRENT;
+   ULONG		mTIM_7_TIMER_DONE;
+   ULONG		mTIM_7_LAST_CLOCK;
+   ULONG		mTIM_7_BORROW_IN;
+   ULONG		mTIM_7_BORROW_OUT;
+   ULONG		mTIM_7_LAST_LINK_CARRY;
+   ULONG		mTIM_7_LAST_COUNT;
 
-		SBYTE		mAUDIO_OUTPUT[4];
-                UBYTE           mAUDIO_ATTEN[4];
-		ULONG		mSTEREO;
-		ULONG		mPAN;
+   ULONG		mAUDIO_0_BKUP;
+   ULONG		mAUDIO_0_ENABLE_RELOAD;
+   ULONG		mAUDIO_0_ENABLE_COUNT;
+   ULONG		mAUDIO_0_LINKING;
+   ULONG		mAUDIO_0_CURRENT;
+   ULONG		mAUDIO_0_TIMER_DONE;
+   ULONG		mAUDIO_0_LAST_CLOCK;
+   ULONG		mAUDIO_0_BORROW_IN;
+   ULONG		mAUDIO_0_BORROW_OUT;
+   ULONG		mAUDIO_0_LAST_LINK_CARRY;
+   ULONG		mAUDIO_0_LAST_COUNT;
+   SBYTE		mAUDIO_0_VOLUME;
+   ULONG		mAUDIO_0_INTEGRATE_ENABLE;
+   ULONG		mAUDIO_0_WAVESHAPER;
 
-		//
-		// Serial related variables
-		//
-		ULONG		mUART_RX_IRQ_ENABLE;
-		ULONG		mUART_TX_IRQ_ENABLE;
+   ULONG		mAUDIO_1_BKUP;
+   ULONG		mAUDIO_1_ENABLE_RELOAD;
+   ULONG		mAUDIO_1_ENABLE_COUNT;
+   ULONG		mAUDIO_1_LINKING;
+   ULONG		mAUDIO_1_CURRENT;
+   ULONG		mAUDIO_1_TIMER_DONE;
+   ULONG		mAUDIO_1_LAST_CLOCK;
+   ULONG		mAUDIO_1_BORROW_IN;
+   ULONG		mAUDIO_1_BORROW_OUT;
+   ULONG		mAUDIO_1_LAST_LINK_CARRY;
+   ULONG		mAUDIO_1_LAST_COUNT;
+   SBYTE		mAUDIO_1_VOLUME;
+   ULONG		mAUDIO_1_INTEGRATE_ENABLE;
+   ULONG		mAUDIO_1_WAVESHAPER;
 
-		ULONG		mUART_RX_COUNTDOWN;
-		ULONG		mUART_TX_COUNTDOWN;
+   ULONG		mAUDIO_2_BKUP;
+   ULONG		mAUDIO_2_ENABLE_RELOAD;
+   ULONG		mAUDIO_2_ENABLE_COUNT;
+   ULONG		mAUDIO_2_LINKING;
+   ULONG		mAUDIO_2_CURRENT;
+   ULONG		mAUDIO_2_TIMER_DONE;
+   ULONG		mAUDIO_2_LAST_CLOCK;
+   ULONG		mAUDIO_2_BORROW_IN;
+   ULONG		mAUDIO_2_BORROW_OUT;
+   ULONG		mAUDIO_2_LAST_LINK_CARRY;
+   ULONG		mAUDIO_2_LAST_COUNT;
+   SBYTE		mAUDIO_2_VOLUME;
+   ULONG		mAUDIO_2_INTEGRATE_ENABLE;
+   ULONG		mAUDIO_2_WAVESHAPER;
 
-		ULONG		mUART_SENDBREAK;
-		ULONG		mUART_TX_DATA;
-		ULONG		mUART_RX_DATA;
-		ULONG		mUART_RX_READY;
+   ULONG		mAUDIO_3_BKUP;
+   ULONG		mAUDIO_3_ENABLE_RELOAD;
+   ULONG		mAUDIO_3_ENABLE_COUNT;
+   ULONG		mAUDIO_3_LINKING;
+   ULONG		mAUDIO_3_CURRENT;
+   ULONG		mAUDIO_3_TIMER_DONE;
+   ULONG		mAUDIO_3_LAST_CLOCK;
+   ULONG		mAUDIO_3_BORROW_IN;
+   ULONG		mAUDIO_3_BORROW_OUT;
+   ULONG		mAUDIO_3_LAST_LINK_CARRY;
+   ULONG		mAUDIO_3_LAST_COUNT;
+   SBYTE		mAUDIO_3_VOLUME;
+   ULONG		mAUDIO_3_INTEGRATE_ENABLE;
+   ULONG		mAUDIO_3_WAVESHAPER;
 
-		ULONG		mUART_PARITY_ENABLE;
-		ULONG		mUART_PARITY_EVEN;
+   SBYTE		mAUDIO_OUTPUT[4];
+   UBYTE           mAUDIO_ATTEN[4];
+   ULONG		mSTEREO;
+   ULONG		mPAN;
 
-		int			mUART_CABLE_PRESENT;
-		void		(*mpUART_TX_CALLBACK)(int data,ULONG objref);
-		ULONG		mUART_TX_CALLBACK_OBJECT;
+   //
+   // Serial related variables
+   //
+   ULONG		mUART_RX_IRQ_ENABLE;
+   ULONG		mUART_TX_IRQ_ENABLE;
 
-		int			mUART_Rx_input_queue[UART_MAX_RX_QUEUE];
-		unsigned int mUART_Rx_input_ptr;
-		unsigned int mUART_Rx_output_ptr;
-		int			mUART_Rx_waiting;
-		int			mUART_Rx_framing_error;
-		int			mUART_Rx_overun_error;
+   ULONG		mUART_RX_COUNTDOWN;
+   ULONG		mUART_TX_COUNTDOWN;
 
-		//
-		// Screen related
-		//
-		
-		UBYTE		*mpDisplayBits;
-		UBYTE		*mpDisplayCurrent;
-		UBYTE		*mpRamPointer;
-		ULONG		mLynxLine;
-		ULONG		mLynxLineDMACounter;
-		ULONG		mLynxAddr;
+   ULONG		mUART_SENDBREAK;
+   ULONG		mUART_TX_DATA;
+   ULONG		mUART_RX_DATA;
+   ULONG		mUART_RX_READY;
 
-		ULONG		mDisplayRotate;
-		ULONG		mDisplayFormat;
-		ULONG		mDisplayPitch;
-		UBYTE*		(*mpDisplayCallback)(ULONG objref);
-		ULONG		mDisplayCallbackObject;
+   ULONG		mUART_PARITY_ENABLE;
+   ULONG		mUART_PARITY_EVEN;
+
+   int			mUART_CABLE_PRESENT;
+   void		(*mpUART_TX_CALLBACK)(int data,ULONG objref);
+   ULONG		mUART_TX_CALLBACK_OBJECT;
+
+   int			mUART_Rx_input_queue[UART_MAX_RX_QUEUE];
+   unsigned int mUART_Rx_input_ptr;
+   unsigned int mUART_Rx_output_ptr;
+   int			mUART_Rx_waiting;
+   int			mUART_Rx_framing_error;
+   int			mUART_Rx_overun_error;
+
+   //
+   // Screen related
+   //
+
+   UBYTE		*mpDisplayBits;
+   UBYTE		*mpDisplayCurrent;
+   UBYTE		*mpRamPointer;
+   ULONG		mLynxLine;
+   ULONG		mLynxLineDMACounter;
+   ULONG		mLynxAddr;
+
+   ULONG		mDisplayRotate;
+   ULONG		mDisplayFormat;
+   ULONG		mDisplayPitch;
+   UBYTE*		(*mpDisplayCallback)(ULONG objref);
+   ULONG		mDisplayCallbackObject;
 };
 
 

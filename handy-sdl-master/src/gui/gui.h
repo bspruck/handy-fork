@@ -14,6 +14,6 @@ void gui_CountFPS();
 void gui_ShowFPS();
 
 void gui_Run();
-void gui_Init(); 
+void gui_Init();
 
 int gui_LoadFile(char *romname);

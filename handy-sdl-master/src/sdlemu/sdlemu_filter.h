@@ -58,26 +58,26 @@ extern "C" {
 #endif
 
 #ifdef MMX
-  void _2xSaILine (u8 *srcPtr, u8 *deltaPtr, u32 srcPitch,
-                   u32 width, u8 *dstPtr, u32 dstPitch);
-  void _2xSaISuperEagleLine (u8 *srcPtr, u8 *deltaPtr,
-                             u32 srcPitch, u32 width,
-                             u8 *dstPtr, u32 dstPitch);
-  void _2xSaISuper2xSaILine (u8 *srcPtr, u8 *deltaPtr,
-                             u32 srcPitch, u32 width,
-                             u8 *dstPtr, u32 dstPitch);
-    void Init_2xSaIMMX (u32 BitFormat);
-  void BilinearMMX (u16 * A, u16 * B, u16 * C, u16 * D,
-                    u16 * dx, u16 * dy, u8 *dP);
-  void BilinearMMXGrid0 (u16 * A, u16 * B, u16 * C, u16 * D,
-                         u16 * dx, u16 * dy, u8 *dP);
-  void BilinearMMXGrid1 (u16 * A, u16 * B, u16 * C, u16 * D,
-                         u16 * dx, u16 * dy, u8 *dP);
-  void EndMMX ();
-  
-  bool cpu_mmx = 1;
+void _2xSaILine (u8 *srcPtr, u8 *deltaPtr, u32 srcPitch,
+                 u32 width, u8 *dstPtr, u32 dstPitch);
+void _2xSaISuperEagleLine (u8 *srcPtr, u8 *deltaPtr,
+                           u32 srcPitch, u32 width,
+                           u8 *dstPtr, u32 dstPitch);
+void _2xSaISuper2xSaILine (u8 *srcPtr, u8 *deltaPtr,
+                           u32 srcPitch, u32 width,
+                           u8 *dstPtr, u32 dstPitch);
+void Init_2xSaIMMX (u32 BitFormat);
+void BilinearMMX (u16 * A, u16 * B, u16 * C, u16 * D,
+                  u16 * dx, u16 * dy, u8 *dP);
+void BilinearMMXGrid0 (u16 * A, u16 * B, u16 * C, u16 * D,
+                       u16 * dx, u16 * dy, u8 *dP);
+void BilinearMMXGrid1 (u16 * A, u16 * B, u16 * C, u16 * D,
+                       u16 * dx, u16 * dy, u8 *dP);
+void EndMMX ();
+
+bool cpu_mmx = 1;
 #endif
- 
+
 #ifdef __cplusplus
 }
 #endif

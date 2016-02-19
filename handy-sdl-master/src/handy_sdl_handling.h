@@ -25,7 +25,7 @@
 //                             Copyright (c) 2005                           //
 //                                SDLemu Team                               //
 //                                                                          //
-//                          Based upon Handy v0.90 WIN32                    // 
+//                          Based upon Handy v0.90 WIN32                    //
 //                            Copyright (c) 1996,1997                       //
 //                                  K. Wilkins                              //
 //////////////////////////////////////////////////////////////////////////////
@@ -62,7 +62,7 @@
 #include <SDL/SDL.h>
 #include <SDL/SDL_main.h>
 #include <SDL/SDL_timer.h>
- 
+
 int		handy_sdl_on_key_up(SDL_KeyboardEvent key, int mask);
 int		handy_sdl_on_key_down(SDL_KeyboardEvent key, int mask);
 #endif

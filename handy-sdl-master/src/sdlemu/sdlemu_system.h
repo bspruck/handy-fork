@@ -52,17 +52,17 @@ typedef signed long long s64;
 #endif
 
 #ifndef boolean
-    #define boolean int
+#define boolean int
 #endif
 #ifndef bool
-    #define bool    int
+#define bool    int
 #endif
 
 #ifndef FALSE
-	#define FALSE 0
+#define FALSE 0
 #endif
 #ifndef TRUE
-	#define TRUE  1
+#define TRUE  1
 #endif
 
 

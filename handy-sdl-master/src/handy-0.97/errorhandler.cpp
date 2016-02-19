@@ -41,7 +41,7 @@
 
 CErrorHandler::CErrorHandler(CLynxWindow *lwin)
 {
-	mpLynxWin=lwin;
+   mpLynxWin=lwin;
 }
 
 CErrorHandler::~CErrorHandler()
@@ -51,40 +51,39 @@ CErrorHandler::~CErrorHandler()
 
 int CErrorHandler::Fatal(const char *message)
 {
-	if(mpLynxWin->DisplayModeWindowed()==FALSE) mpLynxWin->DisplayModeSet(DISPLAY_WINDOWED,DISPLAY_PRESERVE,DISPLAY_PRESERVE,DISPLAY_PRESERVE);
+   if(mpLynxWin->DisplayModeWindowed()==FALSE) mpLynxWin->DisplayModeSet(DISPLAY_WINDOWED,DISPLAY_PRESERVE,DISPLAY_PRESERVE,DISPLAY_PRESERVE);
 
-	mpLynxWin->MessageBox(message,"Handy Fatal Error",MB_OK | MB_ICONERROR);
-	mpLynxWin->PostMessage(WM_CLOSE);
-	mpLynxWin->mInitOK=FALSE;
-	return FALSE;
+   mpLynxWin->MessageBox(message,"Handy Fatal Error",MB_OK | MB_ICONERROR);
+   mpLynxWin->PostMessage(WM_CLOSE);
+   mpLynxWin->mInitOK=FALSE;
+   return FALSE;
 }
 
 int CErrorHandler::Warning(const char *message)
 {
-	if(mpLynxWin->DisplayModeWindowed()==FALSE) mpLynxWin->DisplayModeSet(DISPLAY_WINDOWED,DISPLAY_PRESERVE,DISPLAY_PRESERVE,DISPLAY_PRESERVE);
+   if(mpLynxWin->DisplayModeWindowed()==FALSE) mpLynxWin->DisplayModeSet(DISPLAY_WINDOWED,DISPLAY_PRESERVE,DISPLAY_PRESERVE,DISPLAY_PRESERVE);
 
 
 #ifdef _LYNXDBG
-	// If in debug mode then update all open windows
-	mpLynxWin->UpdateWindows();
+   // If in debug mode then update all open windows
+   mpLynxWin->UpdateWindows();
 #endif
 
-	// Construct and display the warning dialog
-	CWarnDialog warning(IDD_WARNING,mpLynxWin,message);
+   // Construct and display the warning dialog
+   CWarnDialog warning(IDD_WARNING,mpLynxWin,message);
 
-	// Display
-	switch(warning.DoModal())
-	{
-		case IDCANCEL:
-			if(mpLynxWin->mpLynx!=NULL) mpLynxWin->mpLynx->Reset();
-			gBreakpointHit=TRUE;
-			return FALSE;
-			break;
-		case IDOK:
-			return TRUE;
-			break;
-	}
-	return TRUE;
+   // Display
+   switch(warning.DoModal()) {
+      case IDCANCEL:
+         if(mpLynxWin->mpLynx!=NULL) mpLynxWin->mpLynx->Reset();
+         gBreakpointHit=TRUE;
+         return FALSE;
+         break;
+      case IDOK:
+         return TRUE;
+         break;
+   }
+   return TRUE;
 }
 #else
 
@@ -106,13 +105,13 @@ CErrorHandler::~CErrorHandler()
 
 int CErrorHandler::Fatal(const char *message)
 {
-	printf("Fatal Error: %s\n", message);
-	exit(EXIT_FAILURE);
+   printf("Fatal Error: %s\n", message);
+   exit(EXIT_FAILURE);
 }
 
 int CErrorHandler::Warning(const char *message)
 {
-	printf("Warning: %s\n", message);
-	exit(EXIT_FAILURE);
+   printf("Warning: %s\n", message);
+   exit(EXIT_FAILURE);
 }
 #endif

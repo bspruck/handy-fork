@@ -28,44 +28,44 @@ size_t qlz_size_compressed(const char *source);
 int qlz_get_setting(int setting);
 
 #if (defined(__X86__) || defined(__i386__) || defined(i386) || defined(_M_IX86) || defined(__386__) || defined(__x86_64__) || defined(_M_X64))
-	#define X86X64
+#define X86X64
 #endif
 
 // Compute SCRATCH_COMPRESS, SCRATCH_DECOMPRESS and constants used internally
 #if COMPRESSION_LEVEL == 0 && defined(memory_safe)
-	#error memory_safe flag cannot be used with COMPRESSION_LEVEL 0
+#error memory_safe flag cannot be used with COMPRESSION_LEVEL 0
 #endif
 
 #define HASH_ENTRIES 4096
 
 #if (COMPRESSION_LEVEL == 0 || COMPRESSION_LEVEL == 1 || COMPRESSION_LEVEL == 2)
-	#define AND 1
+#define AND 1
 #elif (COMPRESSION_LEVEL == 3)
-	#define AND 0x7
+#define AND 0x7
 #else
-	#error COMPRESSION_LEVEL must be 0, 1, 2 or 3
+#error COMPRESSION_LEVEL must be 0, 1, 2 or 3
 #endif
 
 #define HASH_SIZE (AND + 1)*HASH_ENTRIES*sizeof(unsigned char *)
 
 #ifdef STREAMING_MODE
-	#define STREAMING_MODE_VALUE STREAMING_MODE
+#define STREAMING_MODE_VALUE STREAMING_MODE
 #else
-	#define STREAMING_MODE_VALUE 0
+#define STREAMING_MODE_VALUE 0
 #endif
 
 #define STREAMING_MODE_ROUNDED ((STREAMING_MODE_VALUE >> 3) << 3)
 
 #if (COMPRESSION_LEVEL > 1)
-	#define SCRATCH_COMPRESS HASH_SIZE + STREAMING_MODE_VALUE + 16 + HASH_ENTRIES
+#define SCRATCH_COMPRESS HASH_SIZE + STREAMING_MODE_VALUE + 16 + HASH_ENTRIES
 #else
-	#define SCRATCH_COMPRESS HASH_SIZE + STREAMING_MODE_VALUE + 16
+#define SCRATCH_COMPRESS HASH_SIZE + STREAMING_MODE_VALUE + 16
 #endif
 
 #if (COMPRESSION_LEVEL == 0)
-	#define SCRATCH_DECOMPRESS HASH_ENTRIES*sizeof(unsigned char *) + 16 + STREAMING_MODE_VALUE
+#define SCRATCH_DECOMPRESS HASH_ENTRIES*sizeof(unsigned char *) + 16 + STREAMING_MODE_VALUE
 #else
-	#define SCRATCH_DECOMPRESS 16 + STREAMING_MODE_VALUE
+#define SCRATCH_DECOMPRESS 16 + STREAMING_MODE_VALUE
 #endif
 
 

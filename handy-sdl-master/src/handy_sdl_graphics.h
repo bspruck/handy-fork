@@ -66,13 +66,13 @@
 inline	void    handy_sdl_scale(void);
 inline  void    handy_sdl_draw_graphics(void);
 inline  void    handy_sdl_draw_filter(int filtertype, SDL_Surface *src, SDL_Surface *dst, Uint8 *delta);
-		int 	handy_sdl_video_setup(int rendertype, int fsaa, int fullscreen, int bpp, int scale, int accel, int sysnc);
-		void 	handy_sdl_video_init(int bpp);
-		int 	handy_sdl_video_setup_opengl(int fsaa, int accel, int sync);
-		int 	handy_sdl_video_setup_sdl(const SDL_VideoInfo *info);
-		int 	handy_sdl_video_setup_yuv(void);
-		UBYTE  *handy_sdl_display_callback(ULONG objref);
-		void 	handy_sdl_render_buffer(void);
-		void    handy_sdl_video_close(void);
-		int		handy_sdl_video_early_setup(int surfacewidth, int surfaceheight, int sdl_bpp_flag, int videoflags);
+int 	handy_sdl_video_setup(int rendertype, int fsaa, int fullscreen, int bpp, int scale, int accel, int sysnc);
+void 	handy_sdl_video_init(int bpp);
+int 	handy_sdl_video_setup_opengl(int fsaa, int accel, int sync);
+int 	handy_sdl_video_setup_sdl(const SDL_VideoInfo *info);
+int 	handy_sdl_video_setup_yuv(void);
+UBYTE  *handy_sdl_display_callback(ULONG objref);
+void 	handy_sdl_render_buffer(void);
+void    handy_sdl_video_close(void);
+int		handy_sdl_video_early_setup(int surfacewidth, int surfaceheight, int sdl_bpp_flag, int videoflags);
 #endif
