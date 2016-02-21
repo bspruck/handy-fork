@@ -47,7 +47,7 @@
 #include <afxdisp.h>
 #include "lynxwin.h"
 #include "lynxapp.h"
-#include "error.h"
+#include "../core/error.h"
 
 //#ifdef _DEBUG
 //#define new DEBUG_NEW

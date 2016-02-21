@@ -28,8 +28,8 @@
 #include <afxwin.h>
 #include <afxcmn.h>
 #include <afxdlgs.h>
-#include "system.h"
-#include "error.h"
+#include "../core/system.h"
+#include "../core/error.h"
 #include "debuggerwin.h"
 #include "tracedlg.h"
 #include "tracewin.h"

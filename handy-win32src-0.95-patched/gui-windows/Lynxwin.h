@@ -61,7 +61,7 @@
 #include "resource.h"
 #include "aboutdlg.h"
 #include "keydefs.h"
-#include "system.h"
+#include "../core/system.h"
 #include "netobj.h"
 #include "debugger.h"
 
@@ -322,7 +322,7 @@ protected:
 	afx_msg void OnTimer(UINT nIDEvent);
 	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 	afx_msg void OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags);
-	afx_msg void OnActivateApp(BOOL bActive, HTASK hTask);
+	afx_msg void OnActivateApp(BOOL bActive, DWORD hTask);
 	afx_msg void OnInitMenu(CMenu* pMenu);
 	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 	afx_msg void OnSize(UINT nType, int cx, int cy );

@@ -74,8 +74,8 @@ CRom::CRom(char *romfile)
 
 		lynxerr.Message() << "The Lynx Boot ROM image couldn't be located!";
 		lynxerr.Description()
-			<< "The lynx emulator will not run without the Boot ROM image." << endl
-			<< "\"" << romfile << "\" was not found in the lynx emulator " << endl
+			<< "The lynx emulator will not run without the Boot ROM image." << std::endl
+			<< "\"" << romfile << "\" was not found in the lynx emulator " << std::endl
 			<< "directory (see the LynxEmu User Guide for more information).";
 		throw(lynxerr);
 	}
@@ -88,8 +88,8 @@ CRom::CRom(char *romfile)
 
 		lynxerr.Message() << "The Lynx Boot ROM image couldn't be loaded!";
 		lynxerr.Description()
-			<< "The lynx emulator will not run without the Boot ROM image." << endl
-			<< "It appears that your BOOT image may be corrupted or there is" << endl
+			<< "The lynx emulator will not run without the Boot ROM image." << std::endl
+			<< "It appears that your BOOT image may be corrupted or there is" << std::endl
 			<< "some other error.(see the LynxEmu User Guide for more information)";
 		throw(lynxerr);
 	}

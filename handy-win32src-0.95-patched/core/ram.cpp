@@ -75,7 +75,7 @@ CRam::CRam(UBYTE *filememory,ULONG filesize)
 			CLynxException lynxerr;
 			lynxerr.Message() << "Handy Error: File format invalid (Magic No)";
 			lynxerr.Description()
-				<< "The image you selected was not a recognised homebrew format." << endl
+				<< "The image you selected was not a recognised homebrew format." << std::endl
 				<< "(see the Handy User Guide for more information).";
 			throw(lynxerr);
 		}

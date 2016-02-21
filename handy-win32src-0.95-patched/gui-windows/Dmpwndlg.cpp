@@ -44,7 +44,7 @@
 
 #include "afxwin.h"
 #include "resource.h"
-#include "machine.h"
+#include "../core/machine.h"
 #include "dmpwndlg.h"
 #include "dumpwin.h"
 

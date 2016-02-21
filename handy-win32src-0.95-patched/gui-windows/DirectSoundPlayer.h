@@ -31,7 +31,7 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-#include "machine.h"
+#include "../core/machine.h"
 #include "directx.h"
 
 class CDirectSoundPlayer  

@@ -49,7 +49,7 @@
 #include <afxwin.h>
 #include "hexedit.h"
 #include "resource.h"
-#include "system.h"
+#include "../core/system.h"
 #include "dmpwndlg.h"
 
 

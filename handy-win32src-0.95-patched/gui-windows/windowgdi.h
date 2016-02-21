@@ -35,8 +35,8 @@
 #include <afxcmn.h>
 #include <afxdlgs.h>
 #include <mmsystem.h>
-#include "machine.h"
-#include "pixblend.h"
+#include "../core/machine.h"
+#include "../core/pixblend.h"
 #include "lynxrender.h"
 
 class CWindowGDI : public CLynxRender  

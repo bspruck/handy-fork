@@ -45,7 +45,7 @@
 //////////////////////////////////////////////////////////////////////////////
 
 #include "codewin.h"
-#include "dis6502.h"
+#include "../core/dis6502.h"
 #include "widget.h"
 
 //#ifdef _DEBUG
@@ -488,7 +488,7 @@ void CCodeWin::OnLButtonDblClk(UINT nFlags, CPoint point)
 		// Unset if already set
 		if(address==regs.cpuBreakpoints[loop]) break;
 	}
-
+    int loop;
 	if(loop>=MAX_CPU_BREAKPOINTS)
 	{
 		// New breakpoint at next free
