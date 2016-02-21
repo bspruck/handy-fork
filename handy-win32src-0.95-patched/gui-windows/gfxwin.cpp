@@ -44,7 +44,7 @@
 //////////////////////////////////////////////////////////////////////////////
 
 #include "gfxwin.h"
-#include "lynxdef.h"
+#include "../core/lynxdef.h"
 #include "widget.h"
 
 //#ifdef _DEBUG

@@ -193,7 +193,7 @@ CDebuggerWin::CDebuggerWin(CSystem& pLynx,CObList &list, CString initstr)
 
 	// Fill the editbox lines to the bottom so when the first command
 	// comes in it is in the right place
-	for(loop=0;loop<mWinHeight;loop++) LineOutput("");
+	for(int loop=0;loop<mWinHeight;loop++) LineOutput("");
 
 	// Send ourselves a welcome message
 	LineOutput("HANDY Lynx Emulator - Command Line Debugger");
@@ -545,7 +545,8 @@ void CDebuggerWin::LineOutput(char *text)
 	// Dump the line buffers into the window text
 
 	wintext[0]=0;
-	for(int loop=0;loop<mLineInput-1;loop++)
+    int loop;
+	for(loop=0;loop<mLineInput-1;loop++)
 	{
 		sprintf(winline,"%s%c%c",mLineBuffer[loop],0x0d,0x0a);
 		strcat(wintext,winline);

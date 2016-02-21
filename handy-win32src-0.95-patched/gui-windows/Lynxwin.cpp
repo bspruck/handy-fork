@@ -45,9 +45,9 @@
 //////////////////////////////////////////////////////////////////////////////
 
 #include "lynxwin.h"
-#include "error.h"
-#include "lynxdef.h"
-#include "ErrorHandler.h"
+#include "../core/error.h"
+#include "../core/lynxdef.h"
+#include "errorhandler.h"
 #include "debugger.h"
 
 #ifdef _DEBUG
@@ -865,8 +865,8 @@ BEGIN_MESSAGE_MAP(CLynxWindow,CFrameWnd)
 	ON_COMMAND(IDM_OPTIONS_BACKGROUND, OnBkgndMenuSelect)
 	ON_UPDATE_COMMAND_UI(IDM_OPTIONS_BACKGROUND, OnBkgndMenuUpdate)
 	ON_COMMAND(IDM_OPTIONS_KEYDEFS,OnDefineKeysSelect)
-	ON_MESSAGE(WM_NETOBJ_SELECT, OnNetworkDataWaiting)
-	ON_MESSAGE(WM_NETOBJ_UPDATE, OnNetworkUpdate)
+	//ON_MESSAGE(WM_NETOBJ_SELECT, OnNetworkDataWaiting)
+	//ON_MESSAGE(WM_NETOBJ_UPDATE, OnNetworkUpdate)
 	ON_COMMAND(IDM_OPTIONS_NETWORK, OnNetworkMenuSelect)
 	ON_UPDATE_COMMAND_UI(IDM_OPTIONS_NETWORK, OnNetworkMenuUpdate)
 	ON_WM_CONTEXTMENU()
@@ -1189,7 +1189,7 @@ void CLynxWindow::OnNetworkDataWaiting(WPARAM wparam,LPARAM lparam)
 
 void CLynxWindow::OnNetworkMenuSelect()
 {
-	static firsttime=0;
+	static bool firsttime=0;
 
 	if(!firsttime)
 	{
@@ -1549,6 +1549,7 @@ void CLynxWindow::OnFileSnapshotRAW()
 				UBYTE memmap;
 				UBYTE image[8192];
 				ULONG index=0;
+                ULONG loop = 0;
 
 				file.Open(snapname,CFile::modeCreate|CFile::shareExclusive|CFile::modeWrite);
 
@@ -1556,7 +1557,7 @@ void CLynxWindow::OnFileSnapshotRAW()
 				memmap=mpLynx->Peek_CPU(0xfff9);
 				mpLynx->Poke_CPU(0xfff9,0);
 				// Dump the palette to the index
-				for(ULONG loop=GREEN0;loop<=BLUEREDF;loop++)
+				for(loop=GREEN0;loop<=BLUEREDF;loop++)
 				{
 					image[index++]=(UBYTE)mpLynx->Peek_CPU(loop);
 				}
@@ -2360,7 +2361,7 @@ void CLynxWindow::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 }
 
 
-void CLynxWindow::OnActivateApp(BOOL bActive, HTASK hTask) 
+void CLynxWindow::OnActivateApp(BOOL bActive, DWORD hTask) 
 {
 	CFrameWnd::OnActivateApp(bActive, hTask);
 	

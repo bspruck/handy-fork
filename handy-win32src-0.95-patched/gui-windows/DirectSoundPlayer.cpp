@@ -30,7 +30,7 @@
 #include <afxdlgs.h>
 #include <mmsystem.h>
 #include "directx.h"
-#include "machine.h"
+#include "../core/machine.h"
 #include "DirectSoundPlayer.h"
 
 //#ifdef _DEBUG

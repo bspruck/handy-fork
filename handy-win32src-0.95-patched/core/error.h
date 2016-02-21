@@ -45,7 +45,8 @@
 #ifndef ERROR_H
 #define ERROR_H
 
-#include <strstrea.h>
+#include <iostream>
+#include <strstream>
 
 #define MAX_ERROR_MSG	512
 #define MAX_ERROR_DESC	2048
@@ -82,10 +83,10 @@ class CLynxException
 
   public:
 		// Answer stream which should contain the one line error message
-		ostrstream& Message() { return mMsgStream; }
+		std::ostrstream& Message() { return mMsgStream; }
 
 		// Answer stream which should contain the multiple line description
-		ostrstream& Description() { return mDescStream; }
+		std::ostrstream& Description() { return mDescStream; }
 
   public:
 		// Overload the assignment operator
@@ -105,14 +106,14 @@ class CLynxException
 		}
 
 		// Overload the I/O output operator
-		friend ostream& operator<<(ostream& out, CLynxException& err)
+		friend std::ostream& operator<<(std::ostream& out, CLynxException& err)
 		{
 			out.write(err.Message().str(), err.Message().pcount());
 			err.Message().rdbuf()->freeze(0);
 
 			if(err.Description().pcount() != 0)
 			{
-				out << endl << endl;
+				out << std::endl << std::endl;
 
 				out.write(err.Description().str(), err.Description().pcount());
 				err.Description().rdbuf()->freeze(0);
@@ -123,11 +124,11 @@ class CLynxException
 
   private:
 		// Contains the one line error code message
-		ostrstream mMsgStream;
+		std::ostrstream mMsgStream;
 
 		// Contains a multiple line description of the error and ways to 
 		// solve the problem
-		ostrstream mDescStream;
+		std::ostrstream mDescStream;
 
   public:
 		// CStrings to hold the data after its been thrown

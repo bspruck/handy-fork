@@ -116,8 +116,8 @@ CSystem::CSystem(char* gamefile,char* romfile)
 				CLynxException lynxerr;
 				lynxerr.Message() << "Handy Error: ZIP File select problems" ;
 				lynxerr.Description()
-					<< "The file you selected could not be read." << endl
-					<< "(The ZIP file may be corrupted)." << endl ;
+					<< "The file you selected could not be read." << std::endl
+					<< "(The ZIP file may be corrupted)." << std::endl ;
 				throw(lynxerr);
 			}
 			
@@ -172,8 +172,8 @@ CSystem::CSystem(char* gamefile,char* romfile)
 						CLynxException lynxerr;
 						lynxerr.Message() << "Handy Error: ZIP File load problems" ;
 						lynxerr.Description()
-							<< "The zip file you selected could not be loaded." << endl
-							<< "(The ZIP file may be corrupted)." << endl ;
+							<< "The zip file you selected could not be loaded." << std::endl
+							<< "(The ZIP file may be corrupted)." << std::endl ;
 						throw(lynxerr);
 					}
 
@@ -188,8 +188,8 @@ CSystem::CSystem(char* gamefile,char* romfile)
 				CLynxException lynxerr;
 				lynxerr.Message() << "Handy Error: ZIP File load problems" ;
 				lynxerr.Description()
-					<< "The file you selected could not be loaded." << endl
-					<< "Could not find a Lynx file in the ZIP archive." << endl ;
+					<< "The file you selected could not be loaded." << std::endl
+					<< "Could not find a Lynx file in the ZIP archive." << std::endl ;
 				throw(lynxerr);
 			}
 		}
@@ -198,8 +198,8 @@ CSystem::CSystem(char* gamefile,char* romfile)
 			CLynxException lynxerr;
 			lynxerr.Message() << "Handy Error: ZIP File open problems" ;
 			lynxerr.Description()
-				<< "The file you selected could not be opened." << endl
-				<< "(The ZIP file may be corrupted)." << endl ;
+				<< "The file you selected could not be opened." << std::endl
+				<< "(The ZIP file may be corrupted)." << std::endl ;
 			throw(lynxerr);
 		}
 	}
@@ -215,8 +215,8 @@ CSystem::CSystem(char* gamefile,char* romfile)
 
 			lynxerr.Message() << "Handy Error: File Open Error";
 			lynxerr.Description()
-				<< "The lynx emulator will not run without a cartridge image." << endl
-				<< "\"" << gamefile << "\" was not found in the place you " << endl
+				<< "The lynx emulator will not run without a cartridge image." << std::endl
+				<< "\"" << gamefile << "\" was not found in the place you " << std::endl
 				<< "specified. (see the Handy User Guide for more information).";
 			throw(lynxerr);
 		}
@@ -234,8 +234,8 @@ CSystem::CSystem(char* gamefile,char* romfile)
 
 			lynxerr.Message() << "Handy Error: Unspecified Load error (Header)";
 			lynxerr.Description()
-				<< "The lynx emulator will not run without a cartridge image." << endl
-				<< "It appears that your cartridge image may be corrupted or there is" << endl
+				<< "The lynx emulator will not run without a cartridge image." << std::endl
+				<< "It appears that your cartridge image may be corrupted or there is" << std::endl
 				<< "some other error.(see the Handy User Guide for more information)";
 			throw(lynxerr);
 		}
@@ -261,7 +261,7 @@ CSystem::CSystem(char* gamefile,char* romfile)
 			mFileType=HANDY_FILETYPE_ILLEGAL;
 			lynxerr.Message() << "Handy Error: File format invalid!";
 			lynxerr.Description()
-				<< "The image you selected was not a recognised game cartridge format." << endl
+				<< "The image you selected was not a recognised game cartridge format." << std::endl
 				<< "(see the Handy User Guide for more information).";
 			throw(lynxerr);
 		}
@@ -298,8 +298,8 @@ CSystem::CSystem(char* gamefile,char* romfile)
 					delete filememory;
 					lynxerr.Message() << "Handy Error: Howard.o File Open Error";
 					lynxerr.Description()
-						<< "Headerless cartridges need howard.o bootfile to ." << endl
-						<< "be able to run correctly, could not open file. " << endl;
+						<< "Headerless cartridges need howard.o bootfile to ." << std::endl
+						<< "be able to run correctly, could not open file. " << std::endl;
 					throw(lynxerr);
 				}
 
@@ -316,7 +316,7 @@ CSystem::CSystem(char* gamefile,char* romfile)
 					delete howardmemory;
 					lynxerr.Message() << "Handy Error: Howard.o load error (Header)";
 					lynxerr.Description()
-						<< "Howard.o could not be read????." << endl;
+						<< "Howard.o could not be read????." << std::endl;
 					throw(lynxerr);
 				}
 
@@ -370,8 +370,8 @@ CSystem::CSystem(char* gamefile,char* romfile)
 			CLynxException lynxerr;
 			lynxerr.Message() << "Handy Error: Snapshot load error" ;
 			lynxerr.Description()
-				<< "The snapshot you selected could not be loaded." << endl
-				<< "(The file format was not recognised by Handy)." << endl ;
+				<< "The snapshot you selected could not be loaded." << std::endl
+				<< "(The file format was not recognised by Handy)." << std::endl ;
 			throw(lynxerr);
 		}
 	}
