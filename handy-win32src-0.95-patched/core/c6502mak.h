@@ -72,7 +72,7 @@
 #define PULL(m)					{ mSP++; mSP&=0xff; m=CPU_PEEK(mSP+0x0100); }
 #define PUSH(m)					{ CPU_POKE(0x0100+mSP,m); mSP--; mSP&=0xff; }
 //
-// Opcode execution 
+// Opcode execution
 //
 
 //#define	xADC()\

@@ -69,97 +69,126 @@ enum CTYPE {UNUSED,C64K,C128K,C256K,C512K,C1024K};
 #define CART_ROTATE_LEFT	1
 #define	CART_ROTATE_RIGHT	2
 
-typedef struct
-{
+typedef struct {
    UBYTE   magic[4];
    UWORD   page_size_bank0;
    UWORD   page_size_bank1;
    UWORD   version;
    UBYTE   cartname[32];
    UBYTE   manufname[16];
-   UBYTE   rotation; 
-   UBYTE   aud_bits; 
+   UBYTE   rotation;
+   UBYTE   aud_bits;
    UBYTE   spare[4];
-}LYNX_HEADER;
+} LYNX_HEADER;
 
 
 class CCart : public CLynxBase
 {
 
-	// Function members
+   // Function members
 
-	public:
-		CCart(UBYTE *gamedata,ULONG gamesize);
-		~CCart();
+public:
+   CCart(UBYTE *gamedata,ULONG gamesize);
+   ~CCart();
 
-	public:
+public:
 
 // Access for sensible members of the clan
 
-		void	Reset(void);
-		bool	ContextSave(FILE *fp);
-		bool	ContextLoad(LSS_FILE *fp);
-		bool	ContextLoadLegacy(LSS_FILE *fp);
+   void	Reset(void);
+   bool	ContextSave(FILE *fp);
+   bool	ContextLoad(LSS_FILE *fp);
+   bool	ContextLoadLegacy(LSS_FILE *fp);
 
-		void	Poke(ULONG addr,UBYTE data);
-		UBYTE	Peek(ULONG addr);
-		ULONG	ReadCycle(void) {return 15;};
-		ULONG	WriteCycle(void) {return 15;};
-		void	BankSelect(EMMODE newbank) {mBank=newbank;}
-		ULONG	ObjectSize(void) {return (mBank==bank0)?mMaskBank0+1:mMaskBank1+1;};
+   void	Poke(ULONG addr,UBYTE data);
+   UBYTE	Peek(ULONG addr);
+   ULONG	ReadCycle(void)
+   {
+      return 15;
+   };
+   ULONG	WriteCycle(void)
+   {
+      return 15;
+   };
+   void	BankSelect(EMMODE newbank)
+   {
+      mBank=newbank;
+   }
+   ULONG	ObjectSize(void)
+   {
+      return (mBank==bank0)?mMaskBank0+1:mMaskBank1+1;
+   };
 
-		const char*	CartGetName(void) { return mName;};
-		const char*	CartGetManufacturer(void) { return mManufacturer; };
-		ULONG	CartGetRotate(void) { return mRotation;};
-		bool	CartGetAudin(void) { return mAudinFlag;};
-		int		CartHeaderLess(void) { return mHeaderLess;};
-		ULONG	CRC32(void) { return mCRC32; };
+   const char*	CartGetName(void)
+   {
+      return mName;
+   };
+   const char*	CartGetManufacturer(void)
+   {
+      return mManufacturer;
+   };
+   ULONG	CartGetRotate(void)
+   {
+      return mRotation;
+   };
+   bool	CartGetAudin(void)
+   {
+      return mAudinFlag;
+   };
+   int		CartHeaderLess(void)
+   {
+      return mHeaderLess;
+   };
+   ULONG	CRC32(void)
+   {
+      return mCRC32;
+   };
 
 // Access for the lynx itself, it has no idea of address etc as this is done by the
-// cartridge emulation hardware 
-		void	CartAddressStrobe(bool strobe);
-		void	CartAddressData(bool data);
-		void	Poke0(UBYTE data);
-		void	Poke1(UBYTE data);
-		void	Poke0A(UBYTE data);
-		void	Poke1A(UBYTE data);
-		UBYTE	Peek0(void);
-		UBYTE	Peek1(void);
-		UBYTE	Peek0A(void);
-		UBYTE	Peek1A(void);
+// cartridge emulation hardware
+   void	CartAddressStrobe(bool strobe);
+   void	CartAddressData(bool data);
+   void	Poke0(UBYTE data);
+   void	Poke1(UBYTE data);
+   void	Poke0A(UBYTE data);
+   void	Poke1A(UBYTE data);
+   UBYTE	Peek0(void);
+   UBYTE	Peek1(void);
+   UBYTE	Peek0A(void);
+   UBYTE	Peek1A(void);
 
-	// Data members
+   // Data members
 
-	public:
-		ULONG	mWriteEnableBank0;
-		ULONG	mWriteEnableBank1;
-		ULONG	mCartRAM;
+public:
+   ULONG	mWriteEnableBank0;
+   ULONG	mWriteEnableBank1;
+   ULONG	mCartRAM;
 
-	private:
-		EMMODE	mBank;
-		ULONG	mMaskBank0;
-		ULONG	mMaskBank1;
-		UBYTE	*mCartBank0;
-		UBYTE	*mCartBank1;
-		UBYTE	*mCartBank0A;
-		UBYTE	*mCartBank1A;
-		char	mName[33];
-		char	mManufacturer[17];
-		ULONG	mRotation;
-		bool    mAudinFlag;
-		ULONG	mHeaderLess;
+private:
+   EMMODE	mBank;
+   ULONG	mMaskBank0;
+   ULONG	mMaskBank1;
+   UBYTE	*mCartBank0;
+   UBYTE	*mCartBank1;
+   UBYTE	*mCartBank0A;
+   UBYTE	*mCartBank1A;
+   char	mName[33];
+   char	mManufacturer[17];
+   ULONG	mRotation;
+   bool    mAudinFlag;
+   ULONG	mHeaderLess;
 
-		ULONG	mCounter;
-		ULONG	mShifter;
-		ULONG	mAddrData;
-		ULONG	mStrobe;
+   ULONG	mCounter;
+   ULONG	mShifter;
+   ULONG	mAddrData;
+   ULONG	mStrobe;
 
-		ULONG	mShiftCount0;
-		ULONG	mCountMask0;
-		ULONG	mShiftCount1;
-		ULONG	mCountMask1;
+   ULONG	mShiftCount0;
+   ULONG	mCountMask0;
+   ULONG	mShiftCount1;
+   ULONG	mCountMask1;
 
-		ULONG	mCRC32;
+   ULONG	mCRC32;
 
 };
 

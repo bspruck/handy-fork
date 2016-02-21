@@ -54,87 +54,92 @@
 //class CLynxException : public CException
 class CLynxException
 {
-	public:
-		// Constructor
-		CLynxException() {}
- 
-		// Copy Constructor
-		CLynxException(CLynxException& err)
-		{
-			int MsgCount,DescCount;
+public:
+   // Constructor
+   CLynxException() {}
 
-			MsgCount = err.Message().pcount() + 1;
-			DescCount = err.Description().pcount() + 1;
-			if(MsgCount>MAX_ERROR_MSG) MsgCount=MAX_ERROR_MSG;
-			if(DescCount>MAX_ERROR_DESC) DescCount=MAX_ERROR_DESC;
+   // Copy Constructor
+   CLynxException(CLynxException& err)
+   {
+      int MsgCount,DescCount;
 
-			strncpy(mMsg,err.Message().str(),MsgCount);
-			mMsg[MsgCount-1]='\0';
-			strncpy(mDesc,err.Description().str(),DescCount);
-			mDesc[DescCount-1]='\0';
-		}
- 
-		// Destructor
-		virtual ~CLynxException()
-		{
-			mMsgStream.rdbuf()->freeze(0);
-			mDescStream.rdbuf()->freeze(0);
-		}
+      MsgCount = err.Message().pcount() + 1;
+      DescCount = err.Description().pcount() + 1;
+      if(MsgCount>MAX_ERROR_MSG) MsgCount=MAX_ERROR_MSG;
+      if(DescCount>MAX_ERROR_DESC) DescCount=MAX_ERROR_DESC;
 
-  public:
-		// Answer stream which should contain the one line error message
-		std::ostrstream& Message() { return mMsgStream; }
+      strncpy(mMsg,err.Message().str(),MsgCount);
+      mMsg[MsgCount-1]='\0';
+      strncpy(mDesc,err.Description().str(),DescCount);
+      mDesc[DescCount-1]='\0';
+   }
 
-		// Answer stream which should contain the multiple line description
-		std::ostrstream& Description() { return mDescStream; }
+   // Destructor
+   virtual ~CLynxException()
+   {
+      mMsgStream.rdbuf()->freeze(0);
+      mDescStream.rdbuf()->freeze(0);
+   }
 
-  public:
-		// Overload the assignment operator
-		CLynxException& operator=(CLynxException& err)
-		{
-			mMsgStream.seekp(0);
+public:
+   // Answer stream which should contain the one line error message
+   std::ostrstream& Message()
+   {
+      return mMsgStream;
+   }
 
-			mMsgStream.write(err.Message().str(), err.Message().pcount());
-			err.Message().rdbuf()->freeze(0);
+   // Answer stream which should contain the multiple line description
+   std::ostrstream& Description()
+   {
+      return mDescStream;
+   }
 
-			mDescStream.seekp(0);
+public:
+   // Overload the assignment operator
+   CLynxException& operator=(CLynxException& err)
+   {
+      mMsgStream.seekp(0);
 
-			mDescStream.write(err.Description().str(), err.Description().pcount());
-			err.Description().rdbuf()->freeze(0);
+      mMsgStream.write(err.Message().str(), err.Message().pcount());
+      err.Message().rdbuf()->freeze(0);
 
-			return *this;
-		}
+      mDescStream.seekp(0);
 
-		// Overload the I/O output operator
-		friend std::ostream& operator<<(std::ostream& out, CLynxException& err)
-		{
-			out.write(err.Message().str(), err.Message().pcount());
-			err.Message().rdbuf()->freeze(0);
+      mDescStream.write(err.Description().str(), err.Description().pcount());
+      err.Description().rdbuf()->freeze(0);
 
-			if(err.Description().pcount() != 0)
-			{
-				out << std::endl << std::endl;
+      return *this;
+   }
 
-				out.write(err.Description().str(), err.Description().pcount());
-				err.Description().rdbuf()->freeze(0);
-			}
+   // Overload the I/O output operator
+   friend std::ostream& operator<<(std::ostream& out, CLynxException& err)
+   {
+      out.write(err.Message().str(), err.Message().pcount());
+      err.Message().rdbuf()->freeze(0);
 
-			return out;
-		}
+      if(err.Description().pcount() != 0) {
+         out << std::endl << std::endl;
 
-  private:
-		// Contains the one line error code message
-		std::ostrstream mMsgStream;
+         out.write(err.Description().str(), err.Description().pcount());
+         err.Description().rdbuf()->freeze(0);
+      }
 
-		// Contains a multiple line description of the error and ways to 
-		// solve the problem
-		std::ostrstream mDescStream;
+      return out;
+   }
 
-  public:
-		// CStrings to hold the data after its been thrown
+private:
+   // Contains the one line error code message
+   std::ostrstream mMsgStream;
 
-		char mMsg[MAX_ERROR_MSG];
-		char mDesc[MAX_ERROR_DESC];
+   // Contains a multiple line description of the error and ways to
+   // solve the problem
+   std::ostrstream mDescStream;
+
+public:
+   // CStrings to hold the data after its been thrown
+
+   char mMsg[MAX_ERROR_MSG];
+   char mDesc[MAX_ERROR_DESC];
 };
 #endif
 
