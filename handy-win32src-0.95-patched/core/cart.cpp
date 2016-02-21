@@ -94,7 +94,7 @@ CCart::CCart(UBYTE *gamedata,ULONG gamesize)
 
 		// Setup name & manufacturer
 
-		strncpy(mName,(char*)&header.cartname,32);;
+		strncpy(mName,(char*)&header.cartname,32);
 		strncpy(mManufacturer,(char*)&header.manufname,16);
 
 		// Setup rotation
@@ -308,6 +308,8 @@ CCart::~CCart()
 	TRACE_CART0("~CCart()");
 	delete[] mCartBank0;
 	delete[] mCartBank1;
+   delete[] mCartBank0A;
+   delete[] mCartBank1A;
 }
 
 
