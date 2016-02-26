@@ -78,7 +78,8 @@ typedef struct {
    UBYTE   manufname[16];
    UBYTE   rotation;
    UBYTE   aud_bits;
-   UBYTE   spare[4];
+   UBYTE   eeprom;
+   UBYTE   spare[3];
 } LYNX_HEADER;
 
 
@@ -163,6 +164,7 @@ public:
    ULONG	mWriteEnableBank0;
    ULONG	mWriteEnableBank1;
    ULONG	mCartRAM;
+   UBYTE   mEEPROMType;
 
 private:
    EMMODE	mBank;

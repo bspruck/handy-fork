@@ -92,6 +92,7 @@ public:
 
 public:
    bool	mWriteEnable;
+   bool	mValid;
 private:
    UBYTE	mRomData[ROM_SIZE];
    char	mFileName[1024];

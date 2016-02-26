@@ -62,6 +62,32 @@
 #include "../zlib-113/zlib.h"
 #include "../zlib-113/unzip.h"
 
+extern void lynx_decrypt(unsigned char * result, const unsigned char * encrypted, const int length);
+
+// Posted by Karri
+unsigned char micro_loader_stage1[52]= {
+   0xff, 0x81, 0xca, 0x33, 0xbe, 0x80, 0xa2, 0xc4, 0x6d, 0x98, 0xfe, 0x8d, 0xbc, 0x66, 0xc0, 0x7a,
+   0x09, 0x50, 0x23, 0x28, 0x18, 0xc8, 0x06, 0x70, 0x58, 0x4f, 0x1b, 0xe1, 0xc7, 0x90, 0x08, 0xcd,
+   0x1a, 0x6e, 0x5a, 0x45, 0x32, 0xd7, 0x6d, 0xc6, 0x8a, 0xe5, 0xd8, 0x5c, 0xa0, 0xe8, 0x4f, 0x7a,
+   0x5f, 0x73, 0x8d, 0x22
+};
+
+
+// and the secondary loader that follows the encrypted loader
+
+unsigned char micro_loader_stage2[128+12+11]= {
+   0xa2, 0x00, 0xa0, 0x08, 0xad, 0xb2, 0xfc, 0x95, 0x26, 0xe8, 0x88, 0xd0,
+   0xf7, 0xa5, 0x26, 0x85, 0x2e, 0x20, 0xca, 0xfb, 0xa5, 0x28, 0x49, 0xff, 0xa8, 0xa5, 0x27, 0x49,
+   0xff, 0xaa, 0x20, 0xa1, 0xfb, 0xa5, 0x2a, 0xa6, 0x2b, 0x85, 0x31, 0x86, 0x32, 0xa5, 0x2d, 0x49,
+   0xff, 0xa8, 0xa5, 0x2c, 0x49, 0xff, 0xaa, 0x20, 0xac, 0xfb, 0x6c, 0x2a, 0x00, 0xe8, 0xd0, 0x03,
+   0xc8, 0xf0, 0x57, 0x20, 0xbf, 0xfb, 0x80, 0xf5, 0xe8, 0xd0, 0x03, 0xc8, 0xf0, 0x4c, 0x20, 0xbf,
+   0xfb, 0x92, 0x31, 0xe6, 0x31, 0xd0, 0xf1, 0xe6, 0x32, 0x80, 0xed, 0xad, 0xb2, 0xfc, 0xe6, 0x2f,
+   0xd0, 0x38, 0xe6, 0x30, 0xd0, 0x34, 0x48, 0xda, 0x5a, 0xa5, 0x1a, 0x29, 0xfc, 0xa8, 0x09, 0x02,
+   0xaa, 0xa5, 0x2e, 0xe6, 0x2e, 0x38, 0x80, 0x0b, 0x90, 0x04, 0x8e, 0x8b, 0xfd, 0x18, 0xe8, 0x8e,
+   0x87, 0xfd, 0xca, 0x8e, 0x87, 0xfd, 0x2a, 0x8c, 0x8b, 0xfd, 0xd0, 0xec, 0xa5, 0x1a, 0x8d, 0x8b,
+   0xfd, 0x64, 0x2f, 0xa9, 0xfc, 0x85, 0x30, 0x7a, 0xfa, 0x68, 0x60
+};
+
 int lss_read(void* dest,int varsize, int varcount,LSS_FILE *fp)
 {
    ULONG copysize;
@@ -79,7 +105,8 @@ CSystem::CSystem(char* gamefile,char* romfile)
     mRam(NULL),
     mCpu(NULL),
     mMikie(NULL),
-    mSusie(NULL)
+    mSusie(NULL),
+    mEEPROM()
 {
 
 #ifdef _LYNXDBG
@@ -256,6 +283,8 @@ CSystem::CSystem(char* gamefile,char* romfile)
 
    // An exception from this will be caught by the level above
 
+   mEEPROM = new CEEPROM();
+
    switch(mFileType) {
       case HANDY_FILETYPE_LNX:
          mCart = new CCart(filememory,filesize);
@@ -348,12 +377,15 @@ CSystem::CSystem(char* gamefile,char* romfile)
    }
    if(filesize) delete filememory;
    if(howardsize) delete howardmemory;
+
+   mEEPROM->SetEEPROMType(mCart->mEEPROMType);
 }
 
 CSystem::~CSystem()
 {
    // Cleanup all our objects
 
+   if(mEEPROM!=NULL) delete mEEPROM;
    if(mCart!=NULL) delete mCart;
    if(mRom!=NULL) delete mRom;
    if(mRam!=NULL) delete mRam;
@@ -375,6 +407,67 @@ bool CSystem::IsZip(char *filename)
    }
    if(fp)fclose(fp);
    return FALSE;
+}
+
+void CSystem::HLE_BIOS_FE00(void)
+{
+   // Select Block in A
+   C6502_REGS regs;
+   mCpu->GetRegs(regs);
+   mCart->SetShifterValue(regs.A);
+   // we just put an RTS behind in fake ROM!
+}
+
+void CSystem::HLE_BIOS_FE19(void)
+{
+   // (not) initial jump from reset vector
+   // Clear full 64k memory!
+   mRam->Clear();
+
+   // Set Load adresse to $200 ($05,$06)
+   mRam->Poke(0x0005,0x00);
+   mRam->Poke(0x0006,0x02);
+   // Call to $FE00
+   mCart->SetShifterValue(0);
+   // Fallthrou $FE4A
+   HLE_BIOS_FE4A();
+}
+
+void CSystem::HLE_BIOS_FE4A(void)
+{
+   UWORD addr=mRam->Peek(0x0005) | (mRam->Peek(0x0006)<<8);
+
+   // Load from Cart (loader blocks)
+   unsigned char buff[256];// maximum 5 blocks
+   unsigned char res[256];
+
+   buff[0]=mCart->Peek0();
+   int blockcount = 0x100 -  buff[0];
+
+   for (int i = 1; i < 1+51*blockcount; ++i) { // first encrypted loader
+      buff[i] = mCart->Peek0();
+   }
+   printf("\n");
+
+   lynx_decrypt(res, buff, 51);
+
+   for (int i = 0; i < 50*blockcount; ++i) {
+      Poke_CPU(addr++, res[i]);
+   }
+
+   // Load Block(s), decode to ($05,$06)
+   // jmp $200
+
+   C6502_REGS regs;
+   mCpu->GetRegs(regs);
+   regs.PC=0x0200;
+   mCpu->SetRegs(regs);
+}
+
+void CSystem::HLE_BIOS_FF80(void)
+{
+   // initial jump from reset vector ... calls FE19
+   HLE_BIOS_FE19();
 }
 
 void CSystem::Reset(void)
@@ -405,6 +498,7 @@ void CSystem::Reset(void)
 
    mMemMap->Reset();
    mCart->Reset();
+   mEEPROM->Reset();
    mRom->Reset();
    mRam->Reset();
    mMikie->Reset();
@@ -420,6 +514,30 @@ void CSystem::Reset(void)
       mCpu->GetRegs(regs);
       regs.PC=(UWORD)gCPUBootAddress;
       mCpu->SetRegs(regs);
+   } else {
+      if(!mRom->mValid) {
+         mMikie->PresetForHomebrew();
+         mRom->mWriteEnable=true;
+
+         mRom->Poke(0xFE00+0,0x8d);
+         mRom->Poke(0xFE00+1,0x97);
+         mRom->Poke(0xFE00+2,0xfd);
+         mRom->Poke(0xFE00+3,0x60);// RTS
+
+         mRom->Poke(0xFE19+0,0x8d);
+         mRom->Poke(0xFE19+1,0x97);
+         mRom->Poke(0xFE19+2,0xfd);
+
+         mRom->Poke(0xFE4A+0,0x8d);
+         mRom->Poke(0xFE4A+1,0x97);
+         mRom->Poke(0xFE4A+2,0xfd);
+
+         mRom->Poke(0xFF80+0,0x8d);
+         mRom->Poke(0xFF80+1,0x97);
+         mRom->Poke(0xFF80+2,0xfd);
+
+         mRom->mWriteEnable=false;
+      }
    }
 }
 
@@ -465,6 +583,7 @@ bool CSystem::ContextSave(char *context)
    // Save other device contexts
    if(!mMemMap->ContextSave(fp)) status=0;
    if(!mCart->ContextSave(fp)) status=0;
+   if(!mEEPROM->ContextSave(fp)) status=0;
 //	if(!mRom->ContextSave(fp)) status=0; We no longer save the system ROM
    if(!mRam->ContextSave(fp)) status=0;
    if(!mMikie->ContextSave(fp)) status=0;

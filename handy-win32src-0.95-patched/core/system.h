@@ -166,6 +166,7 @@ class CSystem;
 #include "rom.h"
 #include "memmap.h"
 #include "cart.h"
+#include "eeprom.h"
 #include "susie.h"
 #include "mikie.h"
 #include "c65c02.h"
@@ -185,6 +186,10 @@ public:
    ~CSystem();
 
 public:
+   void HLE_BIOS_FE00(void);
+   void HLE_BIOS_FE19(void);
+   void HLE_BIOS_FE4A(void);
+   void HLE_BIOS_FF80(void);
    void	Reset(void);
    bool	ContextSave(char *context);
    bool	ContextLoad(char *context);
@@ -424,6 +429,7 @@ public:
    C65C02			*mCpu;
    CMikie			*mMikie;
    CSusie			*mSusie;
+   CEEPROM			*mEEPROM;
 
    ULONG			mFileType;
 };

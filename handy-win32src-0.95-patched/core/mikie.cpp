@@ -1881,6 +1881,7 @@ void CMikie::Poke(ULONG addr,UBYTE data)
             gSystemHalt=TRUE;
          }
          mSystem.CartAddressStrobe((data&0x01)?TRUE:FALSE);
+         mSystem.mEEPROM->ProcessEepromCounter(mSystem.mCart->GetCounterValue());
          break;
 
       case (MIKEYSREV&0xff):
@@ -1890,6 +1891,7 @@ void CMikie::Poke(ULONG addr,UBYTE data)
       case (IODIR&0xff):
          TRACE_MIKIE2("Poke(IODIR   ,%02x) at PC=%04x",data,mSystem.mCpu->GetPC());
          mIODIR=data;
+         mSystem.mEEPROM->ProcessEepromIO(mIODIR,mIODAT);
          break;
 
       case (IODAT&0xff):
@@ -1897,7 +1899,8 @@ void CMikie::Poke(ULONG addr,UBYTE data)
          mIODAT=data;
          mSystem.CartAddressData((mIODAT&0x02)?TRUE:FALSE);
          // Enable cart writes to BANK1 on AUDIN if AUDIN is set to output
-         if(mIODIR&0x10) mSystem.mCart->mWriteEnableBank1=(mIODAT&0x10)?TRUE:FALSE;// there is no reason to use AUDIN as Write Enable or latch. private patch???
+         if(mIODIR&0x10) mSystem.mCart->mWriteEnableBank1=(mIODAT&0x10)?TRUE:FALSE;// there is no reason to use AUDIN as Write Enable or latch. private patch??? TODO
+         mSystem.mEEPROM->ProcessEepromIO(mIODIR,mIODAT);
          break;
 
       case (SERCTL&0xff):
@@ -2005,6 +2008,30 @@ void CMikie::Poke(ULONG addr,UBYTE data)
          TRACE_MIKIE2("Poke(MTEST2,%02x) at PC=%04x",data,mSystem.mCpu->GetPC());
          break;
 
+      case (0xfd97&0xff): {
+         // This code is to intercept calls to the fake ROM
+         int mPC = mSystem.mCpu->GetPC();
+         if(mPC>=0xFE00 && mPC<0xFFF0) {
+            switch(mPC) {
+               case 0xFE00+3:
+                  mSystem.HLE_BIOS_FE00();
+                  break;
+               case 0xFE19+3:
+                  mSystem.HLE_BIOS_FE19();
+                  break;
+               case 0xFE4A+3:
+                  mSystem.HLE_BIOS_FE4A();
+                  break;
+               case 0xFF80+3:
+                  mSystem.HLE_BIOS_FF80();
+                  break;
+               default:
+                  printf("ROM code missing...\n");
+                  break;
+            }
+         }
+      };
+      break;
       case (GREEN0&0xff):
       case (GREEN1&0xff):
       case (GREEN2&0xff):
@@ -2550,7 +2577,9 @@ UBYTE CMikie::Peek(ULONG addr)
 
       case (IODAT&0xff): {
          ULONG retval=0;
-         retval|=(mIODIR&0x10)?mIODAT&0x10:0x10;									// IODIR  = output bit : input high (eeprom write done)
+         mSystem.mEEPROM->ProcessEepromBusy();
+         retval|=(mIODIR&0x10)?mIODAT&0x10:(mSystem.mEEPROM->OutputBit()?0x10:0x00);
+         if((mIODIR&0x10)==0) printf("<%d>",mSystem.mEEPROM->OutputBit());
          retval|=(mIODIR&0x08)?(((mIODAT&0x08)&&mIODAT_REST_SIGNAL)?0x00:0x08):0x00;									// REST   = output bit : input low
          retval|=(mIODIR&0x04)?mIODAT&0x04:((mUART_CABLE_PRESENT)?0x04:0x00);	// NOEXP  = output bit : input low
          retval|=(mIODIR&0x02)?mIODAT&0x02:0x00;									// CARTAD = output bit : input low

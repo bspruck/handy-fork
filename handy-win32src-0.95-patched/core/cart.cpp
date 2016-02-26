@@ -64,6 +64,7 @@ CCart::CCart(UBYTE *gamedata,ULONG gamesize)
    mWriteEnableBank1=FALSE;
    mCartRAM=FALSE;
    mHeaderLess=FALSE;
+   mEEPROMType=0;
    mCRC32=0;
    mCRC32=crc32(mCRC32,gamedata,gamesize);
 
@@ -100,6 +101,7 @@ CCart::CCart(UBYTE *gamedata,ULONG gamesize)
       mRotation=header.rotation;
       if(mRotation!=CART_NO_ROTATE && mRotation!=CART_ROTATE_LEFT && mRotation!=CART_ROTATE_RIGHT) mRotation=CART_NO_ROTATE;
       mAudinFlag=(header.aud_bits&0x01) ;
+      mEEPROMType=header.eeprom;
    } else {
       header.page_size_bank0=0x000;
       header.page_size_bank1=0x000;
@@ -217,45 +219,37 @@ CCart::CCart(UBYTE *gamedata,ULONG gamesize)
 
    // Initialiase
 
-   int cartsize = __max(0, int(gamesize - sizeof(LYNX_HEADER)));
+   // TODO: the following code to read the banks is not very nice .. should be reworked
+   // TODO: actually its dangerous, if more than one bank is used ... (only homebrews)
+   int cartsize = __max(0, int(gamesize - headersize));
    int bank0size = __min(cartsize, (int)(mMaskBank0+1));
    int bank1size = __min(cartsize, (int)(mMaskBank1+1));
+   memset(mCartBank0, DEFAULT_CART_CONTENTS, bank0size);
+   memset(mCartBank1, DEFAULT_CART_CONTENTS, bank1size);
+   memset(mCartBank0A, DEFAULT_CART_CONTENTS, bank0size);
+   memset(mCartBank1A, DEFAULT_CART_CONTENTS, bank1size);
    if( bank0size==1) bank0size=0;// workaround ...
    if( bank1size==1) bank1size=0;// workaround ...
    memcpy(
       mCartBank0,
-      gamedata+(sizeof(LYNX_HEADER)),
+      gamedata+(headersize),
       bank0size);
-   memset(
-      mCartBank0 + bank0size,
-      DEFAULT_CART_CONTENTS,
-      mMaskBank0+1 - bank0size);
+
    memcpy(
       mCartBank1,
-      gamedata+(sizeof(LYNX_HEADER) + bank0size),
+      gamedata+(headersize + bank0size),
       bank1size);
-   memset(
-      mCartBank1 + bank1size,
-      DEFAULT_CART_CONTENTS,
-      mMaskBank1+1 - bank1size);
 
-   if(mAudinFlag) { // TODO schoener machen
+   if(mAudinFlag) { // TODO clean up code
       memcpy(
          mCartBank0A,
-         gamedata+(sizeof(LYNX_HEADER)+ bank0size + bank1size),
+         gamedata+(headersize+ bank0size + bank1size),
          bank0size);
-      memset(
-         mCartBank0A + bank0size,
-         DEFAULT_CART_CONTENTS,
-         mMaskBank0+1 - bank0size);
+
       memcpy(
          mCartBank1A,
-         gamedata+(sizeof(LYNX_HEADER) + bank0size + bank1size + bank0size),
+         gamedata+(headersize + bank0size + bank1size + bank0size),
          bank1size);
-      memset(
-         mCartBank1A + bank1size,
-         DEFAULT_CART_CONTENTS,
-         mMaskBank1+1 - bank1size);
    }
 
    if( bank0size==0) bank0size=1;// workaround ...
