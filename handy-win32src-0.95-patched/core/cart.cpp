@@ -57,6 +57,7 @@
 
 CCart::CCart(UBYTE *gamedata,ULONG gamesize)
 {
+   int headersize=0
    TRACE_CART1("CCart() called with %s",gamefile);
    LYNX_HEADER	header;
 
@@ -82,6 +83,12 @@ CCart::CCart(UBYTE *gamedata,ULONG gamesize)
       // Sanity checks on the header
 
       if(header.magic[0]!='L' || header.magic[1]!='Y' || header.magic[2]!='N' || header.magic[3]!='X' || header.version!=1) {
+         memset(&header,0,sizeof(LYNX_HEADER));
+         fprintf(stderr, "Invalid cart (no header?).\nGuessing a ROM layout...\n");
+         strncpy((char*)&header.cartname,"NO HEADER",32);
+         strncpy((char*)&header.manufname,"HANDY",16);
+         header.page_size_bank0=gamesize>>8;// Hard workaround...
+         /*
          CLynxException lynxerr;
 
          lynxerr.Message() << "Handy Error: File format invalid (Magic No)";
@@ -89,6 +96,9 @@ CCart::CCart(UBYTE *gamedata,ULONG gamesize)
                << "The image you selected was not a recognised game cartridge format." << std::endl
                << "(see the Handy User Guide for more information).";
          throw(lynxerr);
+         */
+      } else {
+         headersize=sizeof(LYNX_HEADER);
       }
 
       // Setup name & manufacturer

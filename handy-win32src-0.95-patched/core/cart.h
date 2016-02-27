@@ -158,6 +158,15 @@ public:
    UBYTE	Peek0A(void);
    UBYTE	Peek1A(void);
 
+   void SetShifterValue(UBYTE a)
+   {
+      mShifter=a;
+      mCounter=0;
+   }; // for fake bios
+   inline ULONG GetCounterValue(void)
+   {
+      return mCounter;
+   }; // for eeprom
    // Data members
 
 public:

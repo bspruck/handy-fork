@@ -96,9 +96,9 @@ bool CDirectSoundPlayer::Create(CWnd *pcwnd, UBYTE *lynxbuff, ULONG *lynxpoint, 
 		WAVEFORMATEX wfx;
 		memset(&wfx, 0, sizeof(WAVEFORMATEX)); 
 		wfx.wFormatTag = WAVE_FORMAT_PCM;
-		wfx.nChannels = 1; 
+		wfx.nChannels = 2 ;// Stereo CHANGED was 1; 
 		wfx.nSamplesPerSec = m_LynxSampleFreq;
-		wfx.wBitsPerSample = 8; 
+		wfx.wBitsPerSample = 16; // 16 bit CHANGED was 8; 
 		wfx.nBlockAlign = wfx.wBitsPerSample / 8 * wfx.nChannels;
 		wfx.nAvgBytesPerSec = wfx.nSamplesPerSec * wfx.nBlockAlign; 
 		hr = m_BufferPrimary->SetFormat(&wfx); 
@@ -231,7 +231,7 @@ void CALLBACK CDirectSoundPlayer::TimerCallBack(UINT uID, UINT uMsg, DWORD dwUse
 		DWORD writelen=dsp->CalcWriteSize();
 
 
-		if(writelen)
+		if(writelen) // TODO change to 16 bit stereo... as we do not want to copy bytes but 2*16bit at a time
 		{
 			// Lock required amount of buffer
 
@@ -243,6 +243,7 @@ void CALLBACK CDirectSoundPlayer::TimerCallBack(UINT uID, UINT uMsg, DWORD dwUse
 				// We only write the available amount of lynx data into the sound buffers.
 				// If there is underrun then the last byte is repeated.
 				// If there is overrun then it is truncated
+                                // TODO this will not work for 16 bit stereo!!!
 	
 				// Fetch temp lynx pointer
 				lynxpointer=dsp->m_LynxBufferBasePtr;

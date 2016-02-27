@@ -120,7 +120,7 @@ CSystem::CSystem(char* gamefile,char* romfile)
    ULONG filesize=0;
    ULONG howardsize=0;
 
-   mFileType=HANDY_FILETYPE_LNX;
+   mFileType=HANDY_FILETYPE_ILLEGAL;
    if(strcmp(gamefile,"")==0) {
       // No file
       filesize=0;
@@ -261,7 +261,11 @@ CSystem::CSystem(char* gamefile,char* romfile)
       if(!strcmp(&clip[6],"BS93")) mFileType=HANDY_FILETYPE_HOMEBREW;
       else if(!strcmp(&clip[0],"LYNX")) mFileType=HANDY_FILETYPE_LNX;
       else if(!strcmp(&clip[0],LSS_VERSION_OLD)) mFileType=HANDY_FILETYPE_SNAPSHOT;
-      else {
+      else if(filesize==128*1024 || filesize==256*1024 || filesize==512*1024) {
+         fprintf(stderr, "Invalid Cart (type). but 128/256/512k size -> set to RAW and try to load raw rom image\n");
+         mFileType=HANDY_FILETYPE_RAW;
+         //delete filememory;// WHY????? -> crash!
+      } else {
          CLynxException lynxerr;
          delete filememory;
          mFileType=HANDY_FILETYPE_ILLEGAL;
@@ -286,6 +290,7 @@ CSystem::CSystem(char* gamefile,char* romfile)
    mEEPROM = new CEEPROM();
 
    switch(mFileType) {
+      case HANDY_FILETYPE_RAW:
       case HANDY_FILETYPE_LNX:
          mCart = new CCart(filememory,filesize);
          if(mCart->CartHeaderLess()) {
@@ -490,7 +495,8 @@ void CSystem::Reset(void)
 
    gAudioBufferPointer=0;
    gAudioLastUpdateCycle=0;
-   memset(gAudioBuffer,128,HANDY_AUDIO_BUFFER_SIZE);
+//	memset(gAudioBuffer,128,HANDY_AUDIO_BUFFER_SIZE); // only for unsigned 8bit
+   memset(gAudioBuffer,0,HANDY_AUDIO_BUFFER_SIZE); // for unsigned 8/16 bit
 
 #ifdef _LYNXDBG
    gSystemHalt=TRUE;

@@ -3817,13 +3817,23 @@ inline void CMikie::UpdateSound(void)
    }
 
    // O.k. we downsample to 8 bit MONO
-   UBYTE sample;
-   sample= 128+ ((cur_rsample+cur_lsample)>>3); // signed byte
+//   UBYTE sample;
+//   sample= 128+ ((cur_rsample+cur_lsample)>>3); // signed byte
+//				UBYTE sample_l, sample_r;
+//				sample_l= 128+ (cur_lsample>>2); // signed byte
+//				sample_r= 128+ (cur_rsample>>2); // signed byte
+   // Upsample to 16 bit signed
+   SWORD sample_l, sample_r;
+   sample_l= (cur_lsample<<5); // koennte auch 6 sein
+   sample_r= (cur_rsample<<5); // keep cool
 
    for(; gAudioLastUpdateCycle+HANDY_AUDIO_SAMPLE_PERIOD<gSystemCycleCount; gAudioLastUpdateCycle+=HANDY_AUDIO_SAMPLE_PERIOD) {
       // Output audio sample
-      gAudioBuffer[gAudioBufferPointer++]=(UBYTE)sample;
-
+//      gAudioBuffer[gAudioBufferPointer++]=(UBYTE)sample;
+      // Stereo 16 bit signed
+      *(SWORD *) &(gAudioBuffer[gAudioBufferPointer])=sample_l;
+      *(SWORD *) &(gAudioBuffer[gAudioBufferPointer+2])=sample_r;
+      gAudioBufferPointer+=4;
       // Check buffer overflow condition, stick at the endpoint
       // teh audio output system will reset the input pointer
       // when it reads out the data.
