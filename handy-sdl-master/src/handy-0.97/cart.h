@@ -45,6 +45,9 @@
 #ifndef CART_H
 #define CART_H
 
+#define EPYX_HEADER_OLD 512
+#define EPYX_HEADER_NEW 410
+
 #ifdef TRACE_CART
 
 #define TRACE_CART0(msg)					_RPT1(_CRT_WARN,"CCart::"msg" (Time=%012d)\n",gSystemCycleCount)

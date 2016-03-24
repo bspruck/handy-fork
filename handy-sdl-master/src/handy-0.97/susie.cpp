@@ -631,9 +631,9 @@ ULONG CSusie::PaintSprites(void)
          if(!mSPRCTL1_ReloadPalette) {
             TRACE_SUSIE0("PaintSprites() Palette reloaded");
             for(int loop=0; loop<8; loop++) {
-               UBYTE data=RAM_PEEK(mTMPADR.Word++);
-               mPenIndex[loop*2]=(data>>4)&0x0f;
-               mPenIndex[(loop*2)+1]=data&0x0f;
+               UBYTE data_tmp = RAM_PEEK(mTMPADR.Word++);
+               mPenIndex[loop*2]=(data_tmp>>4)&0x0f;
+               mPenIndex[(loop*2)+1]=data_tmp&0x0f;
             }
             // Increment cycle count for the reads
             cycles_used+=8*SPR_RDWR_CYC;

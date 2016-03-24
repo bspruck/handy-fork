@@ -63,7 +63,7 @@ CCart::CCart(UBYTE *gamedata,ULONG gamesize)
    mWriteEnableBank0=FALSE;
    mWriteEnableBank1=FALSE;
    mCartRAM=FALSE;
-   mHeaderLess=FALSE;
+   mHeaderLess=0;
    mEEPROMType=0;
    mCRC32=0;
    mCRC32=crc32(mCRC32,gamedata,gamesize);
@@ -245,39 +245,21 @@ CCart::CCart(UBYTE *gamedata,ULONG gamesize)
       gamedata+(headersize),
       bank0size);
 
-//	memset(
-//		mCartBank0 + bank0size,
-//		DEFAULT_CART_CONTENTS,
-//		mMaskBank0+1 - bank0size);
    memcpy(
       mCartBank1,
       gamedata+(headersize + bank0size),
       bank1size);
 
-//	memset(
-//		mCartBank1 + bank1size,
-//		DEFAULT_CART_CONTENTS,
-//		mMaskBank1+1 - bank1size);
-
-   if(mAudinFlag) { // TODO schoener machen
+   if(mAudinFlag) { // TODO clean up code
       memcpy(
          mCartBank0A,
          gamedata+(headersize+ bank0size + bank1size),
          bank0size);
 
-//	memset(
-//		mCartBank0A + bank0size,
-//		DEFAULT_CART_CONTENTS,
-//		mMaskBank0+1 - bank0size);
       memcpy(
          mCartBank1A,
          gamedata+(headersize + bank0size + bank1size + bank0size),
          bank1size);
-
-//	memset(
-//		mCartBank1A + bank1size,
-//		DEFAULT_CART_CONTENTS,
-//		mMaskBank1+1 - bank1size);
    }
 
    if( bank0size==0) bank0size=1;// workaround ...
@@ -290,11 +272,19 @@ CCart::CCart(UBYTE *gamedata,ULONG gamesize)
       gCPUBootAddress=0;
 
       //
-      // Check if this is a headerless cart
-      // Headerless used for Howie type... but this cannot work...
-      mHeaderLess=TRUE;
-      for(int loop=0; loop<32; loop++) {
-         if(mCartBank0[loop&mMaskBank0]!=0x00) mHeaderLess=FALSE;
+      // Check if this is a headerless cart, either 410 (EPYX_HEADER_NEW) or 512 (EPYX_HEADER_OLD) zeros
+      //
+      mHeaderLess=EPYX_HEADER_OLD;// old EPYX Type
+      for(int loop=0; loop<EPYX_HEADER_OLD; loop++) {
+         if(mCartBank0[loop&mMaskBank0]!=0x00) {
+            if(loop<EPYX_HEADER_NEW) {
+               mHeaderLess=0;// less than 410 zeros -> invalid
+               break;
+            } else {
+               mHeaderLess=EPYX_HEADER_NEW;// at least 410 -> new EPYX type
+               break;
+            }
+         }
       }
       TRACE_CART1("CCart() - mHeaderLess=%d",mHeaderLess);
    }
