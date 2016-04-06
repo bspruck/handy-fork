@@ -3829,6 +3829,8 @@ inline void CMikie::UpdateSound(void)
    for(; gAudioLastUpdateCycle+HANDY_AUDIO_SAMPLE_PERIOD<gSystemCycleCount; gAudioLastUpdateCycle+=HANDY_AUDIO_SAMPLE_PERIOD) {
       // Output audio sample
 //      gAudioBuffer[gAudioBufferPointer++]=(UBYTE)sample;
+//	  gAudioBuffer[gAudioBufferPointer++]=(UBYTE)sample_l;
+//	  gAudioBuffer[gAudioBufferPointer++]=(UBYTE)sample_r;
       // Stereo 16 bit signed
       *(SWORD *) &(gAudioBuffer[gAudioBufferPointer])=sample_l;
       *(SWORD *) &(gAudioBuffer[gAudioBufferPointer+2])=sample_r;

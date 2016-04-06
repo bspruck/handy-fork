@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "handy", "handy.vcxproj", "{4987A9B5-896C-478C-B73A-4F6A234EBCEF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug Dbg|x86 = Debug Dbg|x86
+		Debug|x86 = Debug|x86
+		Release Dbg|x86 = Release Dbg|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4987A9B5-896C-478C-B73A-4F6A234EBCEF}.Debug Dbg|x86.ActiveCfg = Debug Dbg|Win32
+		{4987A9B5-896C-478C-B73A-4F6A234EBCEF}.Debug Dbg|x86.Build.0 = Debug Dbg|Win32
+		{4987A9B5-896C-478C-B73A-4F6A234EBCEF}.Debug|x86.ActiveCfg = Debug|Win32
+		{4987A9B5-896C-478C-B73A-4F6A234EBCEF}.Debug|x86.Build.0 = Debug|Win32
+		{4987A9B5-896C-478C-B73A-4F6A234EBCEF}.Release Dbg|x86.ActiveCfg = Release Dbg|Win32
+		{4987A9B5-896C-478C-B73A-4F6A234EBCEF}.Release Dbg|x86.Build.0 = Release Dbg|Win32
+		{4987A9B5-896C-478C-B73A-4F6A234EBCEF}.Release|x86.ActiveCfg = Release|Win32
+		{4987A9B5-896C-478C-B73A-4F6A234EBCEF}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -86,28 +86,40 @@ bool CDirectSoundPlayer::Create(CWnd *pcwnd, UBYTE *lynxbuff, ULONG *lynxpoint, 
 
 		// Allocate ourselves a buffer, according to direct-x the buffer defaults
 		// to 22KHz 8 bit samples, just fine by me.
-
-        DXStruct<DSBUFFERDESC> dsbdesc;
-		dsbdesc.dwFlags = DSBCAPS_PRIMARYBUFFER;
-		hr= m_ids->CreateSoundBuffer(&dsbdesc, &m_BufferPrimary, NULL);
+                // Changed to 16 bit stereo!!!
+                // later maybe even to 44.1kHz
 
 		// Set the primary buffer format
 
 		WAVEFORMATEX wfx;
-		memset(&wfx, 0, sizeof(WAVEFORMATEX)); 
-		wfx.wFormatTag = WAVE_FORMAT_PCM;
-		wfx.nChannels = 2 ;// Stereo CHANGED was 1; 
+		memset(&wfx, 0, sizeof(WAVEFORMATEX));
+		wfx.wFormatTag = WAVE_FORMAT_PCM; 
+		wfx.nChannels = 2;
 		wfx.nSamplesPerSec = m_LynxSampleFreq;
-		wfx.wBitsPerSample = 16; // 16 bit CHANGED was 8; 
+		wfx.wBitsPerSample = 16;
 		wfx.nBlockAlign = wfx.wBitsPerSample / 8 * wfx.nChannels;
-		wfx.nAvgBytesPerSec = wfx.nSamplesPerSec * wfx.nBlockAlign; 
-		hr = m_BufferPrimary->SetFormat(&wfx); 
+		wfx.nAvgBytesPerSec = wfx.nSamplesPerSec * wfx.nBlockAlign;
+		wfx.cbSize = 0;
+
+        DXStruct<DSBUFFERDESC> dsbdesc;
+		dsbdesc.dwFlags = DSBCAPS_PRIMARYBUFFER;
+		dsbdesc.dwBufferBytes = 0;
+		dsbdesc.dwReserved = 0;
+		dsbdesc.lpwfxFormat = NULL;
+		dsbdesc.guid3DAlgorithm = GUID_NULL;
+
+		hr = m_ids->CreateSoundBuffer(&dsbdesc, &m_BufferPrimary, NULL);
+
+		hr = m_BufferPrimary->SetFormat(&wfx);
 
 		// Create the secondary buffer, use the WFX from before
 
 		dsbdesc.reset();
+		dsbdesc.dwFlags = 0;
 		dsbdesc.dwBufferBytes = m_LynxBufferLength;
+		dsbdesc.dwReserved = 0;
 		dsbdesc.lpwfxFormat = &wfx;
+		dsbdesc.guid3DAlgorithm = GUID_NULL;
 		hr = m_ids->CreateSoundBuffer(&dsbdesc, &m_BufferSecondary, NULL);
 	}
 
@@ -250,13 +262,17 @@ void CALLBACK CDirectSoundPlayer::TimerCallBack(UINT uID, UINT uMsg, DWORD dwUse
 				lynxbytesavail=*dsp->m_LynxBufferIndexPtr;
 			    dwbyteswritten1 = dwsize1;
 				tmppointer=(LPBYTE)lpbuf1;
-				for(DWORD loop=0;loop<dwsize1;loop++)
+// Attention: We assume that dwsize1 and dwsize2 are always 4*(samples) -> size%4 = 0!!!
+				for(DWORD loop=0;loop<dwsize1;loop+=4)
 				{
-					*(tmppointer++)=*lynxpointer;
-					if(lynxbytesavail)
+					*(tmppointer++) = lynxpointer[0];
+					*(tmppointer++) = lynxpointer[1];
+					*(tmppointer++) = lynxpointer[2];
+					*(tmppointer++) = lynxpointer[3];
+					if(lynxbytesavail>=4)
 					{
-						lynxbytesavail--;
-						lynxpointer++;
+						lynxbytesavail-=4;
+						lynxpointer+=4;
 					}
 					else
 					{
@@ -270,13 +286,16 @@ void CALLBACK CDirectSoundPlayer::TimerCallBack(UINT uID, UINT uMsg, DWORD dwUse
 			    {
 			        dwbyteswritten2 = dwsize2;
 					tmppointer=(LPBYTE)lpbuf2;
-					for(DWORD loop=0;loop<dwsize2;loop++)
+					for(DWORD loop=0;loop<dwsize2;loop+=4)
 					{
-						*(tmppointer++)=*lynxpointer;
-						if(lynxbytesavail)
+						*(tmppointer++) = lynxpointer[0];
+						*(tmppointer++) = lynxpointer[1];
+						*(tmppointer++) = lynxpointer[2];
+						*(tmppointer++) = lynxpointer[3];
+						if(lynxbytesavail>=4)
 						{
-							lynxbytesavail--;
-							lynxpointer++;
+							lynxbytesavail-=4;
+							lynxpointer+=4;
 						}
 						else
 						{
@@ -359,7 +378,7 @@ DWORD CDirectSoundPlayer::CalcWriteSize()
 	// in mind that we always want to stay 2 buffers ahead of the play
 	// pointer = 50mS
 
-	long lAveQueueLen=(m_LynxSampleFreq/TIMER_FREQUENCY)*2;
+	long lAveQueueLen=4*(m_LynxSampleFreq/TIMER_FREQUENCY)*2;
 	long lQueueMaxDelta=lAveQueueLen/4;
 
 

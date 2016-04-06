@@ -1,0 +1,3 @@
+It is herby stated that this is a modified version of handy, which is
+not supported or endorsed by Keith Wilkins (see license.txt).
+

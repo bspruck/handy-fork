@@ -56,7 +56,7 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-#define HANDY_VERSION		"Version 0.95"
+#define HANDY_VERSION		"Version 0.98beta"
 #define HANDY_BUILD			"Build ("__DATE__")"
 
 #define REGISTRY_VERSION	"Version 1.0"
@@ -394,6 +394,8 @@ CSystem* CLynxWindow::CreateLynx(CString gamefile)
 
 	// Try to open it, if not then fail over to message then file dialog
 
+	romfile = "dontcare";
+#if 0 // no need for bios image anymore...
 	CFile file;
 	
 	if(!file.Open(romfile,CFile::modeRead))
@@ -419,6 +421,7 @@ CSystem* CLynxWindow::CreateLynx(CString gamefile)
 	{
 		file.Close();
 	}
+#endif
 
 	// Loop around the file open menu until we have cart or the user
 	// has cancelled the operation
