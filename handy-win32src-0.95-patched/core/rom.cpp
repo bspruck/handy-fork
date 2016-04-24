@@ -55,7 +55,7 @@
 
 extern CErrorInterface *gError;
 
-CRom::CRom(char *romfile,BOOL useEmu)
+CRom::CRom(char *romfile,bool useEmu)
 {
    mWriteEnable=FALSE;
    mValid = TRUE;
@@ -87,8 +87,8 @@ CRom::CRom(char *romfile,BOOL useEmu)
 
       lynxerr.Message() << "The Lynx Boot ROM image couldn't be located!";
       lynxerr.Description()
-      			<< "The lynx emulator can run without the Boot ROM image." << endl
-      			<< "\"" << romfile << "\" was not found in the lynx emulator " << endl
+      			<< "The lynx emulator can run without the Boot ROM image." << std::endl
+      			<< "\"" << romfile << "\" was not found in the lynx emulator " << std::endl
             << "directory (see the LynxEmu User Guide for more information).";
       //throw(lynxerr);
 //      fprintf(stdout, "The Lynx Boot ROM image couldn't be located! Using built-in replacement\n");
@@ -125,12 +125,10 @@ CRom::CRom(char *romfile,BOOL useEmu)
    }
 
    if(mValid==FALSE){
-/*
       gError->Warning("The chosen bootrom is not existing or invalid.\n"
-                      "Switching now to bootrom emulation.\n
+                      "Switching now to bootrom emulation.\n"
                       "(Un)check the menu item to get rid of this message and/or select a valid rom image.\n"
                      );
-*/
    }
    }
 }

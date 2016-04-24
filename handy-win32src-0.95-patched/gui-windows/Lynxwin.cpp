@@ -460,7 +460,7 @@ CSystem* CLynxWindow::CreateLynx(CString gamefile)
 			}
 
 			// Create the system object
-			newsystem = new CSystem((char*)LPCTSTR(gamefile),(char*)LPCTSTR(romfile));
+			newsystem = new CSystem((char*)LPCTSTR(gamefile),(char*)LPCTSTR(romfile), !mUseBootRom);
 
 #ifdef _LYNXDBG
 			if(mpDebugger)

@@ -98,7 +98,7 @@ int lss_read(void* dest,int varsize, int varcount,LSS_FILE *fp)
    return copysize;
 }
 
-CSystem::CSystem(char* gamefile,char* romfile,BOOL UseBootRomEmu)
+CSystem::CSystem(char* gamefile,char* romfile, bool useEmu)
    :mCart(NULL),
     mRom(NULL),
     mMemMap(NULL),
@@ -283,7 +283,7 @@ CSystem::CSystem(char* gamefile,char* romfile,BOOL UseBootRomEmu)
 
    // Attempt to load the cartridge errors caught above here...
 
-   mRom = new CRom(romfile,UseBootRomEmu);
+   mRom = new CRom(romfile,useEmu);
 
    // An exception from this will be caught by the level above
    mEEPROM = new CEEPROM();
