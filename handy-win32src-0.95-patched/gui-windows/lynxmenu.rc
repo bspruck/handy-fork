@@ -69,6 +69,8 @@ BEGIN
             MENUITEM "Screen Border",               IDM_OPTIONS_BACKGROUNDTYPE3
         END
         MENUITEM SEPARATOR
+        MENUITEM "Use Original Boot Rom",       IDM_OPTIONS_USEBOOTROM
+        MENUITEM SEPARATOR
         MENUITEM "Lynx &Networking\tCtrl+N",    IDM_OPTIONS_NETWORK
         MENUITEM SEPARATOR
         MENUITEM "&Reset\tF3",                  IDM_OPTIONS_RESET

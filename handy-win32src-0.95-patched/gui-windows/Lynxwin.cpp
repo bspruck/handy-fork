@@ -102,6 +102,9 @@ CLynxWindow::CLynxWindow(CString gamefile)
 	if(mDisplayBackgroundType!=IDB_BITMAP_BACKGROUND1 && mDisplayBackgroundType!=IDB_BITMAP_BACKGROUND2 && mDisplayBackgroundType!=IDB_BITMAP_BACKGROUND3) mDisplayBackgroundType=IDB_BITMAP_BACKGROUND1;
 	if(!mDisplayBackground.LoadBitmap(mDisplayBackgroundType)) return;
 
+	// Flag use original boot rom, defaults to emulation
+	mUseBootRom = mpLynxApp->GetProfileInt(REGISTRY_VERSION, "UseBootRom", 0);
+
 	// Setup default networker state
 	mpNetLynx=NULL;
 
@@ -373,6 +376,48 @@ void CALLBACK CLynxWindow::fTimerEventHandler(UINT uID,UINT uMsg,DWORD dwUser,DW
 
 }
 
+void CLynxWindow::CheckForBootRom(CString &romfile)
+{
+	// First thing is to locate a Lynxboot image, see if the registry has one
+
+	romfile = mRootPath + "lynxboot.img";
+	romfile = mpLynxApp->GetProfileString(REGISTRY_VERSION, "BootImageFilename", romfile);
+
+	// Try to open it, if not then fail over to message then file dialog
+
+	if (mUseBootRom) {
+		CFile file;
+
+		if (!file.Open(romfile, CFile::modeRead))
+		{
+			// Warn the user that the file couldn't be opened
+
+			MessageBox("The Lynx boot image could not be found, if you want to use the original boot image instead of the emulated one, please select the location of the image in the browser", "Warning", MB_OK | MB_ICONERROR);
+
+			// Check if gamefile exists if so then load, else dialog
+
+			CFileDialog	dlg(TRUE, "img", "lynxboot.img", OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY, "BootRom Image (*.img;*.rom)|*.img;*.rom|All Files (*.*)|*.*||", NULL);
+
+			// Do the dialog and abort if no image given
+
+			if (dlg.DoModal() == IDCANCEL) {
+				mUseBootRom = FALSE;
+				mpLynxApp->WriteProfileInt(REGISTRY_VERSION, "UseBootRom", 0);
+			}
+			else {
+
+				romfile = dlg.GetPathName();
+
+				// Save the rom image path to the registry
+				mpLynxApp->WriteProfileString(REGISTRY_VERSION, "BootImageFilename", romfile);
+			}
+		}
+		else
+		{
+			file.Close();
+		}
+	}
+}
 
 CSystem* CLynxWindow::CreateLynx(CString gamefile)
 {
@@ -387,41 +432,8 @@ CSystem* CLynxWindow::CreateLynx(CString gamefile)
 		gamefile.Remove('\"');
 	}
 
-	// First thing is to locate a Lynxboot image, see if the registry has one
-
-	CString romfile=mRootPath+"lynxboot.img";
-	romfile=mpLynxApp->GetProfileString(REGISTRY_VERSION,"BootImageFilename",romfile);
-
-	// Try to open it, if not then fail over to message then file dialog
-
-	romfile = "dontcare";
-#if 0 // no need for bios image anymore...
-	CFile file;
-	
-	if(!file.Open(romfile,CFile::modeRead))
-	{
-		// Warn the user that the file couldn't be opened
-
-		MessageBox("The Lynx boot image could not be found, please select the location of the image in the browser","Warning", MB_OK | MB_ICONERROR);
-
-		// Check if gamefile exists if so then load, else dialog
-
-		CFileDialog	dlg(TRUE,"img","lynxboot.img",OFN_PATHMUSTEXIST|OFN_FILEMUSTEXIST|OFN_HIDEREADONLY,"BootRom Image (*.img;*.rom)|*.img;*.rom|All Files (*.*)|*.*||",NULL);
-
-		// Do the dialog and abort if no image given
-
-		if(dlg.DoModal()==IDCANCEL) return NULL;
-
-		romfile=dlg.GetPathName();
-
-		// Save the rom image path to the registry
-		mpLynxApp->WriteProfileString(REGISTRY_VERSION,"BootImageFilename",romfile);
-	}
-	else
-	{
-		file.Close();
-	}
-#endif
+	CString romfile="";
+	CheckForBootRom(romfile);
 
 	// Loop around the file open menu until we have cart or the user
 	// has cancelled the operation
@@ -867,6 +879,8 @@ BEGIN_MESSAGE_MAP(CLynxWindow,CFrameWnd)
 	ON_COMMAND(IDM_OPTIONS_RESET, OnResetMenuSelect)
 	ON_COMMAND(IDM_OPTIONS_BACKGROUND, OnBkgndMenuSelect)
 	ON_UPDATE_COMMAND_UI(IDM_OPTIONS_BACKGROUND, OnBkgndMenuUpdate)
+	ON_COMMAND(IDM_OPTIONS_USEBOOTROM, OnBootromMenuSelect)
+	ON_UPDATE_COMMAND_UI(IDM_OPTIONS_USEBOOTROM, OnBootromMenuUpdate)
 	ON_COMMAND(IDM_OPTIONS_KEYDEFS,OnDefineKeysSelect)
 	//ON_MESSAGE(WM_NETOBJ_SELECT, OnNetworkDataWaiting)
 	//ON_MESSAGE(WM_NETOBJ_UPDATE, OnNetworkUpdate)
@@ -1159,6 +1173,23 @@ void CLynxWindow::OnBkgndMenuSelect()
 void CLynxWindow::OnBkgndMenuUpdate(CCmdUI *pCmdUI)
 {
 	pCmdUI->SetCheck((DisplayModeBkgnd()==DISPLAY_BKGND)?TRUE:FALSE);
+}
+
+void CLynxWindow::OnBootromMenuSelect(void)
+{
+	if (mUseBootRom) {
+		mUseBootRom = FALSE;
+	} else {
+		mUseBootRom = TRUE;
+		CString a = "";
+		CheckForBootRom(a);
+	}
+	mpLynxApp->WriteProfileInt(REGISTRY_VERSION, "UseBootRom", mUseBootRom);
+}
+
+void CLynxWindow::OnBootromMenuUpdate(CCmdUI *pCmdUI)
+{
+	pCmdUI->SetCheck(mUseBootRom ? TRUE : FALSE);
 }
 
 void CLynxWindow::OnNetworkUpdate(WPARAM wparam,LPARAM lparam)

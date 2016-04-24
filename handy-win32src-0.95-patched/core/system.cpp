@@ -98,7 +98,7 @@ int lss_read(void* dest,int varsize, int varcount,LSS_FILE *fp)
    return copysize;
 }
 
-CSystem::CSystem(char* gamefile,char* romfile)
+CSystem::CSystem(char* gamefile,char* romfile,BOOL UseBootRomEmu)
    :mCart(NULL),
     mRom(NULL),
     mMemMap(NULL),
@@ -283,10 +283,9 @@ CSystem::CSystem(char* gamefile,char* romfile)
 
    // Attempt to load the cartridge errors caught above here...
 
-   mRom = new CRom(romfile);
+   mRom = new CRom(romfile,UseBootRomEmu);
 
    // An exception from this will be caught by the level above
-
    mEEPROM = new CEEPROM();
 
    switch(mFileType) {
@@ -294,6 +293,8 @@ CSystem::CSystem(char* gamefile,char* romfile)
       case HANDY_FILETYPE_LNX:
          mCart = new CCart(filememory,filesize);
          if(mCart->CartHeaderLess()) {
+            // veryvery strange Howard Check CANNOT work, as there are two different loader-less card types...
+            // unclear HOW this should do anything useful...
             FILE	*fp;
             char drive[3],dir[256],cartgo[256];
             mFileType=HANDY_FILETYPE_HOMEBREW;
@@ -382,7 +383,6 @@ CSystem::CSystem(char* gamefile,char* romfile)
    }
    if(filesize) delete filememory;
    if(howardsize) delete howardmemory;
-
    mEEPROM->SetEEPROMType(mCart->mEEPROMType);
 }
 

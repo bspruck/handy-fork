@@ -3451,7 +3451,6 @@ inline void CMikie::Update(void)
    //
    if(gAudioEnabled) {
       UpdateSound();
-
       //
       // Audio 0
       //
@@ -3846,3 +3845,4 @@ inline void CMikie::UpdateSound(void)
       gAudioBufferPointer%=HANDY_AUDIO_BUFFER_SIZE;
    }
 }
+

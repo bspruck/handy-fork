@@ -303,6 +303,8 @@ protected:
 	afx_msg void OnSoundMenuUpdate(CCmdUI *pCmdUI);
 	afx_msg void OnBkgndMenuSelect();
 	afx_msg void OnBkgndMenuUpdate(CCmdUI *pCmdUI);
+	afx_msg void OnBootromMenuSelect();
+	afx_msg void OnBootromMenuUpdate(CCmdUI *pCmdUI);
 	afx_msg void OnNetworkUpdate(WPARAM,LPARAM);
 	afx_msg void OnNetworkDataWaiting(WPARAM,LPARAM);
 	afx_msg void OnNetworkMenuSelect();
@@ -347,6 +349,7 @@ private:
 	static void		CALLBACK CLynxWindow::fTimerEventHandler(UINT uID,UINT uMsg,DWORD dwUser,DWORD dw1,DWORD dw2);
 	static void		CLynxWindow::NetworkTxCallback(int data,ULONG objref);
 	static UBYTE*	CLynxWindow::DisplayCallback(ULONG objref);
+	void            CLynxWindow::CheckForBootRom(CString &romfile);
 
 private:
 
@@ -366,6 +369,7 @@ private:
 	CLynxRender	*mDisplayRender;
 	CBitmap		mDisplayBackground;
 	unsigned short	mDisplayBackgroundType;
+	BOOL        mUseBootRom;
 	int			mDisplayOffsetX;
 	int			mDisplayOffsetY;
 	ULONG		mDisplayMode;

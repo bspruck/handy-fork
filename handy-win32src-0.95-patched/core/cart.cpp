@@ -64,7 +64,7 @@ CCart::CCart(UBYTE *gamedata,ULONG gamesize)
    mWriteEnableBank0=FALSE;
    mWriteEnableBank1=FALSE;
    mCartRAM=FALSE;
-   mHeaderLess=FALSE;
+   mHeaderLess=0;
    mEEPROMType=0;
    mCRC32=0;
    mCRC32=crc32(mCRC32,gamedata,gamesize);
@@ -228,9 +228,9 @@ CCart::CCart(UBYTE *gamedata,ULONG gamesize)
    mBank=bank0;
 
    // Initialiase
-
    // TODO: the following code to read the banks is not very nice .. should be reworked
    // TODO: actually its dangerous, if more than one bank is used ... (only homebrews)
+
    int cartsize = __max(0, int(gamesize - headersize));
    int bank0size = __min(cartsize, (int)(mMaskBank0+1));
    int bank1size = __min(cartsize, (int)(mMaskBank1+1));
@@ -240,6 +240,7 @@ CCart::CCart(UBYTE *gamedata,ULONG gamesize)
    memset(mCartBank1A, DEFAULT_CART_CONTENTS, bank1size);
    if( bank0size==1) bank0size=0;// workaround ...
    if( bank1size==1) bank1size=0;// workaround ...
+
    memcpy(
       mCartBank0,
       gamedata+(headersize),
@@ -272,11 +273,19 @@ CCart::CCart(UBYTE *gamedata,ULONG gamesize)
       gCPUBootAddress=0;
 
       //
-      // Check if this is a headerless cart
+      // Check if this is a headerless cart, either 410 (EPYX_HEADER_NEW) or 512 (EPYX_HEADER_OLD) zeros
       //
-      mHeaderLess=TRUE;
-      for(int loop=0; loop<32; loop++) {
-         if(mCartBank0[loop&mMaskBank0]!=0x00) mHeaderLess=FALSE;
+      mHeaderLess=EPYX_HEADER_OLD;// old EPYX Type
+      for(int loop=0; loop<EPYX_HEADER_OLD; loop++) {
+         if(mCartBank0[loop&mMaskBank0]!=0x00) {
+            if(loop<EPYX_HEADER_NEW) {
+               mHeaderLess=0;// less than 410 zeros -> invalid
+               break;
+            } else {
+               mHeaderLess=EPYX_HEADER_NEW;// at least 410 -> new EPYX type
+               break;
+            }
+         }
       }
       TRACE_CART1("CCart() - mHeaderLess=%d",mHeaderLess);
    }

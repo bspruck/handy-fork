@@ -385,4 +385,9 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties RESOURCE_FILE="gui-windows\lynxmenu.rc" />
+    </VisualStudio>
+  </ProjectExtensions>
 </Project>

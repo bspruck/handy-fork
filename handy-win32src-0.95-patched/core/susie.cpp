@@ -473,6 +473,7 @@ ULONG CSusie::PaintSprites(void)
    cycles_used=0;
 
    do {
+
       TRACE_SUSIE1("PaintSprites() ************ Rendering Sprite %03d ************",sprcount);
 
       everonscreen=0;// everon has to be reset for every sprite, thus line was moved inside this loop
