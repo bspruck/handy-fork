@@ -185,7 +185,7 @@ void CEEPROM::UpdateEeprom(UWORD cnt)
             if( sendbits>0) break;
 
             state=EE_NONE;
-            if(data!=(0xFFFF&((ADDR_MASK<<2)|0x3))) printf("EE Byte $%02X .. ",(int)data);
+            // if(data!=(0xFFFF&((ADDR_MASK<<2)|0x3))) printf("EE Byte $%02X .. ",(int)data);
             addr=data&ADDR_MASK;
             switch(data>>ADDR_BITS) {
                case 0x3:

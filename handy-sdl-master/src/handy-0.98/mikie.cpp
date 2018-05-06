@@ -2580,7 +2580,7 @@ UBYTE CMikie::Peek(ULONG addr)
          if(mSystem.mEEPROM->Available()){
            mSystem.mEEPROM->ProcessEepromBusy();
            retval|=(mIODIR&0x10)?mIODAT&0x10:(mSystem.mEEPROM->OutputBit()?0x10:0x00);
-           if((mIODIR&0x10)==0) printf("<%d>",mSystem.mEEPROM->OutputBit());
+//            if((mIODIR&0x10)==0) printf("<%d>",mSystem.mEEPROM->OutputBit());
          }else{
              retval|=mIODAT&0x10;
          }
