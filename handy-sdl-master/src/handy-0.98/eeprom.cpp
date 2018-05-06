@@ -12,6 +12,8 @@
 
 CEEPROM::CEEPROM()
 {
+   type=0;
+   *filename=0;
    Reset();
 }
 
@@ -36,10 +38,32 @@ CEEPROM::~CEEPROM()
 {
 }
 
+void CEEPROM::Load(void)
+{
+    if(!Available()) return;
+    FILE *fe;
+    if((fe=fopen(filename,"rb"))!=NULL){
+        printf("EE LOAD %s\n",filename);
+        fread(romdata,1,1024,fe);
+        fclose(fe);
+    }
+}
+
+void CEEPROM::Save(void)
+{
+    if(!Available()) return;
+    FILE *fe;
+    if((fe=fopen(filename,"wb+"))!=NULL){
+        printf("EE SAVE %s\n",filename);
+        fwrite(romdata,1,Size(),fe);
+        fclose(fe);
+    }
+}
+
 void CEEPROM::SetEEPROMType(UBYTE b)
 {
-   UBYTE t=b&0x7;
-   switch(t) {
+   type=b;
+   switch(b&0x7) {
       case 1: // 93C46 , 8 bit mode
          ADDR_MASK =  0x7F;
          CMD_BITS  =  10;
@@ -80,6 +104,12 @@ void CEEPROM::SetEEPROMType(UBYTE b)
       ADDR_BITS--;
       DONE_MASK = 0x10000;
    }
+}
+
+int CEEPROM::Size(void)
+{
+    int m=ADDR_MASK+1;
+    if(type&0x80) return m; else return m*2;
 }
 
 void CEEPROM::ProcessEepromBusy(void)

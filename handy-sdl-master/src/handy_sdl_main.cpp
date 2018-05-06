@@ -276,6 +276,9 @@ void handy_sdl_rom_info(void)
 }
 void handy_sdl_quit(void)
 {
+   if(mpLynx){
+       mpLynx->SaveEEPROM();
+   }
 
    // Disable audio and set emulation to pause, then quit :)
    SDL_PauseAudio(1);
@@ -287,13 +290,16 @@ void handy_sdl_quit(void)
       handy_sdl_video_close();
 #endif
 
+   if(mpLynx) free(mpLynx);
+   mpLynx=0;
+
    //Let is give some free memory
-   if(mpLynxBuffer) free(mpLynxBuffer);
-   mpLynxBuffer=0;
+//   if(mpLynxBuffer) free(mpLynxBuffer); // this crashes
+//   mpLynxBuffer=0;
 
    // Destroy SDL Surface's
-   if(HandyBuffer) SDL_FreeSurface(HandyBuffer);
-   HandyBuffer=0;
+//   if(HandyBuffer) SDL_FreeSurface(HandyBuffer); // this crashes
+//   HandyBuffer=0;
    if(mainSurface) SDL_FreeSurface(mainSurface);
    mainSurface=0;
 
@@ -325,7 +331,7 @@ void handy_sdl_core_init(char *romname)
 
    printf("Initialising Handy Core...    ");
    try {
-      mpLynx = new CSystem(romname, bios_path_and_name);
+      mpLynx = new CSystem(romname, bios_path_and_name, true);
    } catch (CLynxException &err) {
       cerr << err.mMsg.str() << ": " << err.mDesc.str() << endl;
       exit(EXIT_FAILURE);

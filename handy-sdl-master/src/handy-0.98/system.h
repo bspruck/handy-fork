@@ -188,7 +188,7 @@ class CSystem;
 class CSystem : public CSystemBase
 {
 public:
-   CSystem(char* gamefile,char* romfile);
+   CSystem(char* gamefile,char* romfile,bool useEmu);
    ~CSystem();
 
 public:

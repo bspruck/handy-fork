@@ -59,7 +59,7 @@ LDFLAGS =
 
 LIBS = -L/usr/local/lib -L/usr/lib `sdl-config $(SDLLIBTYPE)` -lstdc++ -lz $(GLLIB)
 
-INCS = -I./src -I./src/handy-0.97 -I./src/sdlemu -I/usr/local/include -I/usr/include
+INCS = -I./src -I./src/handy-0.98 -I./src/sdlemu -I/usr/local/include -I/usr/include
 
 OBJS = \
 		obj/cart.o \
@@ -132,11 +132,11 @@ obj:
 #	@windres -i res/$(TARGET).rc -o $(ICON) --include-dir=./res
 #endif
 
-obj/%.o: src/handy-0.97/%.c
+obj/%.o: src/handy-0.98/%.c
 	@echo "*** Compiling $<..."
 	@$(CC) $(CFLAGS) $(INCS) -c $< -o $@
 
-obj/%.o: src/handy-0.97/%.cpp
+obj/%.o: src/handy-0.98/%.cpp
 	@echo "*** Compiling $<..."
 	@$(CC) $(CPPFLAGS) $(INCS) -c $< -o $@
 

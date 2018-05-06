@@ -92,7 +92,7 @@ CCart::CCart(UBYTE *gamedata,ULONG gamesize)
 
          			lynxerr.Message() << "Handy Error: File format invalid (Magic No)";
          			lynxerr.Description()
-         				<< "The image you selected was not a recognised game cartridge format." << endl
+                                        << "The image you selected was not a recognised game cartridge format." << std::endl
          				<< "(see the Handy User Guide for more information).";
          			throw(lynxerr);
          */
@@ -166,7 +166,7 @@ CCart::CCart(UBYTE *gamedata,ULONG gamesize)
          CLynxException lynxerr;
          lynxerr.Message() << "Handy Error: File format invalid (Bank0)";
          lynxerr.Description()
-               << "The image you selected was not a recognised game cartridge format." << endl
+               << "The image you selected was not a recognised game cartridge format." << std::endl
                << "(see the Handy User Guide for more information).";
          throw(lynxerr);
          break;
@@ -208,7 +208,7 @@ CCart::CCart(UBYTE *gamedata,ULONG gamesize)
          CLynxException lynxerr;
          lynxerr.Message() << "Handy Error: File format invalid (Bank1)";
          lynxerr.Description()
-               << "The image you selected was not a recognised game cartridge format." << endl
+               << "The image you selected was not a recognised game cartridge format." << std::endl
                << "(see the Handy User Guide for more information).";
          throw(lynxerr);
          break;

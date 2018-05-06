@@ -61,8 +61,8 @@
 #include "errorhandler.h"
 
 
-#define		HANDY_SDL_VERSION	"v0.5"
-#define     HANDY_VERSION           	"Handy 0.95 WIN32"
+#define		HANDY_SDL_VERSION	"v0.7"
+#define     HANDY_VERSION           	"Handy 0.98"
 #define     HANDY_BASE_FPS              60
 
 /* SDL declarations */

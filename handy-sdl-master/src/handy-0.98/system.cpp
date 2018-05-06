@@ -107,7 +107,7 @@ int lss_read(void* dest,int varsize, int varcount,LSS_FILE *fp)
    return copysize;
 }
 
-CSystem::CSystem(char* gamefile,char* romfile)
+CSystem::CSystem(char* gamefile,char* romfile, bool useEmu)
    :mCart(NULL),
     mRom(NULL),
     mMemMap(NULL),
@@ -147,8 +147,8 @@ CSystem::CSystem(char* gamefile,char* romfile)
             CLynxException lynxerr;
             lynxerr.Message() << "Handy Error: ZIP File select problems" ;
             lynxerr.Description()
-                  << "The file you selected could not be read." << endl
-                  << "(The ZIP file may be corrupted)." << endl ;
+                  << "The file you selected could not be read." << std::endl
+                  << "(The ZIP file may be corrupted)." << std::endl ;
             throw(lynxerr);
          }
 
@@ -197,8 +197,8 @@ CSystem::CSystem(char* gamefile,char* romfile)
                   CLynxException lynxerr;
                   lynxerr.Message() << "Handy Error: ZIP File load problems" ;
                   lynxerr.Description()
-                        << "The zip file you selected could not be loaded." << endl
-                        << "(The ZIP file may be corrupted)." << endl ;
+                        << "The zip file you selected could not be loaded." << std::endl
+                        << "(The ZIP file may be corrupted)." << std::endl ;
                   throw(lynxerr);
                }
 
@@ -211,16 +211,16 @@ CSystem::CSystem(char* gamefile,char* romfile)
             CLynxException lynxerr;
             lynxerr.Message() << "Handy Error: ZIP File load problems" ;
             lynxerr.Description()
-                  << "The file you selected could not be loaded." << endl
-                  << "Could not find a Lynx file in the ZIP archive." << endl ;
+                  << "The file you selected could not be loaded." << std::endl
+                  << "Could not find a Lynx file in the ZIP archive." << std::endl ;
             throw(lynxerr);
          }
       } else {
          CLynxException lynxerr;
          lynxerr.Message() << "Handy Error: ZIP File open problems" ;
          lynxerr.Description()
-               << "The file you selected could not be opened." << endl
-               << "(The ZIP file may be corrupted)." << endl ;
+               << "The file you selected could not be opened." << std::endl
+               << "(The ZIP file may be corrupted)." << std::endl ;
          throw(lynxerr);
       }
    } else {
@@ -233,8 +233,8 @@ CSystem::CSystem(char* gamefile,char* romfile)
 
          lynxerr.Message() << "Handy Error: File Open Error";
          lynxerr.Description()
-               << "The lynx emulator will not run without a cartridge image." << endl
-               << "\"" << gamefile << "\" was not found in the place you " << endl
+               << "The lynx emulator will not run without a cartridge image." << std::endl
+               << "\"" << gamefile << "\" was not found in the place you " << std::endl
                << "specified. (see the Handy User Guide for more information).";
          throw(lynxerr);
       }
@@ -251,8 +251,8 @@ CSystem::CSystem(char* gamefile,char* romfile)
 
          lynxerr.Message() << "Handy Error: Unspecified Load error (Header)";
          lynxerr.Description()
-               << "The lynx emulator will not run without a cartridge image." << endl
-               << "It appears that your cartridge image may be corrupted or there is" << endl
+               << "The lynx emulator will not run without a cartridge image." << std::endl
+               << "It appears that your cartridge image may be corrupted or there is" << std::endl
                << "some other error.(see the Handy User Guide for more information)";
          throw(lynxerr);
       }
@@ -280,7 +280,7 @@ CSystem::CSystem(char* gamefile,char* romfile)
          mFileType=HANDY_FILETYPE_ILLEGAL;
          lynxerr.Message() << "Handy Error: File format invalid!";
          lynxerr.Description()
-               << "The image you selected was not a recognised game cartridge format." << endl
+               << "The image you selected was not a recognised game cartridge format." << std::endl
                << "(see the Handy User Guide for more information).";
          throw(lynxerr);
       }
@@ -292,7 +292,7 @@ CSystem::CSystem(char* gamefile,char* romfile)
 
    // Attempt to load the cartridge errors caught above here...
 
-   mRom = new CRom(romfile);
+   mRom = new CRom(romfile,useEmu);
 
    // An exception from this will be caught by the level above
    mEEPROM = new CEEPROM();
@@ -318,8 +318,8 @@ CSystem::CSystem(char* gamefile,char* romfile)
                delete filememory;
                lynxerr.Message() << "Handy Error: Howard.o File Open Error";
                lynxerr.Description()
-                     << "Headerless cartridges need howard.o bootfile to ." << endl
-                     << "be able to run correctly, could not open file. " << endl;
+                     << "Headerless cartridges need howard.o bootfile to ." << std::endl
+                     << "be able to run correctly, could not open file. " << std::endl;
                throw(lynxerr);
             }
 
@@ -335,7 +335,7 @@ CSystem::CSystem(char* gamefile,char* romfile)
                delete howardmemory;
                lynxerr.Message() << "Handy Error: Howard.o load error (Header)";
                lynxerr.Description()
-                     << "Howard.o could not be read????." << endl;
+                     << "Howard.o could not be read????." << std::endl;
                throw(lynxerr);
             }
 
@@ -385,14 +385,28 @@ CSystem::CSystem(char* gamefile,char* romfile)
          CLynxException lynxerr;
          lynxerr.Message() << "Handy Error: Snapshot load error" ;
          lynxerr.Description()
-               << "The snapshot you selected could not be loaded." << endl
-               << "(The file format was not recognised by Handy)." << endl ;
+               << "The snapshot you selected could not be loaded." << std::endl
+               << "(The file format was not recognised by Handy)." << std::endl ;
          throw(lynxerr);
       }
    }
    if(filesize) delete filememory;
    if(howardsize) delete howardmemory;
    mEEPROM->SetEEPROMType(mCart->mEEPROMType);
+    
+    {
+        char eepromfile[1024];
+        strncpy(eepromfile, gamefile,1024-10);
+        strcat(eepromfile,".eeprom");
+        mEEPROM->SetFilename(eepromfile);
+        printf("filename %d %s %s\n",mCart->mEEPROMType,gamefile,eepromfile);
+        mEEPROM->Load();
+    }
+}
+
+void CSystem::SaveEEPROM(void)
+{
+    if(mEEPROM!=NULL) mEEPROM->Save();
 }
 
 CSystem::~CSystem()
@@ -461,7 +475,6 @@ void CSystem::HLE_BIOS_FE4A(void)
    for (int i = 1; i < 1+51*blockcount; ++i) { // first encrypted loader
       buff[i] = mCart->Peek0();
    }
-   printf("\n");
 
    lynx_decrypt(res, buff, 51);
 
@@ -483,7 +496,6 @@ void CSystem::HLE_BIOS_FF80(void)
    // initial jump from reset vector ... calls FE19
    HLE_BIOS_FE19();
 }
-
 
 void CSystem::Reset(void)
 {

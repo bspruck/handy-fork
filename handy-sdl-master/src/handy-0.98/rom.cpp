@@ -55,7 +55,7 @@
 
 extern CErrorInterface *gError;
 
-CRom::CRom(char *romfile)
+CRom::CRom(char *romfile,bool useEmu)
 {
    mWriteEnable=FALSE;
    mValid = TRUE;
@@ -75,6 +75,9 @@ CRom::CRom(char *romfile)
    mRomData[0x1FE]=0x80;
    mRomData[0x1FF]=0xFF;
 
+   if(useEmu){
+      mValid = FALSE;
+   }else{
    // Load up the file
 
    FILE	*fp;
@@ -93,7 +96,6 @@ CRom::CRom(char *romfile)
       printf("The Lynx Boot ROM image couldn't be located! Using built-in replacement\n");
       mValid = FALSE;
    } else {
-
       // Read in the 512 bytes
 
       if(fread(mRomData,sizeof(char),ROM_SIZE,fp)!=ROM_SIZE) {
@@ -119,6 +121,13 @@ CRom::CRom(char *romfile)
    if(mRomData[0x1FE]!=0x80 || mRomData[0x1FF]!=0xFF) {
       printf("The Lynx Boot ROM image is invalid! Using built-in replacement\n");
       mValid = FALSE;
+   }
+
+   if(mValid==FALSE){
+      printf("The chosen bootrom is not existing or invalid.\n"
+                      "Switching now to bootrom emulation.\n"
+                     );
+   }
    }
 }
 
