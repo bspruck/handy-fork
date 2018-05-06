@@ -190,6 +190,7 @@ class CSystem : public CSystemBase
 public:
    CSystem(char* gamefile,char* romfile,bool useEmu);
    ~CSystem();
+    void SaveEEPROM(void);
 
 public:
    void HLE_BIOS_FE00(void);
