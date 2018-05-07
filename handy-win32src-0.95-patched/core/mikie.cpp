@@ -1880,7 +1880,7 @@ void CMikie::Poke(ULONG addr,UBYTE data)
             gSystemHalt=TRUE;
          }
          mSystem.CartAddressStrobe((data&0x01)?TRUE:FALSE);
-         mSystem.mEEPROM->ProcessEepromCounter(mSystem.mCart->GetCounterValue());
+         if(mSystem.mEEPROM->Available()) mSystem.mEEPROM->ProcessEepromCounter(mSystem.mCart->GetCounterValue());
          break;
 
       case (MIKEYSREV&0xff):
@@ -1890,7 +1890,7 @@ void CMikie::Poke(ULONG addr,UBYTE data)
       case (IODIR&0xff):
          TRACE_MIKIE2("Poke(IODIR   ,%02x) at PC=%04x",data,mSystem.mCpu->GetPC());
          mIODIR=data;
-         mSystem.mEEPROM->ProcessEepromIO(mIODIR,mIODAT);
+         if(mSystem.mEEPROM->Available()) mSystem.mEEPROM->ProcessEepromIO(mIODIR,mIODAT);
          break;
 
       case (IODAT&0xff):
@@ -1899,7 +1899,7 @@ void CMikie::Poke(ULONG addr,UBYTE data)
          mSystem.CartAddressData((mIODAT&0x02)?TRUE:FALSE);
          // Enable cart writes to BANK1 on AUDIN if AUDIN is set to output
          if(mIODIR&0x10) mSystem.mCart->mWriteEnableBank1=(mIODAT&0x10)?TRUE:FALSE;// there is no reason to use AUDIN as Write Enable or latch. private patch??? TODO
-         mSystem.mEEPROM->ProcessEepromIO(mIODIR,mIODAT);
+         if(mSystem.mEEPROM->Available()) mSystem.mEEPROM->ProcessEepromIO(mIODIR,mIODAT);
          break;
 
       case (SERCTL&0xff):
@@ -2576,9 +2576,14 @@ UBYTE CMikie::Peek(ULONG addr)
 
       case (IODAT&0xff): {
          ULONG retval=0;
+         // IODIR  = output bit : input high (eeprom write done)
+         if(mSystem.mEEPROM->Available()){
          mSystem.mEEPROM->ProcessEepromBusy();
          retval|=(mIODIR&0x10)?mIODAT&0x10:(mSystem.mEEPROM->OutputBit()?0x10:0x00);
-         if((mIODIR&0x10)==0) printf("<%d>",mSystem.mEEPROM->OutputBit());
+//            if((mIODIR&0x10)==0) printf("<%d>",mSystem.mEEPROM->OutputBit());
+         }else{
+             retval|=mIODAT&0x10;
+         }
          retval|=(mIODIR&0x08)?(((mIODAT&0x08)&&mIODAT_REST_SIGNAL)?0x00:0x08):0x00;									// REST   = output bit : input low
          retval|=(mIODIR&0x04)?mIODAT&0x04:((mUART_CABLE_PRESENT)?0x04:0x00);	// NOEXP  = output bit : input low
          retval|=(mIODIR&0x02)?mIODAT&0x02:0x00;									// CARTAD = output bit : input low

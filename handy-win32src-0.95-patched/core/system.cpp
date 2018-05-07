@@ -384,13 +384,30 @@ CSystem::CSystem(char* gamefile,char* romfile, bool useEmu)
    if(filesize) delete filememory;
    if(howardsize) delete howardmemory;
    mEEPROM->SetEEPROMType(mCart->mEEPROMType);
+    
+    {
+        char eepromfile[1024];
+        strncpy(eepromfile, gamefile,1024-10);
+        strcat(eepromfile,".eeprom");
+        mEEPROM->SetFilename(eepromfile);
+        printf("filename %d %s %s\n",mCart->mEEPROMType,gamefile,eepromfile);
+        mEEPROM->Load();
+    }
+}
+
+void CSystem::SaveEEPROM(void)
+{
+    if(mEEPROM!=NULL) mEEPROM->Save();
 }
 
 CSystem::~CSystem()
 {
    // Cleanup all our objects
 
-   if(mEEPROM!=NULL) delete mEEPROM;
+   if(mEEPROM!=NULL){
+       SaveEEPROM();
+       delete mEEPROM;
+   }
    if(mCart!=NULL) delete mCart;
    if(mRom!=NULL) delete mRom;
    if(mRam!=NULL) delete mRam;
@@ -452,7 +469,6 @@ void CSystem::HLE_BIOS_FE4A(void)
    for (int i = 1; i < 1+51*blockcount; ++i) { // first encrypted loader
       buff[i] = mCart->Peek0();
    }
-   printf("\n");
 
    lynx_decrypt(res, buff, 51);
 
