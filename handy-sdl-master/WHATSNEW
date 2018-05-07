@@ -1,6 +1,12 @@
 latest updates
 --------------
 
+Handy/SDL v0.7
+--------------
+
+* eeprom support for common SPI eeproms in 8 and 16 bit mode
+* eeprom read/save to file
+
 Handy/SDL v0.61
 --------------
 
@@ -10,7 +16,7 @@ Handy/SDL v0.6
 --------------
 
 * called handy now 0.97 (in sync with libretro)
-* "support" for broken ROMs without lnx header (does not for all BLL types)
+* "support" for broken ROMs without lnx header (does not work for all BLL types)
 * full lynxboot image replacement in software, no image needed anymore
 * patches for sound (stereo)
 * bug fixes in graphic and audio handy code
