@@ -54,7 +54,6 @@
 #include "cart.h"
 #include "../zlib-113/zlib.h"
 
-
 CCart::CCart(UBYTE *gamedata,ULONG gamesize)
 {
    int headersize=0
@@ -110,7 +109,7 @@ CCart::CCart(UBYTE *gamedata,ULONG gamesize)
 
       mRotation=header.rotation;
       if(mRotation!=CART_NO_ROTATE && mRotation!=CART_ROTATE_LEFT && mRotation!=CART_ROTATE_RIGHT) mRotation=CART_NO_ROTATE;
-      mAudinFlag=(header.aud_bits&0x01) ;
+      mAudinFlag=(header.aud_bits&0x01);
       mEEPROMType=header.eeprom;
    } else {
       header.page_size_bank0=0x000;
