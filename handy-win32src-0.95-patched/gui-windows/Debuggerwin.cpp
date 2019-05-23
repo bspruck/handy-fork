@@ -615,6 +615,7 @@ bool CDebuggerWin::CommandStep(int argc, char **argv)
 		else
 		{
 			LineOutput("Invalid PC, must be in range 0-ffff");
+			return false;
 		}
 	}
 	else
@@ -622,7 +623,7 @@ bool CDebuggerWin::CommandStep(int argc, char **argv)
 		gSystemHalt=FALSE;		// Make sure we run always
 		gSingleStepMode=TRUE;	// Go for it....
 	}
-	return false;
+	return true;
 }
 
 bool CDebuggerWin::CommandBpoint(int argc, char **argv)
