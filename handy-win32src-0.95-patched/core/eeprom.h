@@ -11,7 +11,8 @@ enum {EE_NONE=0, EE_START, EE_DATA, EE_BUSY, EE_WAIT};
 class CEEPROM : public CLynxBase
 {
 
-   // Function members
+  
+#define min(x,y) x>y?y:x
 
 public:
    CEEPROM();
