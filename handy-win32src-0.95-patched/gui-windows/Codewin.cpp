@@ -483,16 +483,16 @@ void CCodeWin::OnLButtonDblClk(UINT nFlags, CPoint point)
 	C6502_REGS regs;
 	mSystem.GetRegs(regs);
 
-	for(int loop=0;loop<MAX_CPU_BREAKPOINTS;loop++)
+	int loop;
+	for(loop=0;loop<MAX_CPU_BREAKPOINTS;loop++)
 	{
 		// Unset if already set
 		if(address==regs.cpuBreakpoints[loop]) break;
 	}
-    int loop;
 	if(loop>=MAX_CPU_BREAKPOINTS)
 	{
 		// New breakpoint at next free
-		for(int loop=0;loop<MAX_CPU_BREAKPOINTS;loop++)
+		for(loop=0;loop<MAX_CPU_BREAKPOINTS;loop++)
 		{
 			// Unset if already set
 			if(regs.cpuBreakpoints[loop]>0xffff) break;
