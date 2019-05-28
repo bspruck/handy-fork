@@ -40,9 +40,12 @@ CEEPROM::~CEEPROM()
 
 void CEEPROM::Load(void)
 {
-    if(!Available()) return;
-    FILE *fe;
-    if((fe=fopen(filename,"rb"))!=NULL){
+	if (!Available())
+		return;
+
+    FILE* fe;
+	errno_t err;
+	if ((err = fopen_s(&fe, filename, "rb")) != 0) {
         printf("EEPROM LOAD %s\n",filename);
         fread(romdata,1,1024,fe);
         fclose(fe);
@@ -51,9 +54,12 @@ void CEEPROM::Load(void)
 
 void CEEPROM::Save(void)
 {
-    if(!Available()) return;
-    FILE *fe;
-    if((fe=fopen(filename,"wb+"))!=NULL){
+    if (!Available())
+		return;
+
+	FILE* fe;
+	errno_t err;
+	if ((err = fopen_s(&fe, filename, "wb+")) != 0) {
         printf("EEPROM SAVE %s\n",filename);
         fwrite(romdata,1,Size(),fe);
         fclose(fe);
@@ -154,18 +160,18 @@ void CEEPROM::UpdateEeprom(UWORD cnt)
 {
    // Update if either counter strobed or AUDIN changed
    bool CLKp, CLKn;
-   CLKp=counter&0x02;
+   CLKp = (counter & 0x02) != 0;
    counter=cnt;
-   CLKn=counter&0x02;
+   CLKn = (counter & 0x02) != 0;
 
    if( CLKp!=CLKn && CLKn) { // Rising edge
       bool CS, DI;
       mAUDIN_ext=(readdata&(DONE_MASK>>1)) ? 1 : 0 ;
       readdata<<=1;
-      CS=cnt&0x80;
+      CS = (cnt & 0x80) != 0;
       DI=false;
       if(iodir&0x10) {
-         DI=iodat&0x10;
+         DI = (iodat & 0x10) != 0;
       }
       if(!CS) state=EE_NONE;
       switch(state) {

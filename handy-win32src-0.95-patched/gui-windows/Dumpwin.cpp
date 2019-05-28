@@ -319,10 +319,10 @@ void CDumpWin::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 			{
 				int address=0;
 				CString line,dump,sprot;
-				FILE *fout;
 				UBYTE data;
 
-				fout=fopen("dump.txt","w");
+				FILE* fout;
+				fopen_s(&fout, "dump.txt", "w");
 
 				for(int loop=0;loop<(65536/DUMPWIN_WIDTH);loop++)
 				{
@@ -342,7 +342,7 @@ void CDumpWin::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 
 					line.MakeUpper();
 					line+=dump;
-					fprintf(fout,"%s\n",line);
+					fprintf(fout, "%s\n", (LPCTSTR) line);
 					address+=DUMPWIN_WIDTH;
 				}
 				fclose(fout);

@@ -224,11 +224,11 @@ public:
    inline void UpdateSound(void);
    inline bool SwitchAudInDir(void)
    {
-      return(mIODIR&0x10);
+      return (mIODIR & 0x10) != 0;
    };
    inline bool SwitchAudInValue(void)
    {
-      return (mIODAT&0x10);
+      return (mIODAT & 0x10) != 0;
    };
 
 private:

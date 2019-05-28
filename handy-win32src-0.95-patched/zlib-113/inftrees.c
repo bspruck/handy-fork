@@ -403,7 +403,6 @@ inflate_huft * FAR *tl;  /* literal/length tree result */
 inflate_huft * FAR *td;  /* distance tree result */
 z_streamp z;             /* for memory allocation */
 {
-#pragma unused(z)
 #ifdef BUILDFIXED
   /* build fixed tables if not already */
   if (!fixed_built)

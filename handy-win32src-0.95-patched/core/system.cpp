@@ -215,11 +215,10 @@ CSystem::CSystem(char* gamefile,char* romfile, bool useEmu)
          throw(lynxerr);
       }
    } else {
-      // Open the file and load the file
-      FILE	*fp;
-
       // Open the cartridge file for reading
-      if((fp=fopen(gamefile,"rb"))==NULL) {
+	   FILE* fp;
+	   errno_t err;
+	   if ((err = fopen_s(&fp, gamefile, "rb")) != 0) {
          CLynxException lynxerr;
 
          lynxerr.Message() << "Handy Error: File Open Error";
@@ -295,16 +294,17 @@ CSystem::CSystem(char* gamefile,char* romfile, bool useEmu)
          if(mCart->CartHeaderLess()) {
             // veryvery strange Howard Check CANNOT work, as there are two different loader-less card types...
             // unclear HOW this should do anything useful...
-            FILE	*fp;
             char drive[3],dir[256],cartgo[256];
             mFileType=HANDY_FILETYPE_HOMEBREW;
-            _splitpath(romfile,drive,dir,NULL,NULL);
-            strcpy(cartgo,drive);
-            strcat(cartgo,dir);
-            strcat(cartgo,"howard.o");
+            _splitpath_s(romfile, drive, 3, dir, 256, NULL, 0, NULL, 0);
+            strcpy_s(cartgo, 256, drive);
+            strcat_s(cartgo, 256, dir);
+            strcat_s(cartgo, 256, "howard.o");
 
             // Open the howard file for reading
-            if((fp=fopen(cartgo,"rb"))==NULL) {
+			FILE* fp;
+			errno_t err;
+			if ((err = fopen_s(&fp, cartgo, "rb")) != 0) {
                CLynxException lynxerr;
                delete filememory;
                lynxerr.Message() << "Handy Error: Howard.o File Open Error";
@@ -387,8 +387,8 @@ CSystem::CSystem(char* gamefile,char* romfile, bool useEmu)
     
     {
         char eepromfile[1024];
-        strncpy(eepromfile, gamefile,1024-10);
-        strcat(eepromfile,".eeprom");
+        strncpy_s(eepromfile, 1024, gamefile, 1024-10);
+        strcat_s(eepromfile, 1024, ".eeprom");
         mEEPROM->SetFilename(eepromfile);
         printf("filename %d %s %s\n",mCart->mEEPROMType,gamefile,eepromfile);
         mEEPROM->Load();
@@ -420,9 +420,9 @@ CSystem::~CSystem()
 bool CSystem::IsZip(char *filename)
 {
    UBYTE buf[2];
-   FILE *fp;
-
-   if((fp=fopen(filename,"rb"))!=NULL) {
+   FILE* fp;
+   errno_t err;
+   if ((err = fopen_s(&fp, filename, "rb")) != 0) {
       fread(buf, 2, 1, fp);
       fclose(fp);
       return(memcmp(buf,"PK",2)==0);
@@ -565,10 +565,13 @@ void CSystem::Reset(void)
 
 bool CSystem::ContextSave(char *context)
 {
-   FILE *fp;
    bool status=1;
 
-   if((fp=fopen(context,"wb"))==NULL) return false;
+   FILE* fp;
+   errno_t err;
+   if ((err = fopen_s(&fp, context, "wb")) != 0) {
+	   return false;
+   }
 
    if(!fprintf(fp,LSS_VERSION)) status=0;
 
@@ -701,9 +704,12 @@ bool CSystem::ContextLoad(char *context)
       }
 
    } else {
-      FILE *fp;
       // Just open an read into memory
-      if((fp=fopen(context,"rb"))==NULL) status=0;
+	  FILE* fp;
+	  errno_t err;
+	  if ((err = fopen_s(&fp, context, "rb")) != 0) {
+		  status = 0;
+	  }
 
       fseek(fp,0,SEEK_END);
       filesize=ftell(fp);
@@ -803,7 +809,7 @@ void CSystem::DebugTrace(int address)
    char message[1024+1];
    int count=0;
 
-   sprintf(message,"%08x - DebugTrace(): ",gSystemCycleCount);
+   sprintf_s(message, 1024 + 1, "%08x - DebugTrace(): ", gSystemCycleCount);
    count=strlen(message);
 
    if(address) {
@@ -812,8 +818,8 @@ void CSystem::DebugTrace(int address)
          char linetext[1024];
          // Register dump
          GetRegs(regs);
-         sprintf(linetext,"PC=$%04x SP=$%02x PS=0x%02x A=0x%02x X=0x%02x Y=0x%02x",regs.PC,regs.SP, regs.PS,regs.A,regs.X,regs.Y);
-         strcat(message,linetext);
+         sprintf_s(linetext, 1024, "PC=$%04x SP=$%02x PS=0x%02x A=0x%02x X=0x%02x Y=0x%02x",regs.PC,regs.SP, regs.PS,regs.A,regs.X,regs.Y);
+         strcat_s(message, 1024 + 1, linetext);
          count=strlen(message);
       } else {
          // The RAM address contents should be dumped to an open debug file in this function
@@ -822,7 +828,7 @@ void CSystem::DebugTrace(int address)
          } while(count<1024 && Peek_RAM(address++)!=0);
       }
    } else {
-      strcat(message,"CPU Breakpoint");
+      strcat_s(message, 1024 + 1, "CPU Breakpoint");
       count=strlen(message);
    }
    message[count]=0;

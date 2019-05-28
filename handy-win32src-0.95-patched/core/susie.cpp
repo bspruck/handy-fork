@@ -944,9 +944,9 @@ ULONG CSusie::PaintSprites(void)
          }
 
          // Perform Sprite debugging if required, single step on sprite draw
-         if(gSingleStepModeSprites) {
+         if (gSingleStepModeSprites) {
             char message[256];
-            sprintf(message,"CSusie:PaintSprites() - Rendered Sprite %03d",sprcount);
+            sprintf_s(message, 256, "CSusie:PaintSprites() - Rendered Sprite %03d", sprcount);
             if(!gError->Warning(message)) gSingleStepModeSprites=0;
          }
       } else {
@@ -1786,7 +1786,7 @@ void CSusie::Poke(ULONG addr,UBYTE data)
          } else {
             mSystem.Poke_CARTB0(data);
          }
-         mSystem.mEEPROM->ProcessEepromCounter(mSystem.mCart->GetCounterValue());
+         mSystem.mEEPROM->ProcessEepromCounter((UWORD) mSystem.mCart->GetCounterValue());
          TRACE_SUSIE2("Poke(RCART0,%02x) at PC=$%04x",data,mSystem.mCpu->GetPC());
          break;
       case (RCART1&0xff):
@@ -1795,7 +1795,7 @@ void CSusie::Poke(ULONG addr,UBYTE data)
          } else {
             mSystem.Poke_CARTB1(data);
          }
-         mSystem.mEEPROM->ProcessEepromCounter(mSystem.mCart->GetCounterValue());
+         mSystem.mEEPROM->ProcessEepromCounter((UWORD) mSystem.mCart->GetCounterValue());
          TRACE_SUSIE2("Poke(RCART1,%02x) at PC=$%04x",data,mSystem.mCpu->GetPC());
          break;
 
@@ -2193,7 +2193,7 @@ UBYTE CSusie::Peek(ULONG addr)
          } else {
             retval=mSystem.Peek_CARTB0();
          }
-         mSystem.mEEPROM->ProcessEepromCounter(mSystem.mCart->GetCounterValue());
+         mSystem.mEEPROM->ProcessEepromCounter((UWORD) mSystem.mCart->GetCounterValue());
 //			TRACE_SUSIE2("Peek(RCART0)=$%02x at PC=$%04x",retval,mSystem.mCpu->GetPC());
          return retval;
          break;
@@ -2203,7 +2203,7 @@ UBYTE CSusie::Peek(ULONG addr)
          } else {
             retval=mSystem.Peek_CARTB1();
          }
-         mSystem.mEEPROM->ProcessEepromCounter(mSystem.mCart->GetCounterValue());
+         mSystem.mEEPROM->ProcessEepromCounter((UWORD)mSystem.mCart->GetCounterValue());
 //			TRACE_SUSIE2("Peek(RCART1)=$%02x at PC=$%04x",retval,mSystem.mCpu->GetPC());
          return retval;
          break;

@@ -350,16 +350,16 @@ void CCodeWin::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 			{
 				int	current_address,address;
 				CString line,dump,sprot;
-				FILE *fout;
-
-				fout=fopen("code.txt","w");
+				
+				FILE* fout;
+				fopen_s(&fout, "code.txt", "w");
 
 				for(address=0;address<65536;)
 				{
 					line="";
 					current_address=address;
 					address=Disassemble2(line,address);
-					fprintf(fout,"%s\n",line);
+					fprintf(fout,"%s\n", (LPCTSTR)line);
 				}
 
 				fclose(fout);
@@ -483,12 +483,13 @@ void CCodeWin::OnLButtonDblClk(UINT nFlags, CPoint point)
 	C6502_REGS regs;
 	mSystem.GetRegs(regs);
 
-	for(int loop=0;loop<MAX_CPU_BREAKPOINTS;loop++)
+	int loop;
+	for(loop=0; loop<MAX_CPU_BREAKPOINTS; loop++)
 	{
 		// Unset if already set
-		if(address==regs.cpuBreakpoints[loop]) break;
+		if(address==regs.cpuBreakpoints[loop])
+			break;
 	}
-    int loop;
 	if(loop>=MAX_CPU_BREAKPOINTS)
 	{
 		// New breakpoint at next free

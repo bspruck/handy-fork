@@ -63,15 +63,15 @@ public:
    {
       int MsgCount,DescCount;
 
-      MsgCount = err.Message().pcount() + 1;
-      DescCount = err.Description().pcount() + 1;
+      MsgCount = static_cast<int>(err.Message().pcount()) + 1;
+      DescCount = static_cast<int>(err.Description().pcount()) + 1;
       if(MsgCount>MAX_ERROR_MSG) MsgCount=MAX_ERROR_MSG;
       if(DescCount>MAX_ERROR_DESC) DescCount=MAX_ERROR_DESC;
 
-      strncpy(mMsg,err.Message().str(),MsgCount);
-      mMsg[MsgCount-1]='\0';
-      strncpy(mDesc,err.Description().str(),DescCount);
-      mDesc[DescCount-1]='\0';
+      strncpy_s(mMsg, MAX_ERROR_MSG, err.Message().str(), MsgCount);
+      mMsg[MsgCount-1] = '\0';
+      strncpy_s(mDesc, MAX_ERROR_DESC, err.Description().str(), DescCount);
+      mDesc[DescCount-1] = '\0';
    }
 
    // Destructor
