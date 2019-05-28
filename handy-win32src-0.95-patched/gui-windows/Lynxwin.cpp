@@ -501,15 +501,16 @@ void CLynxWindow::CalcWindowSize(CRect *rect)
 	if(win_width<HANDY_SCREEN_WIDTH) win_width=HANDY_SCREEN_WIDTH;
 
 	// Calculate display offsets
-	/*if (DisplayModeBkgnd() == DISPLAY_BKGND) {
+	// Magic offset values should be defined elsewhere
+	if (DisplayModeBkgnd() == DISPLAY_BKGND) {
 		switch (mDisplayBackgroundType) {
 		case IDB_BITMAP_BACKGROUND1:
 			mDisplayOffsetX = 250;
 			mDisplayOffsetY = 83;
 			break;
 		case IDB_BITMAP_BACKGROUND2:
-			mDisplayOffsetX = 250;
-			mDisplayOffsetY = 83;
+			mDisplayOffsetX = 191;
+			mDisplayOffsetY = 77;
 			break;
 		case IDB_BITMAP_BACKGROUND3:
 			mDisplayOffsetX = 14;
@@ -519,7 +520,7 @@ void CLynxWindow::CalcWindowSize(CRect *rect)
 		mDisplayOffsetX *= DisplayModeMagnification();
 		mDisplayOffsetY *= DisplayModeMagnification();
 	}
-	else*/ {
+	else {
 		mDisplayOffsetX = (win_width / 2) - (img_width / 2);
 		mDisplayOffsetY = (win_height / 2) - (img_height / 2);
 	}

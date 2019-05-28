@@ -499,11 +499,10 @@ END
 // Bitmap
 //
 
-IDB_BITMAP_BACKGROUND1  BITMAP                  "LynxBackground1.bmp"
 
-IDB_BITMAP_BACKGROUND2  BITMAP                  "lynxbackground2.bmp"
-
-IDB_BITMAP_BACKGROUND3  BITMAP                  "lynxbackground3.bmp"
+IDB_BITMAP_BACKGROUND1  BITMAP                  "LynxBackground1-v2.bmp"
+IDB_BITMAP_BACKGROUND2  BITMAP                  "lynxbackground2-v2.bmp"
+IDB_BITMAP_BACKGROUND3  BITMAP                  "lynxbackground3-v2.bmp"
 
 
 /////////////////////////////////////////////////////////////////////////////
