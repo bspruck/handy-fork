@@ -69,7 +69,7 @@ public:
 
    void	Reset(void);
    void    Clear(void);
-   bool	ContextSave(FILE *fp);
+   bool	ContextSave(LSS_FILE *fp);
    bool	ContextLoad(LSS_FILE *fp);
 
    void	Poke(ULONG addr, UBYTE data)

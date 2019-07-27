@@ -98,6 +98,25 @@ int lss_read(void* dest,int varsize, int varcount,LSS_FILE *fp)
    return copysize;
 }
 
+int lss_write(void* src,int varsize, int varcount,LSS_FILE *fp)
+{
+   ULONG copysize;
+   copysize=varsize*varcount;
+   if((fp->index + copysize) > fp->index_limit) copysize=fp->index_limit - fp->index;
+   memcpy(fp->memptr+fp->index,src,copysize);
+   fp->index+=copysize;
+   return copysize;
+}
+
+int lss_printf(LSS_FILE *fp, const char *str)
+{
+   ULONG copysize;
+   copysize=strlen(str);
+   memcpy(fp->memptr+fp->index,str,copysize);
+   fp->index+=copysize;
+   return copysize;
+}
+
 CSystem::CSystem(const char* gamefile, const char* romfile, bool useEmu)
    :mCart(NULL),
     mRom(NULL),
@@ -565,55 +584,35 @@ void CSystem::Reset(void)
 
 bool CSystem::ContextSave(const char *context)
 {
-   FILE *fp;
-   bool status=1;
+   LSS_FILE *lss_fp=NULL;
+   UBYTE *filememory=NULL;
+   bool status=0;
+   const int filesize=0x40000;
 
-   if((fp=fopen(context,"wb"))==NULL) return false;
+   filememory = (UBYTE*) new UBYTE[filesize];
 
-   if(!fprintf(fp,LSS_VERSION)) status=0;
+   // Setup our read structure
+   lss_fp = new LSS_FILE;
+   lss_fp->memptr=filememory;
+   lss_fp->index=0;
+   lss_fp->index_limit=filesize;
 
-   // Save ROM CRC
-   ULONG checksum=mCart->CRC32();
-   if(!fwrite(&checksum,sizeof(ULONG),1,fp)) status=0;
+   status = ContextSave(lss_fp);
+   if(status)
+   {
+      FILE *fp=NULL;
 
-   if(!fprintf(fp,"CSystem::ContextSave")) status=0;
+      if((fp=fopen(context,"wb"))==NULL) status = false;
+      else {
+         fwrite(lss_fp->memptr, 1, lss_fp->index, fp);
+         fclose(fp);
+      }
+   }
 
-   if(!fwrite(&mCycleCountBreakpoint,sizeof(ULONG),1,fp)) status=0;
-   if(!fwrite(&gSystemCycleCount,sizeof(ULONG),1,fp)) status=0;
-   if(!fwrite(&gNextTimerEvent,sizeof(ULONG),1,fp)) status=0;
-   if(!fwrite(&gCPUWakeupTime,sizeof(ULONG),1,fp)) status=0;
-   if(!fwrite(&gCPUBootAddress,sizeof(ULONG),1,fp)) status=0;
-   if(!fwrite(&gIRQEntryCycle,sizeof(ULONG),1,fp)) status=0;
-   if(!fwrite(&gBreakpointHit,sizeof(ULONG),1,fp)) status=0;
-   if(!fwrite(&gSingleStepMode,sizeof(ULONG),1,fp)) status=0;
-   if(!fwrite(&gSystemIRQ,sizeof(ULONG),1,fp)) status=0;
-   if(!fwrite(&gSystemNMI,sizeof(ULONG),1,fp)) status=0;
-   if(!fwrite(&gSystemCPUSleep,sizeof(ULONG),1,fp)) status=0;
-   if(!fwrite(&gSystemCPUSleep_Saved,sizeof(ULONG),1,fp)) status=0;
-   if(!fwrite(&gSystemHalt,sizeof(ULONG),1,fp)) status=0;
-   if(!fwrite(&gThrottleMaxPercentage,sizeof(ULONG),1,fp)) status=0;
-   if(!fwrite(&gThrottleLastTimerCount,sizeof(ULONG),1,fp)) status=0;
-   if(!fwrite(&gThrottleNextCycleCheckpoint,sizeof(ULONG),1,fp)) status=0;
+   delete lss_fp;
+   delete[] filememory;
 
-   ULONG tmp=gTimerCount;
-   if(!fwrite(&tmp,sizeof(ULONG),1,fp)) status=0;
-
-   if(!fwrite(gAudioBuffer,sizeof(UBYTE),HANDY_AUDIO_BUFFER_SIZE,fp)) status=0;
-   if(!fwrite(&gAudioBufferPointer,sizeof(ULONG),1,fp)) status=0;
-   if(!fwrite(&gAudioLastUpdateCycle,sizeof(ULONG),1,fp)) status=0;
-
-   // Save other device contexts
-   if(!mMemMap->ContextSave(fp)) status=0;
-   if(!mCart->ContextSave(fp)) status=0;
-   if(!mEEPROM->ContextSave(fp)) status=0;
-//	if(!mRom->ContextSave(fp)) status=0; We no longer save the system ROM
-   if(!mRam->ContextSave(fp)) status=0;
-   if(!mMikie->ContextSave(fp)) status=0;
-   if(!mSusie->ContextSave(fp)) status=0;
-   if(!mCpu->ContextSave(fp)) status=0;
-
-   fclose(fp);
-   return status;
+   return status;	   
 }
 
 
@@ -680,7 +679,8 @@ bool CSystem::ContextLoad(const char *context)
                if(unzReadCurrentFile(fp,filememory,filesize)!=(int)info.uncompressed_size) {
                   unzCloseCurrentFile(fp);
                   unzClose(fp);
-                  delete filememory;
+                  delete[] filememory;
+
                   // Throw a wobbly
                   gError->Warning("ContextLoad(): ZIP File load problems, could not read data from the zip file");
                   return 1;
@@ -711,6 +711,7 @@ bool CSystem::ContextLoad(const char *context)
       filememory=(UBYTE*) new UBYTE[filesize];
 
       if(fread(filememory,sizeof(char),filesize,fp)!=filesize) {
+         delete[] filememory;
          fclose(fp);
          return 1;
       }
@@ -723,6 +724,66 @@ bool CSystem::ContextLoad(const char *context)
    fp->index=0;
    fp->index_limit=filesize;
 
+   status = ContextLoad(fp);
+
+   delete fp;
+   delete[] filememory;
+
+   return status;
+}
+
+bool CSystem::ContextSave(LSS_FILE *fp)
+{
+   bool status=1;
+
+   if(!lss_printf(fp,LSS_VERSION)) status=0;
+
+   // Save ROM CRC
+   ULONG checksum=mCart->CRC32();
+   if(!lss_write(&checksum,sizeof(ULONG),1,fp)) status=0;
+
+   if(!lss_printf(fp,"CSystem::ContextSave")) status=0;
+
+   if(!lss_write(&mCycleCountBreakpoint,sizeof(ULONG),1,fp)) status=0;
+   if(!lss_write(&gSystemCycleCount,sizeof(ULONG),1,fp)) status=0;
+   if(!lss_write(&gNextTimerEvent,sizeof(ULONG),1,fp)) status=0;
+   if(!lss_write(&gCPUWakeupTime,sizeof(ULONG),1,fp)) status=0;
+   if(!lss_write(&gCPUBootAddress,sizeof(ULONG),1,fp)) status=0;
+   if(!lss_write(&gIRQEntryCycle,sizeof(ULONG),1,fp)) status=0;
+   if(!lss_write(&gBreakpointHit,sizeof(ULONG),1,fp)) status=0;
+   if(!lss_write(&gSingleStepMode,sizeof(ULONG),1,fp)) status=0;
+   if(!lss_write(&gSystemIRQ,sizeof(ULONG),1,fp)) status=0;
+   if(!lss_write(&gSystemNMI,sizeof(ULONG),1,fp)) status=0;
+   if(!lss_write(&gSystemCPUSleep,sizeof(ULONG),1,fp)) status=0;
+   if(!lss_write(&gSystemCPUSleep_Saved,sizeof(ULONG),1,fp)) status=0;
+   if(!lss_write(&gSystemHalt,sizeof(ULONG),1,fp)) status=0;
+   if(!lss_write(&gThrottleMaxPercentage,sizeof(ULONG),1,fp)) status=0;
+   if(!lss_write(&gThrottleLastTimerCount,sizeof(ULONG),1,fp)) status=0;
+   if(!lss_write(&gThrottleNextCycleCheckpoint,sizeof(ULONG),1,fp)) status=0;
+
+   ULONG tmp=gTimerCount;
+   if(!lss_write(&tmp,sizeof(ULONG),1,fp)) status=0;
+
+   if(!lss_write(gAudioBuffer,sizeof(UBYTE),HANDY_AUDIO_BUFFER_SIZE,fp)) status=0;
+   if(!lss_write(&gAudioBufferPointer,sizeof(ULONG),1,fp)) status=0;
+   if(!lss_write(&gAudioLastUpdateCycle,sizeof(ULONG),1,fp)) status=0;
+
+   // Save other device contexts
+   if(!mMemMap->ContextSave(fp)) status=0;
+   if(!mCart->ContextSave(fp)) status=0;
+   if(!mEEPROM->ContextSave(fp)) status=0;
+//	if(!mRom->ContextSave(fp)) status=0; We no longer save the system ROM
+   if(!mRam->ContextSave(fp)) status=0;
+   if(!mMikie->ContextSave(fp)) status=0;
+   if(!mSusie->ContextSave(fp)) status=0;
+   if(!mCpu->ContextSave(fp)) status=0;
+
+   return status;
+}
+
+bool CSystem::ContextLoad(LSS_FILE *fp)
+{
+   bool status=1;
    char teststr[100];
    // Check identifier
    if(!lss_read(teststr,sizeof(char),4,fp)) status=0;
@@ -737,8 +798,6 @@ bool CSystem::ContextLoad(const char *context)
          // Read CRC32 and check against the CART for a match
          lss_read(&checksum,sizeof(ULONG),1,fp);
          if(mCart->CRC32()!=checksum) {
-            delete fp;
-            delete filememory;
             gError->Warning("LSS Snapshot CRC does not match the loaded cartridge image, aborting load");
             return 0;
          }
@@ -790,10 +849,32 @@ bool CSystem::ContextLoad(const char *context)
       gError->Warning("Not a recognised LSS file");
    }
 
-   delete fp;
-   delete filememory;
-
    return status;
+}
+
+int CSystem::ContextSize(void)
+{
+   LSS_FILE *fp=NULL;
+   UBYTE *filememory=NULL;
+   bool status=0;
+   int size=0;
+   const int filesize=0x40000;
+
+   filememory = (UBYTE*) new UBYTE[filesize];
+
+   // Setup our read structure
+   fp = new LSS_FILE;
+   fp->memptr=filememory;
+   fp->index=0;
+   fp->index_limit=filesize;
+
+   status = ContextSave(fp);
+   size = status ? fp->index : 0;
+
+   delete fp;
+   delete[] filememory;
+
+   return size;
 }
 
 #ifdef _LYNXDBG

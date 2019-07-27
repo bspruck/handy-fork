@@ -310,7 +310,7 @@ public:
    ~CSusie();
 
    void	Reset(void);
-   bool	ContextSave(FILE *fp);
+   bool	ContextSave(LSS_FILE *fp);
    bool	ContextLoad(LSS_FILE *fp);
 
    UBYTE	Peek(ULONG addr);

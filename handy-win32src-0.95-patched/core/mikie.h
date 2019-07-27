@@ -177,7 +177,7 @@ public:
    CMikie(CSystem& parent);
    ~CMikie();
 
-   bool	ContextSave(FILE *fp);
+   bool	ContextSave(LSS_FILE *fp);
    bool	ContextLoad(LSS_FILE *fp);
    void	Reset(void);
 

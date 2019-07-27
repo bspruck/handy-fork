@@ -353,24 +353,20 @@ size_t retro_serialize_size(void)
    if(!lynx)
       return 0;
 
-   return 0;
-   //return lynx->ContextSize();
+   return lynx->ContextSize();
 }
 
 bool retro_serialize(void *data, size_t size)
 {
    if(!lynx)
       return false;
-   return false;
 
-   /*
    LSS_FILE fp;
    fp.memptr = (UBYTE *) data;
    fp.index = 0;
    fp.index_limit = size;
 
    return lynx->ContextSave(&fp);
-   */
 }
 
 bool retro_unserialize(const void *data, size_t size)
@@ -378,15 +374,12 @@ bool retro_unserialize(const void *data, size_t size)
    if(!lynx)
       return false;
 
-   return false;
-   /*
    LSS_FILE fp;
    fp.memptr = (UBYTE *) data;
    fp.index = 0;
    fp.index_limit = size;
 
    return lynx->ContextLoad(&fp);
-   */
 }
 
 bool retro_load_game(const struct retro_game_info *info)
