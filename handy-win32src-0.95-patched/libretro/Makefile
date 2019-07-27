@@ -18,7 +18,7 @@ ifeq ($(platform),)
 endif
 
 LIBRETRO_DIR := .
-CORE_DIR := ../
+CORE_DIR := ..
 
 prefix := /usr
 libdir := $(prefix)/lib
