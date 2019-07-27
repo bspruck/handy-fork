@@ -841,6 +841,7 @@ bool CSystem::ContextLoad(LSS_FILE *fp)
       } else {
          if(!mCart->ContextLoad(fp)) status=0;
       }
+      if(!mEEPROM->ContextSave(fp)) status=0;
       if(!mRam->ContextLoad(fp)) status=0;
       if(!mMikie->ContextLoad(fp)) status=0;
       if(!mSusie->ContextLoad(fp)) status=0;

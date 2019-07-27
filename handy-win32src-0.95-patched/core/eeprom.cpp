@@ -62,6 +62,53 @@ void CEEPROM::Save(void)
     }
 }
 
+bool CEEPROM::ContextSave(LSS_FILE *fp)
+{
+   if(!lss_printf(fp,"CEEPROM::ContextSave")) return 0;
+
+   if(!lss_write(&busy_count,sizeof(ULONG),1,fp)) return 0;
+   if(!lss_write(&state,sizeof(ULONG),1,fp)) return 0;
+   if(!lss_write(&readdata,sizeof(UWORD),1,fp)) return 0;
+
+   if(!lss_write(&data,sizeof(ULONG),1,fp)) return 0;
+   if(!lss_write(&addr,sizeof(UWORD),1,fp)) return 0;
+   if(!lss_write(&sendbits,sizeof(ULONG),1,fp)) return 0;
+   if(!lss_write(&readonly,sizeof(UBYTE),1,fp)) return 0;
+
+   if(!lss_write(&counter,sizeof(UWORD),1,fp)) return 0;
+   if(!lss_write(&iodir,sizeof(UBYTE),1,fp)) return 0;
+   if(!lss_write(&iodat,sizeof(UBYTE),1,fp)) return 0;
+   if(!lss_write(&mAUDIN_ext,sizeof(UBYTE),1,fp)) return 0;
+
+   if(!lss_write(&romdata,sizeof(UWORD),1024,fp)) return 0;
+   return 1;
+}
+
+bool CEEPROM::ContextLoad(LSS_FILE *fp)
+{
+   char teststr[100]="XXXXXXXXXXXXXXXXXXXX";
+   if(!lss_read(teststr,sizeof(char),20,fp)) return 0;
+   teststr[20]=0;
+   if(strcmp(teststr,"CEEPROM::ContextSave")!=0) return 0;
+
+   if(!lss_read(&busy_count,sizeof(ULONG),1,fp)) return 0;
+   if(!lss_read(&state,sizeof(ULONG),1,fp)) return 0;
+   if(!lss_read(&readdata,sizeof(UWORD),1,fp)) return 0;
+
+   if(!lss_read(&data,sizeof(ULONG),1,fp)) return 0;
+   if(!lss_read(&addr,sizeof(UWORD),1,fp)) return 0;
+   if(!lss_read(&sendbits,sizeof(ULONG),1,fp)) return 0;
+   if(!lss_read(&readonly,sizeof(UBYTE),1,fp)) return 0;
+
+   if(!lss_read(&counter,sizeof(UWORD),1,fp)) return 0;
+   if(!lss_read(&iodir,sizeof(UBYTE),1,fp)) return 0;
+   if(!lss_read(&iodat,sizeof(UBYTE),1,fp)) return 0;
+   if(!lss_read(&mAUDIN_ext,sizeof(UBYTE),1,fp)) return 0;
+
+   if(!lss_read(&romdata,sizeof(UWORD),1024,fp)) return 0;
+   return 1;
+}
+
 void CEEPROM::SetEEPROMType(UBYTE b)
 {
    type=b;
