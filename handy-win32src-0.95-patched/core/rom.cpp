@@ -55,7 +55,7 @@
 
 extern CErrorInterface *gError;
 
-CRom::CRom(char *romfile,bool useEmu)
+CRom::CRom(const char *romfile,bool useEmu)
 {
    mWriteEnable=FALSE;
    mValid = TRUE;

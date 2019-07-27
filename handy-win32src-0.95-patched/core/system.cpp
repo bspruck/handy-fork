@@ -98,7 +98,7 @@ int lss_read(void* dest,int varsize, int varcount,LSS_FILE *fp)
    return copysize;
 }
 
-CSystem::CSystem(char* gamefile,char* romfile, bool useEmu)
+CSystem::CSystem(const char* gamefile, const char* romfile, bool useEmu)
    :mCart(NULL),
     mRom(NULL),
     mMemMap(NULL),
@@ -417,7 +417,7 @@ CSystem::~CSystem()
    if(mMemMap!=NULL) delete mMemMap;
 }
 
-bool CSystem::IsZip(char *filename)
+bool CSystem::IsZip(const char *filename)
 {
    UBYTE buf[2];
    FILE *fp;
@@ -563,7 +563,7 @@ void CSystem::Reset(void)
    }
 }
 
-bool CSystem::ContextSave(char *context)
+bool CSystem::ContextSave(const char *context)
 {
    FILE *fp;
    bool status=1;
@@ -617,7 +617,7 @@ bool CSystem::ContextSave(char *context)
 }
 
 
-bool CSystem::ContextLoad(char *context)
+bool CSystem::ContextLoad(const char *context)
 {
    LSS_FILE *fp;
    bool status=1;

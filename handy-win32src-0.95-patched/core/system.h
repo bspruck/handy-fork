@@ -185,7 +185,7 @@ class CSystem;
 class CSystem : public CSystemBase
 {
 public:
-   CSystem(char* gamefile,char* romfile,bool useEmu);
+   CSystem(const char* gamefile, const char* romfile,bool useEmu);
    ~CSystem();
     void SaveEEPROM(void);
 
@@ -195,9 +195,9 @@ public:
    void HLE_BIOS_FE4A(void);
    void HLE_BIOS_FF80(void);
    void	Reset(void);
-   bool	ContextSave(char *context);
-   bool	ContextLoad(char *context);
-   bool	IsZip(char *filename);
+   bool	ContextSave(const char *context);
+   bool	ContextLoad(const char *context);
+   bool	IsZip(const char *filename);
 
    inline void Update(void)
    {

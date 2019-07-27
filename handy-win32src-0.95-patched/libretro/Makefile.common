@@ -1,0 +1,35 @@
+LIBRETRO_COMM_DIR  = $(LIBRETRO_DIR)/libretro-common
+
+INCFLAGS = -I$(CORE_DIR)/core \
+	-I$(CORE_DIR)/zlib-113 \
+	-I$(LIBRETRO_DIR)
+
+ifneq (,$(findstring msvc2003,$(platform)))
+	INCFLAGS += -I$(LIBRETRO_COMM_DIR)/include/compat/msvc
+endif
+
+SOURCES_CXX := $(CORE_DIR)/core/lynxdec.cpp \
+	$(CORE_DIR)/core/cart.cpp \
+	$(CORE_DIR)/core/memmap.cpp \
+	$(CORE_DIR)/core/mikie.cpp \
+	$(CORE_DIR)/core/ram.cpp \
+	$(CORE_DIR)/core/rom.cpp \
+	$(CORE_DIR)/core/susie.cpp \
+	$(CORE_DIR)/core/system.cpp \
+	$(CORE_DIR)/core/eeprom.cpp \
+	$(LIBRETRO_DIR)/libretro.cpp
+
+SOURCES_C := $(CORE_DIR)/zlib-113/adler32.c \
+	$(CORE_DIR)/zlib-113/crc32.c \
+	$(CORE_DIR)/zlib-113/deflate.c \
+	$(CORE_DIR)/zlib-113/gzio.c \
+	$(CORE_DIR)/zlib-113/infblock.c \
+	$(CORE_DIR)/zlib-113/infcodes.c \
+	$(CORE_DIR)/zlib-113/inffast.c \
+	$(CORE_DIR)/zlib-113/inflate.c \
+	$(CORE_DIR)/zlib-113/inftrees.c \
+	$(CORE_DIR)/zlib-113/infutil.c \
+	$(CORE_DIR)/zlib-113/trees.c \
+	$(CORE_DIR)/zlib-113/uncompr.c \
+	$(CORE_DIR)/zlib-113/unzip.c \
+	$(CORE_DIR)/zlib-113/zutil.c

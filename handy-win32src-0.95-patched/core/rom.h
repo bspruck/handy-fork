@@ -60,7 +60,7 @@ class CRom : public CLynxBase
    // Function members
 
 public:
-   CRom(char *romfile,bool useEmu);
+   CRom(const char *romfile,bool useEmu);
 
 public:
    void	Reset(void);
