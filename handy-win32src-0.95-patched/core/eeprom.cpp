@@ -32,6 +32,8 @@ void CEEPROM::Reset(void)
    counter=0;
    iodir=0;
    iodat=0;
+
+   mAUDIN_ext=0;
 }
 
 CEEPROM::~CEEPROM()
