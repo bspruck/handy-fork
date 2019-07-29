@@ -751,16 +751,16 @@ ULONG CSusie::PaintSprites(void)
 
                switch(modquad) {
                   case 3:
-                     if((sprite_h>=screen_h_start || sprite_h<world_h_mid) && (sprite_v<screen_v_end   || sprite_v>world_v_mid)) render=TRUE;
+                     if((sprite_h>=screen_h_start || sprite_h<=world_h_mid) && (sprite_v<screen_v_end   || sprite_v>=world_v_mid)) render=TRUE;
                      break;
                   case 2:
-                     if((sprite_h>=screen_h_start || sprite_h<world_h_mid) && (sprite_v>=screen_v_start || sprite_v<world_v_mid)) render=TRUE;
+                     if((sprite_h>=screen_h_start || sprite_h<=world_h_mid) && (sprite_v>=screen_v_start || sprite_v<=world_v_mid)) render=TRUE;
                      break;
                   case 1:
-                     if((sprite_h<screen_h_end   || sprite_h>world_h_mid) && (sprite_v>=screen_v_start || sprite_v<world_v_mid)) render=TRUE;
+                     if((sprite_h<screen_h_end   || sprite_h>=world_h_mid) && (sprite_v>=screen_v_start || sprite_v<=world_v_mid)) render=TRUE;
                      break;
                   default:
-                     if((sprite_h<screen_h_end   || sprite_h>world_h_mid) && (sprite_v<screen_v_end   || sprite_v>world_v_mid)) render=TRUE;
+                     if((sprite_h<screen_h_end   || sprite_h>=world_h_mid) && (sprite_v<screen_v_end   || sprite_v>=world_v_mid)) render=TRUE;
                      break;
                }
             } else {
