@@ -1,0 +1,16 @@
+
+*.pdb
+*.idb
+*.obj
+*.sbr
+*.tlog
+*.ipch
+*.log
+handy-win32src-0.95-patched/.vs/handy/v16/.suo
+*.db
+*.opendb
+*.bsc
+*.exe
+*.ilk
+handy-win32src-0.95-patched/Debug/handy.vcxproj.FileListAbsolute.txt
+handy-win32src-0.95-patched/Debug/lynxmenu.res

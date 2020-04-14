@@ -45,7 +45,7 @@ void CEEPROM::Load(void)
 
     FILE* fe;
 	errno_t err;
-	if ((err = fopen_s(&fe, filename, "rb")) != 0) {
+	if ((err = fopen_s(&fe, filename, "rb")) == 0) {
         printf("EEPROM LOAD %s\n",filename);
         fread(romdata,1,1024,fe);
         fclose(fe);
@@ -59,7 +59,7 @@ void CEEPROM::Save(void)
 
 	FILE* fe;
 	errno_t err;
-	if ((err = fopen_s(&fe, filename, "wb+")) != 0) {
+	if ((err = fopen_s(&fe, filename, "wb+")) == 0) {
         printf("EEPROM SAVE %s\n",filename);
         fwrite(romdata,1,Size(),fe);
         fclose(fe);
