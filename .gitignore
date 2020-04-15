@@ -12,5 +12,8 @@ handy-win32src-0.95-patched/.vs/handy/v16/.suo
 *.bsc
 *.exe
 *.ilk
-handy-win32src-0.95-patched/Debug/handy.vcxproj.FileListAbsolute.txt
-handy-win32src-0.95-patched/Debug/lynxmenu.res
+handy-win32src-0.95-patched/vs/Debug/*
+handy-win32src-0.95-patched/vs/Debug Dbg/*
+handy-win32src-0.95-patched/vs/Release/*
+handy-win32src-0.95-patched/vs/Release Dbg/*
+

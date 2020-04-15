@@ -1,6 +1,6 @@
 // Microsoft Visual C++ generated resource script.
 //
-#include "../gui-windows/resource.h"
+#include "resource.h"
 
 #define APSTUDIO_READONLY_SYMBOLS
 /////////////////////////////////////////////////////////////////////////////
@@ -13,7 +13,7 @@
 #undef APSTUDIO_READONLY_SYMBOLS
 
 /////////////////////////////////////////////////////////////////////////////
-// Englisch (Vereinigtes Königreich) resources
+// English (United Kingdom) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENG)
 LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_UK
@@ -319,23 +319,24 @@ BEGIN
     CONTROL         "Single Step",IDC_SPRITE_DEBUG,"Button",BS_AUTOCHECKBOX | BS_NOTIFY,12,163,65,10
 END
 
-IDD_ABOUT_BOX DIALOGEX 0, 0, 214, 194
+IDD_ABOUT_BOX DIALOGEX 0, 0, 215, 197
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "About Handy"
 FONT 8, "MS Sans Serif", 0, 0, 0x0
 BEGIN
-    DEFPUSHBUTTON   "OK",IDOK,81,126,50,14
-    CTEXT           "Copyright K.Wilkins 2007",IDC_STATIC,66,113,80,8
-    ICON            IDI_ICON1,IDC_STATIC,50,14,20,20
+    DEFPUSHBUTTON   "OK",IDOK,81,132,50,14
+    CTEXT           "Copyright K.Wilkins 2007",IDC_STATIC,66,119,80,8
+    ICON            IDI_ICON1,IDC_STATIC,50,14,21,20
     CTEXT           "Lynx Emulator for Windows",IDC_STATIC,77,19,86,8
-    CTEXT           "Version X.XX",IDC_ABOUT_VERSION,69,38,75,8
-    CTEXT           "http://lynxdev.atari.org/handy",IDC_STATIC,64,61,96,8
-    EDITTEXT        IDC_ABOUT_MANUFACTURER,42,147,129,13,ES_CENTER | ES_READONLY
-    EDITTEXT        IDC_ABOUT_CARTRIDGE,42,166,129,13,ES_CENTER | ES_READONLY
-    CTEXT           "(Build XXXXXX)",IDC_ABOUT_BUILD,66,50,82,8
-    CTEXT           "Core Updates B. Spruck 2016",IDC_STATIC,18,87,176,8
-    CTEXT           "This is a modified version of the original handy.",IDC_STATIC,18,77,189,8
-    CTEXT           "Original (old) version: http://handy.sourceforge.net",IDC_STATIC,14,102,186,8
+    CTEXT           "Version X.XX",IDC_ABOUT_VERSION,69,34,75,8
+    CTEXT           "http://lynxdev.atari.org/handy",IDC_STATIC,64,55,96,8
+    EDITTEXT        IDC_ABOUT_MANUFACTURER,42,153,129,13,ES_CENTER | ES_READONLY
+    EDITTEXT        IDC_ABOUT_CARTRIDGE,42,172,129,13,ES_CENTER | ES_READONLY
+    CTEXT           "(Build XXXXXX)",IDC_ABOUT_BUILD,66,44,82,8
+    CTEXT           "Core Updates B. Spruck 2016",IDC_STATIC,18,82,176,8
+    CTEXT           "This is a modified version of the original handy.",IDC_STATIC,19,71,189,8
+    CTEXT           "Original (old) version: http://handy.sourceforge.net",IDC_STATIC,14,108,186,8
+    CTEXT           "Crash fix + new backgrounds - LordKraken 2020",IDC_STATIC,21,93,176,8
 END
 
 IDD_INFO_BOX DIALOGEX 0, 0, 109, 84
@@ -438,9 +439,9 @@ BEGIN
     IDD_ABOUT_BOX, DIALOG
     BEGIN
         LEFTMARGIN, 7
-        RIGHTMARGIN, 207
+        RIGHTMARGIN, 208
         TOPMARGIN, 7
-        BOTTOMMARGIN, 187
+        BOTTOMMARGIN, 190
     END
 
     IDD_INFO_BOX, DIALOG
@@ -499,9 +500,10 @@ END
 // Bitmap
 //
 
-
 IDB_BITMAP_BACKGROUND1  BITMAP                  "LynxBackground1-v2.bmp"
+
 IDB_BITMAP_BACKGROUND2  BITMAP                  "lynxbackground2-v2.bmp"
+
 IDB_BITMAP_BACKGROUND3  BITMAP                  "lynxbackground3-v2.bmp"
 
 
@@ -555,7 +557,7 @@ BEGIN
     IDM_DEBUG_GRAPHICS      "Open a new graphics window"
 END
 
-#endif    // Englisch (Vereinigtes Königreich) resources
+#endif    // English (United Kingdom) resources
 /////////////////////////////////////////////////////////////////////////////
 
 

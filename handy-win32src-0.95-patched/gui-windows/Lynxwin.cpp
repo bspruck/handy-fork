@@ -56,7 +56,7 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-#define HANDY_VERSION		"Version 0.98"
+#define HANDY_VERSION		"Version 0.98 Alt"
 #define HANDY_BUILD			"Build ("__DATE__")"
 
 #define REGISTRY_VERSION	"Version 1.0"

@@ -204,6 +204,7 @@
     <ClInclude Include="..\gui-windows\resource.h">
       <Filter>gui</Filter>
     </ClInclude>
+    <ClInclude Include="..\resources\resource.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\core\cart.cpp">

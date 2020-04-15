@@ -70,6 +70,7 @@
     <ClInclude Include="..\gui-windows\WindowEagle.h" />
     <ClInclude Include="..\gui-windows\windowgdi.h" />
     <ClInclude Include="..\gui-windows\windowlcd.h" />
+    <ClInclude Include="..\resources\resource.h" />
     <ClInclude Include="..\zlib-113\deflate.h" />
     <ClInclude Include="..\zlib-113\infblock.h" />
     <ClInclude Include="..\zlib-113\infcodes.h" />
