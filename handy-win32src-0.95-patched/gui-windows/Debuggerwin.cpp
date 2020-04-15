@@ -48,10 +48,10 @@
 #include "color.h"
 #include "colorstatic.h"
 #include "debuggerwin.h"
-#include "editline.h"
 #include "displine.h"
-#include "widget.h"
+#include "editline.h"
 #include "resource.h"
+#include "widget.h"
 
 
 //#ifdef _DEBUG
@@ -725,7 +725,7 @@ bool CDebuggerWin::CommandScript(int argc, char **argv)
 	{
 		FILE* fp;
 		errno_t err;
-		if ((err = fopen_s(&fp, argv[1], "rt")) != 0)
+		if ((err = fopen_s(&fp, argv[1], "rt")) == 0)
 		{
 			while(1)
 			{
@@ -996,7 +996,7 @@ bool CDebuggerWin::CommandMemLoad(int argc, char **argv)
 		{
 			FILE* fp;
 			errno_t err;
-			if ((err = fopen_s(&fp, argv[2], "rb")) != 0)
+			if ((err = fopen_s(&fp, argv[2], "rb")) == 0)
 			{
 				// Read bytes until the end
 				while(fread(&data,1,1,fp)==1 && addr<=0xffff)
@@ -1036,7 +1036,7 @@ bool CDebuggerWin::CommandMemSave(int argc, char **argv)
 		{
 			FILE* fp;
 			errno_t err;
-			if ((err = fopen_s(&fp, argv[3], "wb")) != 0)
+			if ((err = fopen_s(&fp, argv[3], "wb")) == 0)
 			{
 				// Write loop
 				for(addr=saddr;addr<=eaddr;addr++)
@@ -1167,7 +1167,7 @@ bool CDebuggerWin::CommandCartLoad(int argc, char **argv)
 		{
 			FILE* fp;
 			errno_t err;
-			if ((err = fopen_s(&fp, argv[2], "rb")) != 0)
+			if ((err = fopen_s(&fp, argv[2], "rb")) == 0)
 			{
 				mSystem.mCart->BankSelect(bank0);
 				mSystem.mCart->mWriteEnableBank0=TRUE;
@@ -1210,7 +1210,7 @@ bool CDebuggerWin::CommandCartSave(int argc, char **argv)
 		{
 			FILE* fp;
 			errno_t err;
-			if ((err = fopen_s(&fp, argv[3], "wb")) != 0)
+			if ((err = fopen_s(&fp, argv[3], "wb")) == 0)
 			{
 				// Write loop
 				for(addr=saddr;addr<=eaddr;addr++)

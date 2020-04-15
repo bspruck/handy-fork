@@ -46,9 +46,9 @@
 #define TRACEWIN_H
 
 #include <afxwin.h>
-#include "resource.h"
 #include "../core/system.h"
 #include "dmpwndlg.h"
+#include "resource.h"
 #include "tracedlg.h"
 
 #ifdef _LYNXDBG

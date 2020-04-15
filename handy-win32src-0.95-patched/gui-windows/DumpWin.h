@@ -47,10 +47,10 @@
 
 
 #include <afxwin.h>
-#include "hexedit.h"
-#include "resource.h"
 #include "../core/system.h"
 #include "dmpwndlg.h"
+#include "hexedit.h"
+#include "resource.h"
 
 
 #ifdef _LYNXDBG

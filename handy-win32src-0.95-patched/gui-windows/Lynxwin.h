@@ -49,21 +49,21 @@
 #include <afxcmn.h>
 #include <afxdlgs.h>
 #include <mmsystem.h>
+#include "../core/system.h"
+#include "aboutdlg.h"
+#include "debugger.h"
+#include "directsoundplayer.h"
 #include "directx.h"
 #include "fullscreendirectx.h"
 #include "fullscreenlcd.h"
 #include "fullscreeneagle.h"
+#include "keydefs.h"
+#include "netobj.h"
+#include "resource.h"
 #include "windowdirectx.h"
+#include "windoweagle.h"
 #include "windowgdi.h"
 #include "windowlcd.h"
-#include "windoweagle.h"
-#include "directsoundplayer.h"
-#include "resource.h"
-#include "aboutdlg.h"
-#include "keydefs.h"
-#include "../core/system.h"
-#include "netobj.h"
-#include "debugger.h"
 
 #ifdef TRACE_LYNXWIN
 

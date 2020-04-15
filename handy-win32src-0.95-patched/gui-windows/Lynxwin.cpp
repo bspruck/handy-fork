@@ -2120,7 +2120,7 @@ void CLynxWindow::OnRAMDumpMenuSelect()
 {
 	FILE* fp;
 	errno_t err;
-	if ((err = fopen_s(&fp, "lynxram.bin", "wb")) != 0)
+	if ((err = fopen_s(&fp, "lynxram.bin", "wb")) == 0)
 	{
 		int loop;
 		for (loop=0; loop<65536; loop++)

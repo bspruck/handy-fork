@@ -49,8 +49,8 @@
 //#include <winsock2.h>
 #include <winsock.h>
 #include <mmsystem.h>
-#include "resource.h"
 #include "../core/system.h"
+#include "resource.h"
 
 // Define the message we will send to 
 // Use the ON_MESSAGE() macro to decode it

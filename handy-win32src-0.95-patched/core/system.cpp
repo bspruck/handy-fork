@@ -422,7 +422,7 @@ bool CSystem::IsZip(char *filename)
    UBYTE buf[2];
    FILE* fp;
    errno_t err;
-   if ((err = fopen_s(&fp, filename, "rb")) != 0) {
+   if ((err = fopen_s(&fp, filename, "rb")) == 0) {
       fread(buf, 2, 1, fp);
       fclose(fp);
       return(memcmp(buf,"PK",2)==0);

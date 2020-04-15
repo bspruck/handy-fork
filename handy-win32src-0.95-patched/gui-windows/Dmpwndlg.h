@@ -45,6 +45,8 @@
 #ifndef DMPWINDLG_H
 #define DMPWINDLG_H
 
+#include "resource.h"
+
 class CDumpWinDlg : public CDialog
 {
 // Construction
