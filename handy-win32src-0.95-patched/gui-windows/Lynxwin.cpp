@@ -879,6 +879,7 @@ BEGIN_MESSAGE_MAP(CLynxWindow,CFrameWnd)
 	ON_UPDATE_COMMAND_UI(IDM_HELP_INFO,OnInfoMenuUpdate)
 	ON_COMMAND(IDM_HELP_ABOUT, OnAboutBoxSelect)
 	ON_COMMAND(IDM_OPTIONS_RESET, OnResetMenuSelect)
+	ON_COMMAND(IDM_OPTIONS_RESETEEPROM, OnResetEepromMenuSelect)
 	ON_COMMAND(IDM_OPTIONS_BACKGROUND, OnBkgndMenuSelect)
 	ON_UPDATE_COMMAND_UI(IDM_OPTIONS_BACKGROUND, OnBkgndMenuUpdate)
 	ON_COMMAND(IDM_OPTIONS_USEBOOTROM, OnBootromMenuSelect)
@@ -1748,6 +1749,13 @@ void CLynxWindow::OnSoundMenuUpdate(CCmdUI *pCmdUI)
 void CLynxWindow::OnResetMenuSelect()
 {
 	mpLynx->Reset();
+	OnDebuggerUpdate();
+	Invalidate(FALSE);
+}
+
+void CLynxWindow::OnResetEepromMenuSelect()
+{
+	mpLynx->ResetEeprom();
 	OnDebuggerUpdate();
 	Invalidate(FALSE);
 }

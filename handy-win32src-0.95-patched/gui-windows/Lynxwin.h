@@ -313,6 +313,7 @@ protected:
 	afx_msg void OnInfoMenuUpdate(CCmdUI *pCmdUI);
 	afx_msg void OnAboutBoxSelect();
 	afx_msg void OnResetMenuSelect();
+	afx_msg void OnResetEepromMenuSelect();
 	afx_msg void OnContextMenu(CWnd *pWnd, CPoint point);
 	afx_msg void OnFileExit();
 	afx_msg void OnFileLoad();

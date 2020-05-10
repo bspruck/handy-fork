@@ -195,6 +195,7 @@ public:
    void HLE_BIOS_FE4A(void);
    void HLE_BIOS_FF80(void);
    void	Reset(void);
+   void	ResetEeprom(void);
    bool	ContextSave(char *context);
    bool	ContextLoad(char *context);
    bool	IsZip(char *filename);

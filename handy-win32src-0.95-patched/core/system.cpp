@@ -397,17 +397,18 @@ CSystem::CSystem(char* gamefile,char* romfile, bool useEmu)
 
 void CSystem::SaveEEPROM(void)
 {
-    if(mEEPROM!=NULL) mEEPROM->Save();
+    if (mEEPROM !=NULL)
+        mEEPROM->Save();
 }
 
 CSystem::~CSystem()
 {
    // Cleanup all our objects
-
-   if(mEEPROM!=NULL){
+   if (mEEPROM != NULL){
        SaveEEPROM();
        delete mEEPROM;
    }
+
    if(mCart!=NULL) delete mCart;
    if(mRom!=NULL) delete mRom;
    if(mRam!=NULL) delete mRam;
@@ -524,7 +525,6 @@ void CSystem::Reset(void)
 
    mMemMap->Reset();
    mCart->Reset();
-   mEEPROM->Reset();
    mRom->Reset();
    mRam->Reset();
    mMikie->Reset();
@@ -565,6 +565,10 @@ void CSystem::Reset(void)
          mRom->mWriteEnable=false;
       }
    }
+}
+
+void CSystem::ResetEeprom(void) {
+    mEEPROM->Reset();
 }
 
 bool CSystem::ContextSave(char *context)
