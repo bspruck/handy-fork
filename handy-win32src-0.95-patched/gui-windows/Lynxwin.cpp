@@ -1756,6 +1756,7 @@ void CLynxWindow::OnResetMenuSelect()
 void CLynxWindow::OnResetEepromMenuSelect()
 {
 	mpLynx->ResetEeprom();
+	mpLynx->Reset();
 	OnDebuggerUpdate();
 	Invalidate(FALSE);
 }
