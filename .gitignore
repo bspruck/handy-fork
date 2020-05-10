@@ -1,0 +1,14 @@
+
+*.ipch
+*.obj
+*.sbr
+handy-win32src-0.95-patched/.vs/handy/v16/.suo
+*.aps
+handy-win32src-0.95-patched/vs/Debug/handy.Build.CppClean.log
+handy-win32src-0.95-patched/vs/Debug/handy.log
+*.db
+*.tlog
+*.pdb
+handy-win32src-0.95-patched/vs/Release Dbg/handy.log
+*.asm
+/handy-win32src-0.95-patched/vs
