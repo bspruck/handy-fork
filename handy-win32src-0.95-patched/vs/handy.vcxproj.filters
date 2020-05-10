@@ -1,0 +1,388 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="zlib">
+      <UniqueIdentifier>{903364a2-1064-4f37-87e0-89cf3c09e71e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="resources">
+      <UniqueIdentifier>{ddc86e37-8c67-49c6-9681-0307677993ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core">
+      <UniqueIdentifier>{7525fae3-cd81-4ecf-b7cb-fcd4fe16a805}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gui">
+      <UniqueIdentifier>{4c581666-e204-4d35-8528-936000fd51d9}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\core\c65c02.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\core\c6502mak.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\core\cart.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\core\dis6502.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\core\eeprom.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\core\error.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\core\errorinterface.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\core\lynxbase.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\core\lynxdef.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\core\machine.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\core\memfault.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\core\memmap.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\core\mikie.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\core\pixblend.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\core\ram.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\core\rom.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\core\susie.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\core\sysbase.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\core\system.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\zlib-113\infblock.h">
+      <Filter>zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\zlib-113\infcodes.h">
+      <Filter>zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\zlib-113\inffast.h">
+      <Filter>zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\zlib-113\inffixed.h">
+      <Filter>zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\zlib-113\inftrees.h">
+      <Filter>zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\zlib-113\infutil.h">
+      <Filter>zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\zlib-113\trees.h">
+      <Filter>zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\zlib-113\unzip.h">
+      <Filter>zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\zlib-113\zconf.h">
+      <Filter>zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\zlib-113\zlib.h">
+      <Filter>zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\zlib-113\zutil.h">
+      <Filter>zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\zlib-113\deflate.h">
+      <Filter>zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gui-windows\Color.h">
+      <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gui-windows\ColorStatic.h">
+      <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gui-windows\Debugger.h">
+      <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gui-windows\Debuggerwin.h">
+      <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gui-windows\DirectSoundPlayer.h">
+      <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gui-windows\DirectX.h">
+      <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gui-windows\DispLine.h">
+      <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gui-windows\Dmpwndlg.h">
+      <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gui-windows\DumpWin.h">
+      <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gui-windows\EditLine.h">
+      <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gui-windows\errorhandler.h">
+      <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gui-windows\FullScreenDirectX.h">
+      <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gui-windows\FullScreenEagle.h">
+      <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gui-windows\fullscreenlcd.h">
+      <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gui-windows\gfxwin.h">
+      <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gui-windows\HexEdit.h">
+      <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gui-windows\Keydefs.h">
+      <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gui-windows\lynxapp.h">
+      <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gui-windows\lynxrender.h">
+      <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gui-windows\Lynxwin.h">
+      <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gui-windows\netobj.h">
+      <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gui-windows\Tracedlg.h">
+      <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gui-windows\Tracewin.h">
+      <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gui-windows\warndlg.h">
+      <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gui-windows\widget.h">
+      <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gui-windows\WindowDirectX.h">
+      <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gui-windows\WindowEagle.h">
+      <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gui-windows\windowgdi.h">
+      <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gui-windows\windowlcd.h">
+      <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gui-windows\aboutdlg.h">
+      <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gui-windows\CodeWin.h">
+      <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gui-windows\resource.h">
+      <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\resources\resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\core\cart.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\core\eeprom.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\core\lynxdec.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\core\memmap.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\core\mikie.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\core\ram.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\core\rom.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\core\susie.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\core\system.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\zlib-113\gzio.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\zlib-113\infblock.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\zlib-113\infcodes.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\zlib-113\inffast.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\zlib-113\inflate.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\zlib-113\inftrees.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\zlib-113\infutil.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\zlib-113\trees.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\zlib-113\uncompr.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\zlib-113\unzip.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\zlib-113\zutil.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\zlib-113\adler32.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\zlib-113\compress.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\zlib-113\crc32.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\zlib-113\deflate.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gui-windows\ColorStatic.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gui-windows\Debugger.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gui-windows\Debuggerwin.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gui-windows\DirectSoundPlayer.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gui-windows\DispLine.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gui-windows\Dmpwndlg.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gui-windows\Dumpwin.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gui-windows\DxError.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gui-windows\EditLine.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gui-windows\errorhandler.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gui-windows\gfxwin.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gui-windows\HexEdit.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gui-windows\keydefs.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gui-windows\Lynxapp.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gui-windows\Lynxwin.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gui-windows\netobj.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gui-windows\Tracedlg.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gui-windows\Tracewin.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gui-windows\windowgdi.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gui-windows\Codewin.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\resources\icon1.ico">
+      <Filter>resources</Filter>
+    </Image>
+    <Image Include="..\resources\Icon2.ico">
+      <Filter>resources</Filter>
+    </Image>
+    <Image Include="..\resources\LynxBackground1.bmp">
+      <Filter>resources</Filter>
+    </Image>
+    <Image Include="..\resources\lynxbackground1-v2.bmp">
+      <Filter>resources</Filter>
+    </Image>
+    <Image Include="..\resources\lynxbackground1-v3.bmp">
+      <Filter>resources</Filter>
+    </Image>
+    <Image Include="..\resources\lynxbackground2.bmp">
+      <Filter>resources</Filter>
+    </Image>
+    <Image Include="..\resources\lynxbackground2-v2.bmp">
+      <Filter>resources</Filter>
+    </Image>
+    <Image Include="..\resources\lynxbackground3.bmp">
+      <Filter>resources</Filter>
+    </Image>
+    <Image Include="..\resources\lynxbackground3-v2.bmp">
+      <Filter>resources</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\resources\lynxbackground-template.pspimage">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="..\resources\lynxbackground-template2.pspimage">
+      <Filter>resources</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\resources\lynxmenu.rc">
+      <Filter>resources</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\license.txt" />
+  </ItemGroup>
+</Project>

@@ -397,17 +397,18 @@ CSystem::CSystem(char* gamefile,char* romfile, bool useEmu)
 
 void CSystem::SaveEEPROM(void)
 {
-    if(mEEPROM!=NULL) mEEPROM->Save();
+    if (mEEPROM !=NULL)
+        mEEPROM->Save();
 }
 
 CSystem::~CSystem()
 {
    // Cleanup all our objects
-
-   if(mEEPROM!=NULL){
+   if (mEEPROM != NULL){
        SaveEEPROM();
        delete mEEPROM;
    }
+
    if(mCart!=NULL) delete mCart;
    if(mRom!=NULL) delete mRom;
    if(mRam!=NULL) delete mRam;
@@ -422,7 +423,7 @@ bool CSystem::IsZip(char *filename)
    UBYTE buf[2];
    FILE* fp;
    errno_t err;
-   if ((err = fopen_s(&fp, filename, "rb")) != 0) {
+   if ((err = fopen_s(&fp, filename, "rb")) == 0) {
       fread(buf, 2, 1, fp);
       fclose(fp);
       return(memcmp(buf,"PK",2)==0);
@@ -450,7 +451,8 @@ void CSystem::HLE_BIOS_FE19(void)
    mRam->Poke(0x0005,0x00);
    mRam->Poke(0x0006,0x02);
    // Call to $FE00
-   mCart->SetShifterValue(0);
+   if (mCart)
+        mCart->SetShifterValue(0);
    // Fallthrou $FE4A
    HLE_BIOS_FE4A();
 }
@@ -463,18 +465,21 @@ void CSystem::HLE_BIOS_FE4A(void)
    unsigned char buff[256];// maximum 5 blocks
    unsigned char res[256];
 
-   buff[0]=mCart->Peek0();
-   int blockcount = 0x100 -  buff[0];
+   buff[0] = mCart->Peek0();
 
-   for (int i = 1; i < 1+51*blockcount; ++i) { // first encrypted loader
-      buff[i] = mCart->Peek0();
-   }
+   int blockcount = 0x100 - buff[0];
+   if (blockcount > 5)
+       return;
 
-   lynx_decrypt(res, buff, 51);
+    for (int i = 1; i < 1 + 51 * blockcount; ++i) { // first encrypted loader
+        buff[i] = mCart->Peek0();
+    }
 
-   for (int i = 0; i < 50*blockcount; ++i) {
-      Poke_CPU(addr++, res[i]);
-   }
+    lynx_decrypt(res, buff, 51);
+
+    for (int i = 0; i < 50 * blockcount; ++i) {
+        Poke_CPU(addr++, res[i]);
+    }
 
    // Load Block(s), decode to ($05,$06)
    // jmp $200
@@ -520,7 +525,6 @@ void CSystem::Reset(void)
 
    mMemMap->Reset();
    mCart->Reset();
-   mEEPROM->Reset();
    mRom->Reset();
    mRam->Reset();
    mMikie->Reset();
@@ -561,6 +565,10 @@ void CSystem::Reset(void)
          mRom->mWriteEnable=false;
       }
    }
+}
+
+void CSystem::ResetEeprom(void) {
+    mEEPROM->Reset();
 }
 
 bool CSystem::ContextSave(char *context)

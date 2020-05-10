@@ -47,13 +47,13 @@
 
 
 #include <afxwin.h>
-#include "resource.h"
 #include "../core/system.h"
 #include "color.h"
 #include "colorstatic.h"
-#include "editline.h"
 #include "displine.h"
 #include "dmpwndlg.h"
+#include "editline.h"
+#include "resource.h"
 
 #define	MAX_LINE_BUFFERS 500
 #define MAX_LINE_SIZE	 120

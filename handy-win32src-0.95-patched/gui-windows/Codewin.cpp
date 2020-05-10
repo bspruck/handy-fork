@@ -44,8 +44,14 @@
 //                                                                          //
 //////////////////////////////////////////////////////////////////////////////
 
+#include <afxwin.h>
 #include "codewin.h"
+
+#include "../core/system.h"
 #include "../core/dis6502.h"
+
+#include "dmpwndlg.h"
+#include "resource.h"
 #include "widget.h"
 
 //#ifdef _DEBUG

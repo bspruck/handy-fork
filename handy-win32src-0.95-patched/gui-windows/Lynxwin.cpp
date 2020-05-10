@@ -56,7 +56,7 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-#define HANDY_VERSION		"Version 0.98"
+#define HANDY_VERSION		"Version 0.98 Alt"
 #define HANDY_BUILD			"Build ("__DATE__")"
 
 #define REGISTRY_VERSION	"Version 1.0"
@@ -501,15 +501,16 @@ void CLynxWindow::CalcWindowSize(CRect *rect)
 	if(win_width<HANDY_SCREEN_WIDTH) win_width=HANDY_SCREEN_WIDTH;
 
 	// Calculate display offsets
-	/*if (DisplayModeBkgnd() == DISPLAY_BKGND) {
+	// Magic offset values should be defined elsewhere
+	if (DisplayModeBkgnd() == DISPLAY_BKGND) {
 		switch (mDisplayBackgroundType) {
 		case IDB_BITMAP_BACKGROUND1:
 			mDisplayOffsetX = 250;
 			mDisplayOffsetY = 83;
 			break;
 		case IDB_BITMAP_BACKGROUND2:
-			mDisplayOffsetX = 250;
-			mDisplayOffsetY = 83;
+			mDisplayOffsetX = 191;
+			mDisplayOffsetY = 77;
 			break;
 		case IDB_BITMAP_BACKGROUND3:
 			mDisplayOffsetX = 14;
@@ -519,7 +520,7 @@ void CLynxWindow::CalcWindowSize(CRect *rect)
 		mDisplayOffsetX *= DisplayModeMagnification();
 		mDisplayOffsetY *= DisplayModeMagnification();
 	}
-	else*/ {
+	else {
 		mDisplayOffsetX = (win_width / 2) - (img_width / 2);
 		mDisplayOffsetY = (win_height / 2) - (img_height / 2);
 	}
@@ -878,6 +879,7 @@ BEGIN_MESSAGE_MAP(CLynxWindow,CFrameWnd)
 	ON_UPDATE_COMMAND_UI(IDM_HELP_INFO,OnInfoMenuUpdate)
 	ON_COMMAND(IDM_HELP_ABOUT, OnAboutBoxSelect)
 	ON_COMMAND(IDM_OPTIONS_RESET, OnResetMenuSelect)
+	ON_COMMAND(IDM_OPTIONS_RESETEEPROM, OnResetEepromMenuSelect)
 	ON_COMMAND(IDM_OPTIONS_BACKGROUND, OnBkgndMenuSelect)
 	ON_UPDATE_COMMAND_UI(IDM_OPTIONS_BACKGROUND, OnBkgndMenuUpdate)
 	ON_COMMAND(IDM_OPTIONS_USEBOOTROM, OnBootromMenuSelect)
@@ -1751,6 +1753,13 @@ void CLynxWindow::OnResetMenuSelect()
 	Invalidate(FALSE);
 }
 
+void CLynxWindow::OnResetEepromMenuSelect()
+{
+	mpLynx->ResetEeprom();
+	OnDebuggerUpdate();
+	Invalidate(FALSE);
+}
+
 void CLynxWindow::OnPauseMenuSelect()
 {
 	if(!gSystemHalt)
@@ -2119,7 +2128,7 @@ void CLynxWindow::OnRAMDumpMenuSelect()
 {
 	FILE* fp;
 	errno_t err;
-	if ((err = fopen_s(&fp, "lynxram.bin", "wb")) != 0)
+	if ((err = fopen_s(&fp, "lynxram.bin", "wb")) == 0)
 	{
 		int loop;
 		for (loop=0; loop<65536; loop++)
