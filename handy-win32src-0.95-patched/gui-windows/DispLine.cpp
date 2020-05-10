@@ -30,8 +30,8 @@
 
 #include <afxwin.h>
 #include "displine.h"
-#include "resource.h"
 #include "debuggerwin.h"
+#include "resource.h"
 
 #ifdef _LYNXDBG
 

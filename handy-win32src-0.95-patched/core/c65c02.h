@@ -1740,7 +1740,7 @@ public:
    inline void xILLEGAL(void)
    {
       char addr[1024];
-      sprintf(addr,"C65C02::Update() - Illegal opcode (%02x) at PC=$%04x.",mOpcode,mPC);
+      sprintf_s(addr, 1024, "C65C02::Update() - Illegal opcode (%02x) at PC=$%04x.", mOpcode,mPC);
       gError->Warning(addr);
    }
 

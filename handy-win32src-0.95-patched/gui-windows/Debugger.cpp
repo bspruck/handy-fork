@@ -28,15 +28,18 @@
 #include <afxwin.h>
 #include <afxcmn.h>
 #include <afxdlgs.h>
+
+#include "debugger.h"
+
 #include "../core/system.h"
 #include "../core/error.h"
+
 #include "debuggerwin.h"
 #include "tracedlg.h"
 #include "tracewin.h"
 #include "dumpwin.h"
 #include "codewin.h"
 #include "gfxwin.h"
-#include "debugger.h"
 
 //#ifdef _DEBUG
 //#undef THIS_FILE

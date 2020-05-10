@@ -40,9 +40,9 @@ CEditLine::CEditLine()
 
 	mHistoryLast=-1;
 	mHistoryMax=0;
-	for(int loop=0;loop<EL_MAX_LINES;loop++)
+	for (int loop=0; loop<EL_MAX_LINES; loop++)
 	{
-		strcpy(mHistory[loop],"");
+		strcpy_s(mHistory[loop], EL_MAX_LINE_LENGTH + 1, "");
 	}
 }
 

@@ -29,7 +29,7 @@ public:
    };
    void SetEEPROMType(UBYTE b);
    int Size(void);
-   int InitFrom(char *data,int count){ memcpy(romdata,data,min(count,Size()));};
+   int InitFrom(char *data,int count){ memcpy(romdata,data,__min(count,Size()));};
 
    void	Poke(ULONG addr,UBYTE data) { };
    UBYTE	Peek(ULONG addr)
@@ -37,8 +37,8 @@ public:
       return(0);
    };
 
-   void SetFilename(char* f){strcpy(filename,f);};
-   char* GetFilename(void){ return filename;};
+   void SetFilename(char* f) { strcpy_s(filename, 1024, f); };
+   char* GetFilename(void) { return filename; };
    
    void Load(void);
    void Save(void);

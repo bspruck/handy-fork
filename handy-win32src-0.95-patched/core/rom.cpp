@@ -59,7 +59,7 @@ CRom::CRom(char *romfile,bool useEmu)
 {
    mWriteEnable=FALSE;
    mValid = TRUE;
-   strncpy(mFileName,romfile,1024);
+   strncpy_s(mFileName, 1024, romfile, 1024);
    Reset();
 
    // Initialise ROM
@@ -75,14 +75,13 @@ CRom::CRom(char *romfile,bool useEmu)
    mRomData[0x1FE]=0x80;
    mRomData[0x1FF]=0xFF;
 
-   if(useEmu){
+   if (useEmu) {
       mValid = FALSE;
-   }else{
+   } else {
    // Load up the file
-
-   FILE	*fp;
-
-   if((fp=fopen(mFileName,"rb"))==NULL) {
+   FILE* fp;
+   errno_t err;
+   if ((err = fopen_s(&fp, mFileName, "rb")) != 0) {
       CLynxException lynxerr;
 
       lynxerr.Message() << "The Lynx Boot ROM image couldn't be located!";

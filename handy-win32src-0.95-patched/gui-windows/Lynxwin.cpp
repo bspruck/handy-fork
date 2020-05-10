@@ -56,7 +56,7 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-#define HANDY_VERSION		"Version 0.98"
+#define HANDY_VERSION		"Version 0.98 Alt"
 #define HANDY_BUILD			"Build ("__DATE__")"
 
 #define REGISTRY_VERSION	"Version 1.0"
@@ -90,7 +90,6 @@ CLynxWindow::CLynxWindow(CString gamefile)
 	mFrameSkip=0;
 
 	// Init display stuff so it will create correctly
-
 	mDisplayRender=NULL;
 	mDisplayNoPainting=TRUE;
 	mDisplayMode=DISPLAY_WINDOWED|DISPLAY_X1|DISPLAY_NO_ROTATE;
@@ -109,9 +108,7 @@ CLynxWindow::CLynxWindow(CString gamefile)
 	mpNetLynx=NULL;
 
 	// Read the default window position from the registry
-
 	CRect rect=rectDefault;
-
 	rect.left=mpLynxApp->GetProfileInt(REGISTRY_VERSION,"MainWindowX1", rectDefault.left);
 	rect.top=mpLynxApp->GetProfileInt(REGISTRY_VERSION,"MainWindowY1", rectDefault.top);
 
@@ -124,9 +121,7 @@ CLynxWindow::CLynxWindow(CString gamefile)
 	// Create our window OVERLAPPEDWINDOW - THICKFRAME (No resize)
 	Create(NULL,"Handy",WS_OVERLAPPED|WS_CAPTION|WS_SYSMENU|WS_MINIMIZEBOX,rect,NULL,MAKEINTRESOURCE(IDR_MAINFRAME));
 
-	//
 	// Create an invisible dialog for emulator info
-	//
 	mInfoDialogEnable=0;
 	mInfoDialog.Create(IDD_INFO_BOX,this);
 	mInfoDialog.ShowWindow(SW_HIDE);
@@ -136,9 +131,7 @@ CLynxWindow::CLynxWindow(CString gamefile)
 	ctlspeed.SetRange(1,500);
 	ctlspeed.SetPos(gThrottleMaxPercentage);
 
-	//
 	// Initialise/Hide the debugging menu if debugging is disabled
-	//
 #ifdef _LYNXDBG
 	mpDebugger=NULL;
 	gSingleStepModeSprites=mpLynxApp->GetProfileInt(REGISTRY_VERSION,"DebugSpriteStep",FALSE);
@@ -148,58 +141,46 @@ CLynxWindow::CLynxWindow(CString gamefile)
 #endif
 
 	// Load our icon
-
 	HICON hIcon = AfxGetApp()->LoadIcon(IDI_ICON1);
 	SetIcon(hIcon,TRUE);
 
 	// Load the keyboard accelerator table
-
 	LoadAccelTable(MAKEINTRESOURCE(IDR_ACCELERATOR1));
 
 	// Setup the root directory path
-
 	GetCurrentDirectory(256,mRootPath.GetBuffer(256));
 	mRootPath.ReleaseBuffer();
 	mRootPath+="\\";
 
-	//
 	// Finally make the lynx emulator object now all the windoze shit is done
-	//
-
 	mCommandLineMode=(strcmp(gamefile,""))?TRUE:FALSE;
-
 	if((mpLynx=CreateLynx(gamefile))==NULL)
 	{
 		return;
 	}
 
-//
-// Set the video mode, create device contexts
-//
+	// Set the video mode, create device contexts
 	ULONG render=mpLynxApp->GetProfileInt(REGISTRY_VERSION,"DisplayModeRender",DISPLAY_WINDOWED)&DISPLAY_RENDER_MASK;
 	ULONG magnify=mpLynxApp->GetProfileInt(REGISTRY_VERSION,"DisplayModeMagnification",DISPLAY_X1)&DISPLAY_X_MASK;
 	ULONG rotate=DISPLAY_NO_ROTATE;
 	ULONG bkgnd=mpLynxApp->GetProfileInt(REGISTRY_VERSION,"DisplayModeBackground",DISPLAY_BKGND);
 	if(mpLynx->CartGetRotate()==CART_ROTATE_LEFT) rotate=DISPLAY_ROTATE_LEFT;
 	if(mpLynx->CartGetRotate()==CART_ROTATE_RIGHT) rotate=DISPLAY_ROTATE_RIGHT;
-// Allow boot into fullscreen -	if(render==DISPLAY_FULLSCREEN || render==DISPLAY_EAGLE_FULLSCREEN || render==DISPLAY_LYNXLCD_FULLSCREEN) render=DISPLAY_WINDOWED;
+	
+	// Allow boot into fullscreen -	if(render==DISPLAY_FULLSCREEN || render==DISPLAY_EAGLE_FULLSCREEN || render==DISPLAY_LYNXLCD_FULLSCREEN) render=DISPLAY_WINDOWED;
 	mDisplayMode=DisplayModeSet(render,bkgnd,magnify,rotate);
 
-//
-// Create a Multimedia timer for speed throttling/calculation
-//
+	// Create a Multimedia timer for speed throttling/calculation
 	if((mTimerID=timeSetEvent(1000/HANDY_TIMER_FREQ,0,(LPTIMECALLBACK)fTimerEventHandler,(DWORD)this,TIME_PERIODIC))==NULL)
 	{
 		gError->Fatal("CLynxWindow::CLynxWindow() - Couldn't initialise Multimedia timer ???");
 	}
 
 	// Create a sound object
-
 	mDirectSoundPlayer.Create(this,gAudioBuffer,&gAudioBufferPointer,HANDY_AUDIO_BUFFER_SIZE,HANDY_AUDIO_SAMPLE_FREQ);
 	if(mpLynxApp->GetProfileInt(REGISTRY_VERSION,"AudioEnabled",FALSE)) gAudioEnabled=mDirectSoundPlayer.Start();
 
 	// Enable the joystick if required
-
 	mJoystickEnable=FALSE;
 	if(mpLynxApp->GetProfileInt(REGISTRY_VERSION,"JoystickEnabled",FALSE)) OnJoystickMenuSelect();
 
@@ -520,8 +501,29 @@ void CLynxWindow::CalcWindowSize(CRect *rect)
 	if(win_width<HANDY_SCREEN_WIDTH) win_width=HANDY_SCREEN_WIDTH;
 
 	// Calculate display offsets
-	mDisplayOffsetX=(win_width/2)-(img_width/2);
-	mDisplayOffsetY=(win_height/2)-(img_height/2);
+	// Magic offset values should be defined elsewhere
+	if (DisplayModeBkgnd() == DISPLAY_BKGND) {
+		switch (mDisplayBackgroundType) {
+		case IDB_BITMAP_BACKGROUND1:
+			mDisplayOffsetX = 250;
+			mDisplayOffsetY = 83;
+			break;
+		case IDB_BITMAP_BACKGROUND2:
+			mDisplayOffsetX = 191;
+			mDisplayOffsetY = 77;
+			break;
+		case IDB_BITMAP_BACKGROUND3:
+			mDisplayOffsetX = 14;
+			mDisplayOffsetY = 31;
+			break;
+		}
+		mDisplayOffsetX *= DisplayModeMagnification();
+		mDisplayOffsetY *= DisplayModeMagnification();
+	}
+	else {
+		mDisplayOffsetX = (win_width / 2) - (img_width / 2);
+		mDisplayOffsetY = (win_height / 2) - (img_height / 2);
+	}
 
 	// Move into the output structure
 	rect->left=0;
@@ -877,6 +879,7 @@ BEGIN_MESSAGE_MAP(CLynxWindow,CFrameWnd)
 	ON_UPDATE_COMMAND_UI(IDM_HELP_INFO,OnInfoMenuUpdate)
 	ON_COMMAND(IDM_HELP_ABOUT, OnAboutBoxSelect)
 	ON_COMMAND(IDM_OPTIONS_RESET, OnResetMenuSelect)
+	ON_COMMAND(IDM_OPTIONS_RESETEEPROM, OnResetEepromMenuSelect)
 	ON_COMMAND(IDM_OPTIONS_BACKGROUND, OnBkgndMenuSelect)
 	ON_UPDATE_COMMAND_UI(IDM_OPTIONS_BACKGROUND, OnBkgndMenuUpdate)
 	ON_COMMAND(IDM_OPTIONS_USEBOOTROM, OnBootromMenuSelect)
@@ -1001,7 +1004,7 @@ void CLynxWindow::OnTimer(UINT nIDEvent)
 			{
 				surfDesc->GetDC(&fullscnHDC);
 				fullscnCDC = CDC::FromHandle (fullscnHDC);
-				sprintf(info,"%%=%03d F=%03d FSkip=%01d",mEmulationSpeed,mFramesPerSecond,mFrameSkip);
+				sprintf_s(info, 40, "%%=%03d F=%03d FSkip=%01d", mEmulationSpeed, mFramesPerSecond, mFrameSkip);
 				TextOut(fullscnHDC,0,0,info,strlen(info));
 				surfDesc->ReleaseDC(fullscnHDC);
 			}
@@ -1750,6 +1753,13 @@ void CLynxWindow::OnResetMenuSelect()
 	Invalidate(FALSE);
 }
 
+void CLynxWindow::OnResetEepromMenuSelect()
+{
+	mpLynx->ResetEeprom();
+	OnDebuggerUpdate();
+	Invalidate(FALSE);
+}
+
 void CLynxWindow::OnPauseMenuSelect()
 {
 	if(!gSystemHalt)
@@ -2116,12 +2126,12 @@ void CLynxWindow::OnGraphicsMenuSelect()
 
 void CLynxWindow::OnRAMDumpMenuSelect()
 {
-	FILE *fp;
-
-	if((fp=fopen("lynxram.bin","wb"))!=NULL)
+	FILE* fp;
+	errno_t err;
+	if ((err = fopen_s(&fp, "lynxram.bin", "wb")) == 0)
 	{
 		int loop;
-		for(loop=0;loop<65536;loop++)
+		for (loop=0; loop<65536; loop++)
 		{
 			UBYTE data;
 			data=mpLynx->Peek_RAM(loop);

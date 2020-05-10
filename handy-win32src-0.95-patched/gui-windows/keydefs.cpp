@@ -27,8 +27,8 @@
 #include <afxwin.h>
 #include <afxcmn.h>
 #include <afxdlgs.h>
-#include "resource.h"
 #include "keydefs.h"
+#include "resource.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

@@ -27,6 +27,7 @@
 #ifndef DEBUGGER_H
 #define DEBUGGER_H
 
+class CSystem;
 
 #define	MAX_DEBUGGER_WIN	1
 #define	MAX_TRACE_WIN		1

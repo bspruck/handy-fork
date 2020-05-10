@@ -27,6 +27,8 @@
 #ifndef BADACCESS_H
 #define BADACCESS_H
 
+#include "lynxbase.h"
+
 class CMemFaultObj : public CLynxBase
 {
    // Function members
