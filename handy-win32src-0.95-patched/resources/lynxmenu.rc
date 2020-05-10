@@ -74,7 +74,7 @@ BEGIN
         MENUITEM "Lynx &Networking\tCtrl+N",    IDM_OPTIONS_NETWORK
         MENUITEM SEPARATOR
         MENUITEM "&Reset\tF3",                  IDM_OPTIONS_RESET
-        MENUITEM "Reset EEPROM\tF4",            IDM_OPTIONS_RESETEEPROM
+        MENUITEM "Reset + empty EEPROM\tF4",    IDM_OPTIONS_RESETEEPROM
         MENUITEM "&Pause\tF5",                  IDM_OPTIONS_PAUSE
     END
     POPUP "&Debug"
