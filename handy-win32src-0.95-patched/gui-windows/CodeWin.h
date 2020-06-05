@@ -45,14 +45,11 @@
 #ifndef CODEWIN_H
 #define CODEWIN_H
 
-
-#include <afxwin.h>
-#include "resource.h"
-#include "../core/system.h"
-#include "dmpwndlg.h"
-
-
 #ifdef _LYNXDBG
+
+#include "../core/system.h"
+
+class CSystem;
 
 class CCodeWin : public CFrameWnd
 {

@@ -345,7 +345,6 @@ extern unzFile ZEXPORT unzOpen (path)
 	unz_s us;
 	unz_s *s;
 	uLong central_pos,uL;
-	FILE * fin ;
 
 	uLong number_disk;          /* number of the current dist, used for 
 								   spaning ZIP, unsupported, always 0*/
@@ -360,9 +359,11 @@ extern unzFile ZEXPORT unzOpen (path)
     if (unz_copyright[0]!=' ')
         return NULL;
 
-    fin=fopen(path,"rb");
-	if (fin==NULL)
+	FILE* fin;
+	errno_t err2;
+	if ((err2 = fopen_s(&fin, path, "rb")) != 0) {
 		return NULL;
+	}
 
 	central_pos = unzlocal_SearchCentralDir(fin);
 	if (central_pos==0)

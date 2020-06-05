@@ -84,9 +84,9 @@ CCart::CCart(UBYTE *gamedata,ULONG gamesize)
       if(header.magic[0]!='L' || header.magic[1]!='Y' || header.magic[2]!='N' || header.magic[3]!='X' || header.version!=1) {
          memset(&header,0,sizeof(LYNX_HEADER));
          fprintf(stderr, "Invalid cart (no header?).\nGuessing a ROM layout...\n");
-         strncpy((char*)&header.cartname,"NO HEADER",32);
-         strncpy((char*)&header.manufname,"HANDY",16);
-         header.page_size_bank0=gamesize>>8;// Hard workaround...
+         strncpy_s((char*)&header.cartname, 32, "NO HEADER", 32);
+         strncpy_s((char*)&header.manufname, 16, "HANDY", 16);
+         header.page_size_bank0 = static_cast<UWORD>(gamesize >> 8); // Hard workaround...
          /*
          CLynxException lynxerr;
 
@@ -101,12 +101,10 @@ CCart::CCart(UBYTE *gamedata,ULONG gamesize)
       }
 
       // Setup name & manufacturer
-
-      strncpy(mName,(char*)&header.cartname,32);
-      strncpy(mManufacturer,(char*)&header.manufname,16);
+      strncpy_s(mName, 33, (char*)&header.cartname, 32);
+      strncpy_s(mManufacturer, 17, (char*)&header.manufname, 16);
 
       // Setup rotation
-
       mRotation=header.rotation;
       if(mRotation!=CART_NO_ROTATE && mRotation!=CART_ROTATE_LEFT && mRotation!=CART_ROTATE_RIGHT) mRotation=CART_NO_ROTATE;
       mAudinFlag=(header.aud_bits&0x01);
@@ -116,12 +114,10 @@ CCart::CCart(UBYTE *gamedata,ULONG gamesize)
       header.page_size_bank1=0x000;
 
       // Setup name & manufacturer
-
-      strcpy(mName,"<No cart loaded>");
-      strcpy(mManufacturer,"<No cart loaded>");
+      strcpy_s(mName, 33, "<No cart loaded>");
+      strcpy_s(mManufacturer, 17, "<No cart loaded>");
 
       // Setup rotation
-
       mAudinFlag=false;
       mRotation=CART_NO_ROTATE;
    }
@@ -380,8 +376,8 @@ bool CCart::ContextLoad(LSS_FILE *fp)
 bool CCart::ContextLoadLegacy(LSS_FILE *fp)
 {
    TRACE_CART0("ContextLoadLegacy()");
-   strcpy(mName,"<** IMAGE **>");
-   strcpy(mManufacturer,"<** RESTORED **>");
+   strcpy_s(mName, 33, "<** IMAGE **>");
+   strcpy_s(mManufacturer, 17, "<** RESTORED **>");
    char teststr[100]="XXXXXXXXXXXXXXXXXX";
    if(!lss_read(teststr,sizeof(char),18,fp)) return 0;
    if(strcmp(teststr,"CCart::ContextSave")!=0) return 0;

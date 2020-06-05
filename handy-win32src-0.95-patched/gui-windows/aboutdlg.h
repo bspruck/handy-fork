@@ -41,6 +41,8 @@
 //                                                                          //
 //////////////////////////////////////////////////////////////////////////////
 
+#include "resource.h"
+
 class CAboutDialog : public CDialog
 {
 	public:

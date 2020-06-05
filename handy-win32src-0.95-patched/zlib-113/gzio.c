@@ -101,11 +101,12 @@ local gzFile gz_open (path, mode, fd)
     s->msg = NULL;
     s->transparent = 0;
 
-    s->path = (char*)ALLOC(strlen(path)+1);
+	int pathSize = strlen(path) + 1;
+    s->path = (char*)ALLOC(pathSize);
     if (s->path == NULL) {
         return destroy(s), (gzFile)Z_NULL;
     }
-    strcpy(s->path, path); /* do this early for debugging */
+    strcpy_s(s->path, pathSize, path); /* do this early for debugging */
 
     s->mode = '\0';
     do {
@@ -153,11 +154,17 @@ local gzFile gz_open (path, mode, fd)
     s->stream.avail_out = Z_BUFSIZE;
 
     errno = 0;
-    s->file = fd < 0 ? F_OPEN(path, fmode) : (FILE*)fdopen(fd, fmode);
+	if (fd < 0) {
+		fopen_s(&(s->file), path, fmode);
+	}
+	else {
+		s->file = (FILE*) fdopen(fd, fmode);
+	}
 
     if (s->file == NULL) {
         return destroy(s), (gzFile)Z_NULL;
     }
+
     if (s->mode == 'w') {
         /* Write a very simple .gz header:
          */
@@ -198,7 +205,7 @@ gzFile ZEXPORT gzdopen (fd, mode)
     char name[20];
 
     if (fd < 0) return (gzFile)Z_NULL;
-    sprintf(name, "<fd:%d>", fd); /* for debugging */
+    sprintf_s(name, 20, "<fd:%d>", fd); /* for debugging */
 
     return gz_open (name, mode, fd);
 }
@@ -531,9 +538,9 @@ int ZEXPORTVA gzprintf (gzFile file, const char *format, /* args */ ...)
 
     va_start(va, format);
 #ifdef HAS_vsnprintf
-    (void)vsnprintf(buf, sizeof(buf), format, va);
+    (void)vsnprintf_s(buf, sizeof(buf), Z_PRINTF_BUFSIZE, format, va);
 #else
-    (void)vsprintf(buf, format, va);
+    (void)vsprintf_s(buf, Z_PRINTF_BUFSIZE, format, va);
 #endif
     va_end(va);
     len = strlen(buf); /* some *sprintf don't return the nb of bytes written */
@@ -868,9 +875,10 @@ const char*  ZEXPORT gzerror (file, errnum)
     if (m == NULL || *m == '\0') m = (char*)ERR_MSG(s->z_err);
 
     TRYFREE(s->msg);
-    s->msg = (char*)ALLOC(strlen(s->path) + strlen(m) + 3);
-    strcpy(s->msg, s->path);
-    strcat(s->msg, ": ");
-    strcat(s->msg, m);
+	int msgSize = strlen(s->path) + strlen(m) + 3;
+    s->msg = (char*)ALLOC(msgSize);
+    strcpy_s(s->msg, msgSize, s->path);
+    strcat_s(s->msg, msgSize, ": ");
+    strcat_s(s->msg, msgSize, m);
     return (const char*)s->msg;
 }

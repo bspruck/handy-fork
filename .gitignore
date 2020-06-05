@@ -1,0 +1,24 @@
+*.aps
+*.db
+*.tlog
+*.pdb
+*.asm
+*.pdb
+*.idb
+*.obj
+*.sbr
+*.tlog
+*.ipch
+*.log
+*.db
+*.opendb
+*.bsc
+*.exe
+*.ilk
+handy-win32src-0.95-patched/.vs/handy/v16/.suo
+handy-win32src-0.95-patched/vs/*
+handy-win32src-0.95-patched/vs/Debug/*
+handy-win32src-0.95-patched/vs/Debug Dbg/*
+handy-win32src-0.95-patched/vs/Release/*
+handy-win32src-0.95-patched/vs/Release Dbg/*
+

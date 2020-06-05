@@ -63,7 +63,7 @@ void CMikie::BlowOut(void)
    char addr[100];
    C6502_REGS regs;
    mSystem.GetRegs(regs);
-   sprintf(addr,"Runtime Error - System Halted\nCMikie::Poke() - Read/Write to counter clocks at PC=$%04x.",regs.PC);
+   sprintf_s(addr, 100, "Runtime Error - System Halted\nCMikie::Poke() - Read/Write to counter clocks at PC=$%04x.", regs.PC);
    gError->Warning(addr);
    gSystemHalt=TRUE;
 }
@@ -1874,13 +1874,13 @@ void CMikie::Poke(ULONG addr,UBYTE data)
             char addr[256];
             C6502_REGS regs;
             mSystem.GetRegs(regs);
-            sprintf(addr,"Runtime Alert - System Halted\nCMikie::Poke(SYSCTL1) - Lynx power down occured at PC=$%04x.\nResetting system.",regs.PC);
+            sprintf_s(addr, 256, "Runtime Alert - System Halted\nCMikie::Poke(SYSCTL1) - Lynx power down occured at PC=$%04x.\nResetting system.", regs.PC);
             gError->Warning(addr);
             mSystem.Reset();
             gSystemHalt=TRUE;
          }
          mSystem.CartAddressStrobe((data&0x01)?TRUE:FALSE);
-         if(mSystem.mEEPROM->Available()) mSystem.mEEPROM->ProcessEepromCounter(mSystem.mCart->GetCounterValue());
+         if(mSystem.mEEPROM->Available()) mSystem.mEEPROM->ProcessEepromCounter((UWORD) mSystem.mCart->GetCounterValue());
          break;
 
       case (MIKEYSREV&0xff):
@@ -1890,7 +1890,7 @@ void CMikie::Poke(ULONG addr,UBYTE data)
       case (IODIR&0xff):
          TRACE_MIKIE2("Poke(IODIR   ,%02x) at PC=%04x",data,mSystem.mCpu->GetPC());
          mIODIR=data;
-         if(mSystem.mEEPROM->Available()) mSystem.mEEPROM->ProcessEepromIO(mIODIR,mIODAT);
+         if(mSystem.mEEPROM->Available()) mSystem.mEEPROM->ProcessEepromIO((UBYTE) mIODIR, (UBYTE) mIODAT);
          break;
 
       case (IODAT&0xff):
@@ -1899,7 +1899,7 @@ void CMikie::Poke(ULONG addr,UBYTE data)
          mSystem.CartAddressData((mIODAT&0x02)?TRUE:FALSE);
          // Enable cart writes to BANK1 on AUDIN if AUDIN is set to output
          if(mIODIR&0x10) mSystem.mCart->mWriteEnableBank1=(mIODAT&0x10)?TRUE:FALSE;// there is no reason to use AUDIN as Write Enable or latch. private patch??? TODO
-         if(mSystem.mEEPROM->Available()) mSystem.mEEPROM->ProcessEepromIO(mIODIR,mIODAT);
+         if(mSystem.mEEPROM->Available()) mSystem.mEEPROM->ProcessEepromIO((UBYTE) mIODIR, (UBYTE) mIODAT);
          break;
 
       case (SERCTL&0xff):

@@ -48,10 +48,10 @@
 #include "color.h"
 #include "colorstatic.h"
 #include "debuggerwin.h"
-#include "editline.h"
 #include "displine.h"
-#include "widget.h"
+#include "editline.h"
 #include "resource.h"
+#include "widget.h"
 
 
 //#ifdef _DEBUG
@@ -363,8 +363,8 @@ bool CDebuggerWin::ExecCommand(char *linetext)
 	};
 
 	// Dump back to the edit window
-	strcpy(tmptext,">");
-	strncat(tmptext,linetext,MAX_LINE_SIZE-1);
+	strcpy_s(tmptext, MAX_LINE_SIZE + 1, ">");
+	strncat_s(tmptext, MAX_LINE_SIZE + 1, linetext, MAX_LINE_SIZE-1);
 	tmptext[MAX_LINE_SIZE]=0;
 	LineOutput(tmptext);
 
@@ -512,7 +512,8 @@ bool CDebuggerWin::ExecCommand(char *linetext)
 
 void CDebuggerWin::LineOutput(char *text)
 {
-	char wintext[MAX_LINE_BUFFERS*(MAX_LINE_SIZE+1)];
+	const int winTextSize = MAX_LINE_BUFFERS * (MAX_LINE_SIZE + 1);
+	char wintext[winTextSize];
 	char winline[MAX_LINE_SIZE+1];
 
 	if(mpLogFile)
@@ -529,14 +530,14 @@ void CDebuggerWin::LineOutput(char *text)
 			mLineBuffer[loop]=mLineBuffer[loop+1];
 		}
 		mLineBuffer[MAX_LINE_BUFFERS-1]=tmpline;
-		strncpy(mLineBuffer[MAX_LINE_BUFFERS-1],text,MAX_LINE_SIZE);
+		strncpy_s(mLineBuffer[MAX_LINE_BUFFERS-1], MAX_LINE_SIZE+1, text, MAX_LINE_SIZE);
 		mLineBuffer[MAX_LINE_BUFFERS-1][MAX_LINE_SIZE]=0;
 	}
 	else
 	{
 		char *newbuf;
 		newbuf = new char[MAX_LINE_SIZE+1];
-		strncpy(newbuf,text,MAX_LINE_SIZE);
+		strncpy_s(newbuf, MAX_LINE_SIZE + 1, text, MAX_LINE_SIZE);
 		newbuf[MAX_LINE_SIZE]=0;
 		mLineBuffer[mLineInput++]=newbuf;
 	}
@@ -544,15 +545,15 @@ void CDebuggerWin::LineOutput(char *text)
 
 	// Dump the line buffers into the window text
 
-	wintext[0]=0;
+	wintext[0] = 0;
     int loop;
-	for(loop=0;loop<mLineInput-1;loop++)
+	for (loop=0;loop<mLineInput-1;loop++)
 	{
-		sprintf(winline,"%s%c%c",mLineBuffer[loop],0x0d,0x0a);
-		strcat(wintext,winline);
+		sprintf_s(winline, MAX_LINE_SIZE + 1, "%s%c%c", mLineBuffer[loop], 0x0d, 0x0a);
+		strcat_s(wintext, winTextSize, winline);
 	}
-	sprintf(winline,"%s",mLineBuffer[loop],0x0d,0x0a);
-	strcat(wintext,winline);
+	sprintf_s(winline, MAX_LINE_SIZE + 1, "%s", mLineBuffer[loop]);
+	strcat_s(wintext, winTextSize, winline);
 
 	mpEditDisplay->SetWindowText(wintext);
 
@@ -587,7 +588,8 @@ bool CDebuggerWin::CommandLog(int argc, char **argv)
 	else
 	{
 		// Start logging
-		if((mpLogFile=fopen(argv[1],"wt"))==NULL)
+		errno_t err;
+		if ((err = fopen_s(&mpLogFile, argv[1], "wt")) != 0)
 		{
 			LineOutput("Error Creating Log file");
 			return true;
@@ -638,12 +640,12 @@ bool CDebuggerWin::CommandBpoint(int argc, char **argv)
 				{
 					if(regs.cpuBreakpoints[loop]>0xffff)
 					{
-						sprintf(tmptext,"BP%02x - Unset",loop);
+						sprintf_s(tmptext, MAX_LINE_SIZE + 1, "BP%02x - Unset", loop);
 						LineOutput(tmptext);
 					}
 					else
 					{
-						sprintf(tmptext,"BP%02x - $%04x",loop,regs.cpuBreakpoints[loop]);
+						sprintf_s(tmptext, MAX_LINE_SIZE + 1, "BP%02x - $%04x", loop, regs.cpuBreakpoints[loop]);
 						LineOutput(tmptext);
 					}
 				}
@@ -658,12 +660,12 @@ bool CDebuggerWin::CommandBpoint(int argc, char **argv)
 				{
 					if(regs.cpuBreakpoints[bpn]>0xffff)
 					{
-						sprintf(tmptext,"BP%02x - Unset",bpn);
+						sprintf_s(tmptext, MAX_LINE_SIZE + 1, "BP%02x - Unset", bpn);
 						LineOutput(tmptext);
 					}
 					else
 					{
-						sprintf(tmptext,"BP%02x - $%04x",bpn,regs.cpuBreakpoints[bpn]);
+						sprintf_s(tmptext, MAX_LINE_SIZE + 1, "BP%02x - $%04x", bpn, regs.cpuBreakpoints[bpn]);
 						LineOutput(tmptext);
 					}
 				}
@@ -713,7 +715,6 @@ bool CDebuggerWin::CommandBpoint(int argc, char **argv)
 bool CDebuggerWin::CommandScript(int argc, char **argv)
 {
 	UBYTE data;
-	FILE *fp;
 
 	if(argc!=2)
 	{
@@ -722,7 +723,9 @@ bool CDebuggerWin::CommandScript(int argc, char **argv)
 	}
 	else
 	{
-		if((fp=fopen(argv[1],"rt"))!=NULL)
+		FILE* fp;
+		errno_t err;
+		if ((err = fopen_s(&fp, argv[1], "rt")) == 0)
 		{
 			while(1)
 			{
@@ -877,7 +880,7 @@ bool CDebuggerWin::CommandSearch(int argc, char **argv)
 				char tmptext[MAX_LINE_SIZE+1];
 
 				//We found something
-				sprintf(tmptext,"Match at 0x%04x",addr);
+				sprintf_s(tmptext, MAX_LINE_SIZE + 1, "Match at 0x%04x", addr);
 				LineOutput(tmptext);
 
 				search_matches++;
@@ -959,13 +962,13 @@ bool CDebuggerWin::CommandMemDump(int argc, char **argv)
 			for(loop=0;loop<count;loop++)
 			{
 				char linetext[MAX_LINE_SIZE+1];
-				sprintf(linetext,"%04x ",addr);
+				sprintf_s(linetext, MAX_LINE_SIZE + 1, "%04x ", addr);
 
 				for(loop2=0;loop2<16;loop2++)
 				{
 					char cliptext[MAX_LINE_SIZE+1];
-					sprintf(cliptext," %02x",mSystem.Peek_RAM(addr+loop2));
-					strcat(linetext,cliptext);
+					sprintf_s(cliptext, MAX_LINE_SIZE + 1, " %02x", mSystem.Peek_RAM(addr+loop2));
+					strcat_s(linetext, MAX_LINE_SIZE + 1, cliptext);
 				}
 				addr+=16;
 				LineOutput(linetext);
@@ -981,7 +984,6 @@ bool CDebuggerWin::CommandMemLoad(int argc, char **argv)
 {
 	ULONG addr;
 	UBYTE data;
-	FILE *fp;
 
 	if(argc!=3)
 	{
@@ -992,7 +994,9 @@ bool CDebuggerWin::CommandMemLoad(int argc, char **argv)
 	{
 		if((addr=GetLongFromString(argv[1],0xffff))!=0xffffffff)
 		{
-			if((fp=fopen(argv[2],"rb"))!=NULL)
+			FILE* fp;
+			errno_t err;
+			if ((err = fopen_s(&fp, argv[2], "rb")) == 0)
 			{
 				// Read bytes until the end
 				while(fread(&data,1,1,fp)==1 && addr<=0xffff)
@@ -1020,7 +1024,6 @@ bool CDebuggerWin::CommandMemSave(int argc, char **argv)
 {
 	ULONG saddr,eaddr,addr;
 	UBYTE data;
-	FILE *fp;
 
 	if(argc!=4)
 	{
@@ -1031,7 +1034,9 @@ bool CDebuggerWin::CommandMemSave(int argc, char **argv)
 	{
 		if((saddr=GetLongFromString(argv[1],0xffff))!=0xffffffff && (eaddr=GetLongFromString(argv[2],0xffff))!=0xffffffff)
 		{
-			if((fp=fopen(argv[3],"wb"))!=NULL)
+			FILE* fp;
+			errno_t err;
+			if ((err = fopen_s(&fp, argv[3], "wb")) == 0)
 			{
 				// Write loop
 				for(addr=saddr;addr<=eaddr;addr++)
@@ -1129,13 +1134,13 @@ bool CDebuggerWin::CommandCartDump(int argc, char **argv)
 				int page,offset;
 				page=addr/(mSystem.CartSize()>>8);
 				offset=addr%(mSystem.CartSize()>>8);
-				sprintf(linetext,"%02x:%03x ",page,offset);
+				sprintf_s(linetext, MAX_LINE_SIZE + 1, "%02x:%03x ", page, offset);
 
 				for(loop2=0;loop2<16;loop2++)
 				{
 					char cliptext[MAX_LINE_SIZE+1];
-					sprintf(cliptext," %02x",mSystem.Peek_CART(addr+loop2));
-					strcat(linetext,cliptext);
+					sprintf_s(cliptext, MAX_LINE_SIZE + 1, " %02x", mSystem.Peek_CART(addr+loop2));
+					strcat_s(linetext, MAX_LINE_SIZE + 1, cliptext);
 				}
 				addr+=16;
 				LineOutput(linetext);
@@ -1150,7 +1155,6 @@ bool CDebuggerWin::CommandCartLoad(int argc, char **argv)
 {
 	ULONG addr;
 	UBYTE data;
-	FILE *fp;
 
 	if(argc!=3)
 	{
@@ -1161,7 +1165,9 @@ bool CDebuggerWin::CommandCartLoad(int argc, char **argv)
 	{
 		if((addr=GetLongFromString(argv[1],0xffffff))!=0xffffffff)
 		{
-			if((fp=fopen(argv[2],"rb"))!=NULL)
+			FILE* fp;
+			errno_t err;
+			if ((err = fopen_s(&fp, argv[2], "rb")) == 0)
 			{
 				mSystem.mCart->BankSelect(bank0);
 				mSystem.mCart->mWriteEnableBank0=TRUE;
@@ -1192,7 +1198,6 @@ bool CDebuggerWin::CommandCartSave(int argc, char **argv)
 {
 	ULONG saddr,eaddr,addr;
 	UBYTE data;
-	FILE *fp;
 
 	if(argc!=4)
 	{
@@ -1203,7 +1208,9 @@ bool CDebuggerWin::CommandCartSave(int argc, char **argv)
 	{
 		if((saddr=GetLongFromString(argv[1],0xffffff))!=0xffffffff && (eaddr=GetLongFromString(argv[2],0xffffff))!=0xffffffff)
 		{
-			if((fp=fopen(argv[3],"wb"))!=NULL)
+			FILE* fp;
+			errno_t err;
+			if ((err = fopen_s(&fp, argv[3], "wb")) == 0)
 			{
 				// Write loop
 				for(addr=saddr;addr<=eaddr;addr++)
@@ -1286,7 +1293,7 @@ bool CDebuggerWin::CommandExecute(int argc, char **argv)
 	}
 	else
 	{
-		spawnvp(_P_WAIT,argv[1],&argv[1]);
+		_spawnvp(_P_WAIT,argv[1],&argv[1]);
 	}
 	return true;
 }
@@ -1305,7 +1312,7 @@ bool CDebuggerWin::CommandRegisters(int argc, char **argv)
 	{
 		char linetext[MAX_LINE_SIZE+1];
 		mSystem.GetRegs(regs);
-		sprintf(linetext,"PC=$%04x SP=$%02x PS=0x%02x A=0x%02x X=0x%02x Y=0x%02x",regs.PC,regs.SP, regs.PS,regs.A,regs.X,regs.Y);
+		sprintf_s(linetext, MAX_LINE_SIZE + 1, "PC=$%04x SP=$%02x PS=0x%02x A=0x%02x X=0x%02x Y=0x%02x",regs.PC,regs.SP, regs.PS,regs.A,regs.X,regs.Y);
 		LineOutput(linetext);
 	}
 	else
